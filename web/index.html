@@ -3,7 +3,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="dark">
+    <meta name="color-scheme" content="light">
     <title>Hubbits · Pentest com IA</title>
     <link rel="stylesheet" href="/style.css">
     <script src="/app.js" defer></script>
@@ -20,6 +20,7 @@
         <nav class="side-nav">
           <a class="active" href="#overview"><span aria-hidden="true">◈</span> Visão geral</a>
           <a href="#pipeline"><span aria-hidden="true">◇</span> Pipeline</a>
+          <a href="#framework"><span aria-hidden="true">▣</span> Framework</a>
           <a href="#findings"><span aria-hidden="true">▤</span> Achados</a>
           <a href="#recommendations"><span aria-hidden="true">✦</span> Correções</a>
           <a href="#audit"><span aria-hidden="true">⌁</span> Auditoria</a>
@@ -27,7 +28,7 @@
         </nav>
         <div class="sidebar-bottom">
           <span class="sidebar-pulse" aria-hidden="true"></span>
-          <div><strong>Ambiente controlado</strong><small>Juice Shop · desafio 03</small></div>
+          <div><strong>Ambiente controlado</strong><small>Alvo definido por campanha</small></div>
         </div>
       </aside>
 
@@ -40,21 +41,38 @@
         <main id="main">
           <section class="hero" id="overview" aria-labelledby="hero-title">
             <div class="hero-copy">
-              <div class="eyebrow"><span class="eyebrow-line"></span> PENTEST COM AGENTES · MVP FUNCIONAL</div>
+              <div class="eyebrow">PENTEST COM AGENTES · MVP FUNCIONAL</div>
               <h1 id="hero-title">Entenda a superfície.<br><em>Teste com limites.</em></h1>
-              <p>Uma campanha observável para o alvo fornecido: cada ação passa pelo escopo, gera evidência e termina sob controle do operador.</p>
-              <div class="hero-actions">
-                <button id="start-btn" class="button button-primary" type="button"><span aria-hidden="true">▶</span> Iniciar campanha</button>
-                <button id="stop-btn" class="button button-danger" type="button" disabled><span aria-hidden="true">■</span> Interromper</button>
-                <a id="download-btn" class="button button-ghost disabled" href="/api/report.md" download aria-disabled="true"><span aria-hidden="true">↓</span> Relatório</a>
-              </div>
+              <div class="signature-bars" aria-hidden="true"><span></span><span></span></div>
+              <p>Informe uma URL autorizada. Os agentes planejam, testam e analisam sob limites de escopo, taxa e parada.</p>
+              <form id="campaign-form" class="campaign-form">
+                <div class="form-field">
+                  <label for="target-url">URL do alvo</label>
+                  <input id="target-url" name="target_url" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://exemplo.com/" value="https://4.migbot.com.br/#/" required>
+                  <small id="target-preview">O teste usa somente a origem HTTPS informada.</small>
+                </div>
+                <div class="form-field">
+                  <label for="api-key">Chave OpenAI <span>se não estiver configurada no servidor</span></label>
+                  <input id="api-key" name="api_key" type="password" autocomplete="off" spellcheck="false" placeholder="Usada apenas nesta campanha">
+                  <small>O campo é limpo ao iniciar. O console não salva a chave.</small>
+                </div>
+                <label class="authorization-check" for="authorization-confirmed">
+                  <input id="authorization-confirmed" type="checkbox" required>
+                  <span>Confirmo que tenho autorização para testar esta URL.</span>
+                </label>
+                <div class="hero-actions">
+                  <button id="start-btn" class="button button-primary" type="submit"><span aria-hidden="true">▶</span> Iniciar campanha</button>
+                  <button id="stop-btn" class="button button-danger" type="button" disabled><span aria-hidden="true">■</span> Interromper</button>
+                  <a id="download-btn" class="button button-ghost disabled" href="/api/report.md" download aria-disabled="true"><span aria-hidden="true">↓</span> Relatório</a>
+                </div>
+              </form>
               <p id="action-message" class="action-message" role="status" aria-live="polite"></p>
             </div>
             <div class="hero-panel" aria-label="Estado da campanha">
               <div class="panel-top"><span>STATUS DA OPERAÇÃO</span><span class="panel-icon" aria-hidden="true">◉</span></div>
               <div class="status-visual"><span class="status-ring"><span></span></span><div><strong id="hero-status">Aguardando</strong><small id="hero-substatus">Pronto para uma execução controlada</small></div></div>
-              <div class="target-box"><span>ALVO AUTORIZADO</span><strong id="target-display">Carregando escopo...</strong></div>
-              <div class="panel-footer"><span>ESCOPO FIXO</span><span>PARADA MANUAL</span><span>EVIDÊNCIA LOCAL</span></div>
+              <div class="target-box"><span>ALVO DA CAMPANHA</span><strong id="target-display">Carregando escopo...</strong></div>
+              <div class="panel-footer"><span>ORIGEM EXATA</span><span>PARADA MANUAL</span><span>EVIDÊNCIA LOCAL</span></div>
             </div>
           </section>
 
@@ -66,15 +84,32 @@
           </section>
 
           <section class="basics-panel" id="basics" aria-labelledby="basics-title">
-            <div><span class="section-index">PONTO DE PARTIDA</span><h2 id="basics-title">Dificuldades mais básicas</h2><p>O catálogo público do laboratório indica quantos desafios estão nos níveis iniciais e a ordem sugerida para começar.</p></div>
+            <div><span class="section-index">PONTO DE PARTIDA</span><h2 id="basics-title">Dificuldades mais básicas</h2><p>Quando o alvo é o Juice Shop, o catálogo público indica os níveis iniciais e a ordem sugerida.</p></div>
             <div class="basics-counts"><span><strong id="difficulty-one">—</strong> NÍVEL 1</span><span><strong id="difficulty-two">—</strong> NÍVEL 2</span></div>
             <ol id="tutorial-list" class="tutorial-list"><li>Os nomes aparecem após uma campanha concluída.</li></ol>
           </section>
 
           <section id="pipeline" class="content-section" aria-labelledby="pipeline-title">
-            <div class="section-heading"><div><span class="section-index">01 / FLUXO</span><h2 id="pipeline-title">Pipeline de agentes</h2><p>Cada agente recebe somente o resultado da etapa anterior e opera dentro do escopo.</p></div><span class="section-tag">6 ETAPAS</span></div>
+            <div class="section-heading"><div><span class="section-index">01 / FLUXO</span><h2 id="pipeline-title">Pipeline de agentes</h2><p>O planejamento por IA escolhe apenas verificações permitidas; o executor mantém o controle da rede.</p></div><span class="section-tag">7 ETAPAS</span></div>
             <div id="pipeline-grid" class="pipeline-grid"></div>
+            <p id="plan-status" class="monitor-delta">O plano de testes aparece quando a campanha começar.</p>
             <p id="monitor-delta" class="monitor-delta">A comparação de regressões aparece após duas campanhas completas no mesmo alvo.</p>
+          </section>
+
+          <section id="framework" class="content-section" aria-labelledby="framework-title">
+            <div class="section-heading"><div><span class="section-index">INVENTÁRIO DE TECNOLOGIA</span><h2 id="framework-title">Framework e avisos públicos</h2><p>Indícios observados no alvo e referências de segurança para investigação.</p></div><span id="framework-count" class="section-tag">AGUARDANDO</span></div>
+            <div class="framework-panel">
+              <div class="framework-summary">
+                <div><span>FAMÍLIA OBSERVADA</span><strong id="framework-family">Aguardando</strong></div>
+                <div><span>VERSÃO OBSERVADA</span><strong id="framework-version">Não confirmada</strong></div>
+                <div><span>CERTEZA DO INVENTÁRIO</span><strong id="framework-certainty">—</strong></div>
+              </div>
+              <p id="framework-caveat" class="framework-caveat">Nenhuma versão ou instalação afetada foi confirmada nesta execução.</p>
+              <div class="framework-detail-grid">
+                <div><h3>Evidência observada</h3><div id="framework-evidence" class="framework-evidence"><p>O inventário aparece após a verificação da página.</p></div></div>
+                <div><h3>Avisos para triagem</h3><div id="framework-advisories" class="framework-advisories"><p>Nenhum aviso correlacionado até agora.</p></div></div>
+              </div>
+            </div>
           </section>
 
           <section id="findings" class="content-section" aria-labelledby="findings-title">
@@ -95,7 +130,7 @@
           <section id="guardrails" class="content-section guardrails" aria-labelledby="guardrails-title">
             <div class="section-heading"><div><span class="section-index">05 / MODELO DE SEGURANÇA</span><h2 id="guardrails-title">Limites da operação</h2><p>As regras do desafio são aplicadas pelo executor antes de cada requisição.</p></div><span class="section-tag">POLÍTICA ATIVA</span></div>
             <div class="guardrail-grid">
-              <article><span class="guardrail-icon">⌖</span><h3>Alvo único</h3><p id="guardrail-target">Somente a origem definida em <code>scope.json</code>. Redirecionamentos externos são recusados.</p></article>
+              <article><span class="guardrail-icon">⌖</span><h3>Alvo único</h3><p id="guardrail-target">Somente a origem HTTPS informada nesta campanha. Redirecionamentos externos são recusados.</p></article>
               <article><span class="guardrail-icon">◷</span><h3>Volume limitado</h3><p id="guardrail-volume">Métodos de leitura, orçamento de requisições e intervalo mínimo entre ações.</p></article>
               <article><span class="guardrail-icon">▣</span><h3>Interrupção auditável</h3><p>O botão Parar sinaliza o executor, que preserva os resultados já capturados e encerra entre ações.</p></article>
               <article><span class="guardrail-icon">◇</span><h3>Aprovação humana</h3><p>Credenciais privilegiadas, mudança de estado, aumento de intensidade e exploração encadeada ficam fora desta campanha automática.</p></article>

@@ -219,8 +219,9 @@ class SurfaceChecksTests(unittest.TestCase):
             self.assertEqual(result.status, "completed")
             self.assertEqual(result.summary["requests"], 6)
             self.assertTrue({"ftp_listing", "public_metrics", "sql_error_exposure"} <= checks)
-            self.assertEqual(result.observations[0]["difficulty_counts"], {"1": 2, "2": 1})
-            self.assertEqual(result.observations[0]["tutorial_names"], ["First Steps", "Score Board"])
+            beginner = next(item for item in result.observations if item.get("type") == "beginner_challenges")
+            self.assertEqual(beginner["difficulty_counts"], {"1": 2, "2": 1})
+            self.assertEqual(beginner["tutorial_names"], ["First Steps", "Score Board"])
             self.assertEqual(seen, ["/", "/ftp/", "/metrics",
                                     "/rest/products/search?q=apple",
                                     "/rest/products/search?q=apple%27", "/api/Challenges"])

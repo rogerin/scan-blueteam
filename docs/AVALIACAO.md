@@ -20,6 +20,10 @@ A aplicação se identifica como **OWASP Juice Shop**, um laboratório deliberad
 
 Todos os seis achados têm confiança **alta na observação**. O erro SQLite comprova divulgação de detalhe interno e uma entrada que causa erro, **não** extração de dados ou SQL injection explorável. A listagem comprova nomes visíveis, **não** acesso ao conteúdo. O monitor distingue esses limites no relatório. A [OWASP recomenda](https://cheatsheetseries.owasp.org/cheatsheets/SQL_Injection_Prevention_Cheat_Sheet) consultas parametrizadas; seu [guia de testes](https://wstg.owasp.org/latest/4-Web_Application_Security_Testing/08-Error_Handling/01-Improper_Error_Handling/) descreve o risco de erros detalhados. A [documentação do Prometheus](https://prometheus.io/docs/operating/security/) recomenda proteger endpoints de métricas de redes públicas.
 
+A [análise aprofundada de `/ftp`](FTP_ANALISE.md) separa a listagem confirmada do acesso direto a arquivos: `HEAD` de um `.kdbx` retornou 200, enquanto dois backups `.bak` retornaram 403. O conteúdo e a presença de credenciais não foram verificados.
+
+Depois desta campanha inicial, a pipeline passou a inventariar bundles Angular e verificar metadados de arquivos listados por `HEAD`, com teto de 11 requisições. A [nova execução na rota Token Sale](ANGULAR_CVES.md) identificou Angular 22.2.2; nenhum CVE foi confirmado. A [revisão de prompt injection](PROMPT_INJECTION.md) também permaneceu inconclusiva porque o chat de IA retornou indisponibilidade.
+
 ## Dificuldades básicas do laboratório
 
 O catálogo público de `/api/Challenges` retornou **13 desafios de dificuldade 1** e **19 de dificuldade 2**. A ordem inicial indicada por `tutorialOrder` começa com **Score Board, DOM XSS, Bonus Payload, Privacy Policy, Reflected XSS** e **Exposed Credentials**. Isso é um mapa de aprendizagem, não uma lista de desafios resolvidos. Os testes desta campanha ficaram nas exposições públicas e em um par de entradas de busca não destrutivo; XSS, autenticação, autorização de cestas e credenciais ficaram fora da execução automática.

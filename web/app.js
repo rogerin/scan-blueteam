@@ -3,11 +3,19 @@
 const stages = [
   { id: "scope", number: "01", icon: "⌖", title: "Guardião do escopo", description: "Valida origem, método, orçamento e condição de parada antes de qualquer ação." },
   { id: "discovery", number: "02", icon: "◈", title: "Descoberta", description: "Identifica a aplicação e as rotas públicas incluídas na campanha." },
-  { id: "checks", number: "03", icon: "◇", title: "Testes seguros", description: "Executa verificações de leitura com cadência e volume limitados." },
-  { id: "triage", number: "04", icon: "▤", title: "Triagem", description: "Classifica evidência, severidade e confiança sem inferir exploração." },
-  { id: "remediation", number: "05", icon: "✦", title: "Correção", description: "Relaciona os achados a dicas de código e testes de regressão." },
-  { id: "monitor", number: "06", icon: "⌁", title: "Monitoramento", description: "Compara execuções e destaca achados novos ou resolvidos." },
+  { id: "planning", number: "03", icon: "✧", title: "Plano por IA", description: "Seleciona verificações de uma lista permitida e registra a decisão." },
+  { id: "checks", number: "04", icon: "◇", title: "Testes seguros", description: "Executa verificações de leitura com cadência e volume limitados." },
+  { id: "triage", number: "05", icon: "▤", title: "Triagem", description: "Classifica evidência, severidade e confiança sem inferir exploração." },
+  { id: "remediation", number: "06", icon: "✦", title: "Correção", description: "Relaciona os achados a dicas de código e testes de regressão." },
+  { id: "monitor", number: "07", icon: "⌁", title: "Monitoramento", description: "Compara execuções e destaca achados novos ou resolvidos." },
 ];
+
+const checkLabels = {
+  headers: "cabeçalhos", cookies: "cookies", ftp_listing: "listagem /ftp",
+  public_metrics: "métricas públicas", sql_error_exposure: "erros SQL expostos",
+  beginner_challenges: "desafios iniciais", robots_txt: "robots.txt",
+  security_txt: "security.txt", framework_inventory: "inventário do framework",
+};
 
 const $ = (id) => document.getElementById(id);
 const text = (node, value) => { node.textContent = value == null ? "" : String(value); };
@@ -46,14 +54,22 @@ function renderStages(snapshot) {
     card.append(top, node("div", "agent-icon", stage.icon), node("h3", "", stage.title), node("p", "", stage.description));
     grid.append(card);
   });
+  const planEvent = [...events].reverse().find((event) => event.phase === "planning" && event.type !== "request" && event.type !== "response");
+  const selectedChecks = Array.isArray(planEvent?.check_ids) ? planEvent.check_ids : [];
+  const planSource = planEvent?.source === "ai" ? "Plano por IA" : "Plano determinístico";
+  const fallback = planEvent?.fallback ? " após fallback da IA" : "";
+  text($("plan-status"), selectedChecks.length
+    ? `${planSource}${fallback}: ${selectedChecks.map((check) => checkLabels[check] || check).join(" · ")}.`
+    : planEvent?.message || "O plano de testes aparece quando a campanha começar.");
   const diff = snapshot.delta?.summary;
   text($("monitor-delta"), diff
     ? `Comparação: ${diff.new} novo(s), ${diff.resolved} resolvido(s), ${diff.changed} alterado(s), ${diff.unchanged} estável(is).`
     : "A comparação de regressões aparece após duas campanhas completas no mesmo alvo.");
 }
 
-function renderBasics(observations) {
+function renderBasics(observations, campaignStatus) {
   const catalog = observations.find((item) => item.type === "beginner_challenges");
+  $("basics").hidden = !catalog && Boolean(campaignStatus) && campaignStatus !== "running";
   text($("difficulty-one"), catalog?.difficulty_counts?.["1"] ?? "—");
   text($("difficulty-two"), catalog?.difficulty_counts?.["2"] ?? "—");
   const list = $("tutorial-list");
@@ -66,11 +82,14 @@ function renderBasics(observations) {
   }
 }
 
-function renderAIStatus(observations, scope) {
+function renderAIStatus(observations, scope, events) {
   const ai = observations.find((item) => item.type === "ai_advisor");
+  const plan = [...events].reverse().find((event) => event.phase === "planning" && Array.isArray(event.check_ids));
   const status = ai?.status === "completed" ? `IA ${ai.model || ""} · CONCLUÍDA`
     : ai?.status === "failed" ? `IA ${ai.model || ""} · FALHOU`
-      : scope.ai_model ? `IA ${scope.ai_model} · ATIVA` : "IA DESLIGADA";
+      : plan?.fallback ? "IA INDISPONÍVEL · PLANO SEGURO"
+        : plan?.source === "ai" ? `IA ${scope.ai_model || ""} · PLANO DEFINIDO`
+          : scope.ai_model ? `IA ${scope.ai_model} · CONFIGURADA` : "IA DESLIGADA";
   text($("ai-status"), status);
 }
 
@@ -86,6 +105,85 @@ function readable(value) {
     return parts.join(" · ");
   }
   return String(value);
+}
+
+function renderFrameworkInventory(observations) {
+  const inventory = observations.find((item) => item.type === "framework_inventory");
+  const family = typeof inventory?.family === "string" && inventory.family.trim()
+    ? inventory.family.trim() : "Não identificada";
+  const version = (typeof inventory?.version === "string" || typeof inventory?.version === "number")
+    && String(inventory.version).trim() ? String(inventory.version).trim() : "Não confirmada";
+  const certaintyLabels = {
+    exact: "Versão exata observada", conflicting_versions: "Versões conflitantes",
+    family_only: "Apenas família identificada", not_detected: "Não detectado",
+    confirmed: "Confirmada", high: "Alta", medium: "Média", low: "Baixa",
+    inferred: "Inferida", unknown: "Desconhecida",
+  };
+  const certainty = typeof inventory?.certainty === "string" ? inventory.certainty.trim() : "";
+  const advisories = Array.isArray(inventory?.advisories) ? inventory.advisories : [];
+  text($("framework-count"), inventory ? `${advisories.length} ${advisories.length === 1 ? "AVISO" : "AVISOS"}` : "AGUARDANDO");
+  text($("framework-family"), inventory ? family : "Aguardando");
+  text($("framework-version"), version);
+  text($("framework-certainty"), certaintyLabels[certainty.toLowerCase()] || certainty || "—");
+  text($("framework-caveat"), !inventory
+    ? "Nenhuma versão ou instalação afetada foi confirmada nesta execução."
+    : version === "Não confirmada"
+      ? "A versão instalada não foi confirmada. Estes avisos são referências para triagem e não comprovam vulnerabilidade no alvo."
+      : "A versão observada e a aplicabilidade dos avisos exigem validação no inventário e no build do alvo. Estes avisos não comprovam vulnerabilidade.");
+  const evidence = inventory?.evidence;
+  const evidenceItems = Array.isArray(evidence) ? evidence : evidence == null ? [] : [evidence];
+  const evidenceContainer = $("framework-evidence");
+  evidenceContainer.replaceChildren();
+  if (evidenceItems.length) {
+    const evidenceList = node("ul", "framework-evidence-list");
+    evidenceItems.forEach((item) => evidenceList.append(node("li", "", readable(item) || JSON.stringify(item))));
+    evidenceContainer.append(evidenceList);
+  } else {
+    evidenceContainer.append(node("p", "", "Nenhuma evidência de framework registrada nesta execução."));
+  }
+  const list = $("framework-advisories");
+  list.replaceChildren();
+  if (!advisories.length) {
+    list.append(node("p", "framework-empty", inventory
+      ? "Nenhum aviso correlacionado com a evidência disponível. Isso não confirma ausência de falhas."
+      : "Nenhum aviso correlacionado até agora."));
+    return;
+  }
+  const statusLabels = {
+    version_unconfirmed: "Versão não confirmada",
+    reference_only: "Referência sem confirmação",
+    candidate: "Aplicabilidade a verificar",
+    potential: "Aplicabilidade a verificar",
+    possible: "Possível; validar versão",
+    not_confirmed: "Não confirmado",
+    affected: "Faixa afetada descrita no aviso",
+    not_applicable: "Não aplicável à versão observada",
+    unknown: "Indeterminada",
+  };
+  advisories.forEach((advisory) => {
+    if (!advisory || typeof advisory !== "object") return;
+    const item = node("article", "framework-advisory");
+    const title = [advisory.id, advisory.cve].filter((value, index, values) => value && values.indexOf(value) === index).join(" · ");
+    item.append(node("strong", "", title || "Aviso de segurança"));
+    if (advisory.status) item.append(node("span", "framework-advisory-status",
+      `Correlação: ${statusLabels[advisory.status] || String(advisory.status).replaceAll("_", " ")}`));
+    if (advisory.reason) item.append(node("p", "", advisory.reason));
+    if (typeof advisory.url === "string") {
+      try {
+        const reference = new URL(advisory.url);
+        if (reference.origin === "https://github.com"
+            && reference.pathname.startsWith("/angular/angular/security/advisories/")
+            && !reference.username && !reference.password) {
+          const link = node("a", "framework-reference", `Abrir referência em ${reference.hostname} ↗`);
+          link.href = reference.href;
+          link.target = "_blank";
+          link.rel = "noopener noreferrer";
+          item.append(link);
+        }
+      } catch { /* Ignore malformed reference URLs. */ }
+    }
+    list.append(item);
+  });
 }
 
 function renderFindings(findings) {
@@ -178,7 +276,11 @@ function render(snapshot) {
   const actions = Array.isArray(result.actions) ? result.actions : [];
   const events = snapshot.events || [];
   const scope = snapshot.scope || {};
-  const target = scope.target || result.target || "Alvo definido em scope.json";
+  const target = scope.target || result.target || "Alvo ainda não informado";
+  if (!targetDirty && !snapshot.running && target && target !== "Alvo ainda não informado") {
+    $("target-url").value = target;
+    updateTargetPreview();
+  }
   text($("target-display"), target);
   text($("guardrail-target"), `Somente ${target}. Redirecionamentos externos são recusados.`);
   const maxRequests = scope.max_requests ?? "?";
@@ -194,11 +296,15 @@ function render(snapshot) {
   text($("metric-control"), snapshot.stop_requested ? "PARANDO" : snapshot.running ? "EM CURSO" : "ATIVO");
   $("start-btn").disabled = snapshot.running;
   $("stop-btn").disabled = !snapshot.running || snapshot.stop_requested;
+  $("target-url").disabled = snapshot.running;
+  $("api-key").disabled = snapshot.running;
+  $("authorization-confirmed").disabled = snapshot.running;
   $("download-btn").classList.toggle("disabled", !snapshot.report_available);
   $("download-btn").setAttribute("aria-disabled", String(!snapshot.report_available));
   renderStages(snapshot);
-  renderBasics(observations);
-  renderAIStatus(observations, scope);
+  renderBasics(observations, snapshot.running ? "running" : result.status);
+  renderFrameworkInventory(observations);
+  renderAIStatus(observations, scope, events.length ? events : actions);
   renderFindings(findings);
   renderRecommendations(recommendations, findings);
   renderAudit(events.length ? events : actions);
@@ -220,18 +326,69 @@ async function refresh() {
   }
 }
 
-async function action(path) {
+async function action(path, data = {}) {
   try {
-    const response = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" });
+    const response = await fetch(path, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(data) });
     const payload = await response.json();
     message(payload.message || payload.error || `HTTP ${response.status}`, !response.ok);
     await refresh();
+    return response.ok;
   } catch (error) {
     message(`Ação indisponível: ${error.message}`, true);
+    return false;
   }
 }
 
-$("start-btn").addEventListener("click", () => action("/api/campaign/start"));
+let targetDirty = false;
+function updateTargetPreview() {
+  const input = $("target-url");
+  const preview = $("target-preview");
+  const value = input.value.trim();
+  if (!value) {
+    input.setCustomValidity("Informe a URL do alvo.");
+    text(preview, "Informe uma URL HTTPS autorizada.");
+    return;
+  }
+  try {
+    const parsed = new URL(value);
+    if (parsed.protocol !== "https:" || parsed.username || parsed.password || parsed.search) {
+      input.setCustomValidity("Use HTTPS e remova usuário, senha e parâmetros da URL.");
+      text(preview, "Use HTTPS e remova usuário, senha e parâmetros da URL.");
+    } else {
+      input.setCustomValidity("");
+      text(preview, `Origem exata: ${parsed.origin}`);
+    }
+  } catch {
+    input.setCustomValidity("Informe uma URL HTTPS válida.");
+    text(preview, "Informe uma URL HTTPS válida.");
+  }
+}
+
+$("target-url").addEventListener("input", () => {
+  targetDirty = true;
+  $("authorization-confirmed").checked = false;
+  updateTargetPreview();
+});
+$("api-key").value = "";
+window.addEventListener("pageshow", () => { $("api-key").value = ""; });
+$("campaign-form").addEventListener("submit", async (event) => {
+  event.preventDefault();
+  updateTargetPreview();
+  if (!$("campaign-form").reportValidity()) return;
+  const targetUrl = $("target-url").value.trim();
+  const keyInput = $("api-key");
+  const apiKey = keyInput.value.trim();
+  keyInput.value = "";
+  const accepted = await action("/api/campaign/start", {
+    target_url: targetUrl,
+    api_key: apiKey,
+    authorization_confirmed: $("authorization-confirmed").checked,
+  });
+  if (accepted) {
+    targetDirty = false;
+    $("authorization-confirmed").checked = false;
+  }
+});
 $("stop-btn").addEventListener("click", () => action("/api/campaign/stop"));
 $("download-btn").addEventListener("click", (event) => { if (event.currentTarget.classList.contains("disabled")) event.preventDefault(); });
 document.querySelectorAll(".side-nav a").forEach((link) => link.addEventListener("click", () => {

@@ -5,14 +5,14 @@
   "allowed_schemes": ["https"],
   "allowed_ports": [443],
   "allowed_methods": ["GET", "HEAD"],
-  "max_requests": 8,
-  "max_assets": 0,
+  "max_requests": 11,
+  "max_assets": 3,
   "ftp_path": "/ftp/",
   "metrics_path": "/metrics",
   "search_path": "/rest/products/search",
   "challenge_path": "/api/Challenges",
   "min_interval_seconds": 1.0,
   "timeout_seconds": 8.0,
-  "max_response_bytes": 262144,
+  "max_response_bytes": 524288,
   "allow_private_ips": false
 }

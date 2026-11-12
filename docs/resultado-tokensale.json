@@ -1,0 +1,855 @@
+{
+  "run_id": "20261112T132142Z-4c6be3db",
+  "target": "https://4.migbot.com.br//",
+  "campaign_name": "Hackathon Hubbits - Desafio 3",
+  "started_at": "2026-11-12T13:21:42.847195+00:00",
+  "ended_at": "2026-11-12T13:21:55.895815+00:00",
+  "status": "completed",
+  "stop_reason": "planned_tests_complete",
+  "actions": [
+    {
+      "timestamp": "2026-11-12T13:21:42.854039+00:00",
+      "type": "decision",
+      "phase": "scope",
+      "message": "Campaign scope validated",
+      "target": "https://4.migbot.com.br//",
+      "allowed_hosts": [
+        "4.migbot.com.br"
+      ],
+      "methods": [
+        "GET",
+        "HEAD"
+      ],
+      "max_requests": 11,
+      "min_interval_seconds": 1.0
+    },
+    {
+      "timestamp": "2026-11-12T13:21:42.875886+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br//",
+      "request_number": 1
+    },
+    {
+      "timestamp": "2026-11-12T13:21:43.529034+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br//",
+      "status": 200,
+      "elapsed_ms": 653,
+      "body_bytes": 10351,
+      "truncated": false,
+      "body_sha256": "2827d932e8058a5eaa6b3519f024c5af7aac2bb2725cc92cbd03bb60140dbc8d",
+      "headers": {
+        "Content-Type": "text/html; charset=UTF-8",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T13:21:43.530521+00:00",
+      "type": "decision",
+      "phase": "discovery",
+      "message": "Discovery complete",
+      "script_references": 8,
+      "in_scope_assets": 3
+    },
+    {
+      "timestamp": "2026-11-12T13:21:43.530547+00:00",
+      "type": "decision",
+      "phase": "planning",
+      "message": "Safe profile selected",
+      "check_ids": [
+        "headers",
+        "cookies",
+        "framework_inventory",
+        "ftp_listing",
+        "public_metrics",
+        "sql_error_exposure",
+        "beginner_challenges"
+      ],
+      "source": "deterministic",
+      "fallback": false
+    },
+    {
+      "timestamp": "2026-11-12T13:21:43.880994+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rolldown-runtime-BoHGiXSq.js",
+      "request_number": 2
+    },
+    {
+      "timestamp": "2026-11-12T13:21:44.571350+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rolldown-runtime-BoHGiXSq.js",
+      "status": 200,
+      "elapsed_ms": 690,
+      "body_bytes": 250,
+      "truncated": false,
+      "body_sha256": "68e9792c539bcfd8cb3a9516d0b216cfa70fcbd0fc02738f58ee7196f91e29fb",
+      "headers": {
+        "Content-Type": "application/javascript; charset=UTF-8",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T13:21:44.885113+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/chunk-DBPdFzgj.js",
+      "request_number": 3
+    },
+    {
+      "timestamp": "2026-11-12T13:21:45.128001+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/chunk-DBPdFzgj.js",
+      "status": 200,
+      "elapsed_ms": 243,
+      "body_bytes": 2458,
+      "truncated": false,
+      "body_sha256": "97f1c69840855dfd1497f72d325d97f1c93caf45ed10ee0599c2967757a8b8aa",
+      "headers": {
+        "Content-Type": "application/javascript; charset=UTF-8",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T13:21:45.887990+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/chunk-Cv2YgWUq.js",
+      "request_number": 4
+    },
+    {
+      "timestamp": "2026-11-12T13:21:49.422127+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/chunk-Cv2YgWUq.js",
+      "status": 200,
+      "elapsed_ms": 3534,
+      "body_bytes": 367621,
+      "truncated": false,
+      "body_sha256": "fbc703799bc777df67e696f42cd8889e0fdf977d0bdc19071c931f7d1501cdd1",
+      "headers": {
+        "Content-Type": "application/javascript; charset=UTF-8",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T13:21:49.429926+00:00",
+      "type": "observation",
+      "phase": "discovery",
+      "message": "Framework inventory evaluated",
+      "family": "Angular",
+      "version": "22.2.2",
+      "certainty": "exact",
+      "advisory_count": 1
+    },
+    {
+      "timestamp": "2026-11-12T13:21:49.432594+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/ftp/",
+      "request_number": 5
+    },
+    {
+      "timestamp": "2026-11-12T13:21:49.771432+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/ftp/",
+      "status": 200,
+      "elapsed_ms": 339,
+      "body_bytes": 11641,
+      "truncated": false,
+      "body_sha256": "1a3c507a1d6068a9f30e08be33d613de8ecb03b7697886f3f82b2691aba80cdd",
+      "headers": {
+        "Content-Type": "text/html; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T13:21:49.772213+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Checked public FTP index",
+      "check": "ftp_listing",
+      "status": 200,
+      "outcome": "listing"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:50.435270+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/metrics",
+      "request_number": 6
+    },
+    {
+      "timestamp": "2026-11-12T13:21:50.812719+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/metrics",
+      "status": 200,
+      "elapsed_ms": 377,
+      "body_bytes": 26235,
+      "truncated": false,
+      "body_sha256": "d7afc600c51a3ff0a58c104ebd1ae1a72fa6643154395aeb93753964f418a645",
+      "headers": {
+        "Content-Type": "text/plain; version=0.0.4; charset=utf-8"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T13:21:50.812849+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Checked public metrics endpoint",
+      "check": "public_metrics",
+      "status": 200,
+      "outcome": "prometheus"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:51.440547+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "request_number": 7
+    },
+    {
+      "timestamp": "2026-11-12T13:21:51.721286+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "status": 200,
+      "elapsed_ms": 281,
+      "body_bytes": 1617,
+      "truncated": false,
+      "body_sha256": "084d85f6fb39b3a6876774690acd01f784cba5e85ddc2435ff396c4d657ed21e",
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T13:21:52.445718+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "request_number": 8
+    },
+    {
+      "timestamp": "2026-11-12T13:21:52.720136+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "status": 500,
+      "elapsed_ms": 274,
+      "body_bytes": 1361,
+      "truncated": false,
+      "body_sha256": "7364680cd6b508c59e9589effa11292ef43653805f5f791daedf407a7c37965f",
+      "headers": {
+        "Content-Type": "text/html; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T13:21:52.720151+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Compared benign and quoted search inputs",
+      "check": "sql_error_exposure",
+      "baseline_status": 200,
+      "quoted_status": 500,
+      "sqlite_error_marker": true,
+      "outcome": "confirmed"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:53.446590+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/api/Challenges",
+      "request_number": 9
+    },
+    {
+      "timestamp": "2026-11-12T13:21:54.112456+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/api/Challenges",
+      "status": 200,
+      "elapsed_ms": 666,
+      "body_bytes": 67772,
+      "truncated": false,
+      "body_sha256": "6157b3195a6b60b9ccfa49444454a70806780320519082cf3c046d20fbf93a9b",
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T13:21:54.113692+00:00",
+      "type": "observation",
+      "phase": "discovery",
+      "message": "Beginner challenges counted",
+      "difficulty_counts": {
+        "1": 13,
+        "2": 19
+      },
+      "tutorial_names": [
+        "Score Board",
+        "DOM XSS",
+        "Bonus Payload",
+        "Privacy Policy",
+        "Reflected XSS",
+        "Exposed Credentials",
+        "Login Admin",
+        "Admin Section",
+        "Password Strength",
+        "View Basket",
+        "Forged Feedback",
+        "Login Jim"
+      ]
+    },
+    {
+      "timestamp": "2026-11-12T13:21:54.451522+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "HEAD",
+      "url": "https://4.migbot.com.br/ftp/incident-support.kdbx",
+      "request_number": 10
+    },
+    {
+      "timestamp": "2026-11-12T13:21:54.785272+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "HEAD",
+      "url": "https://4.migbot.com.br/ftp/incident-support.kdbx",
+      "status": 200,
+      "elapsed_ms": 333,
+      "body_bytes": 0,
+      "truncated": false,
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "Content-Type": "application/octet-stream",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T13:21:54.785353+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Checked listed file with HEAD only",
+      "filename": "incident-support.kdbx",
+      "status": 200
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.456720+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "HEAD",
+      "url": "https://4.migbot.com.br/ftp/package.json.bak",
+      "request_number": 11
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895334+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "HEAD",
+      "url": "https://4.migbot.com.br/ftp/package.json.bak",
+      "status": 403,
+      "elapsed_ms": 438,
+      "body_bytes": 0,
+      "truncated": false,
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "Content-Type": "text/html; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895370+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Checked listed file with HEAD only",
+      "filename": "package.json.bak",
+      "status": 403
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895436+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked Strict-Transport-Security",
+      "check": "missing_hsts",
+      "outcome": "absent"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895481+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked X-Content-Type-Options",
+      "check": "missing_nosniff",
+      "outcome": "present"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895490+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked Referrer-Policy",
+      "check": "missing_referrer_policy",
+      "outcome": "absent"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895508+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked Content-Security-Policy",
+      "check": "missing_csp",
+      "outcome": "absent"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895525+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked frame protection",
+      "check": "missing_frame_protection",
+      "outcome": "present"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895724+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "ftp_file_head_incident-support.kdbx-8cc84ca64260",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895731+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "ftp_listing-65e2d54cd901",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895735+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895739+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895743+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "missing_csp-8ff0abadd3a0",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895747+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "missing_hsts-06d4aa3e8a88",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895750+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "missing_referrer_policy-253b1b85b972",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895762+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "ftp_file_head_incident-support.kdbx-8cc84ca64260",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895769+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "ftp_listing-65e2d54cd901",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895774+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895779+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895783+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "missing_csp-8ff0abadd3a0",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895788+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "missing_hsts-06d4aa3e8a88",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895792+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "missing_referrer_policy-253b1b85b972",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T13:21:55.895800+00:00",
+      "type": "stop",
+      "phase": "control",
+      "message": "Planned non-destructive campaign ended",
+      "request_count": 11
+    }
+  ],
+  "findings": [
+    {
+      "id": "ftp_file_head_incident-support.kdbx-8cc84ca64260",
+      "title": "Recurso anunciado em /ftp/: incident-support.kdbx",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "ftp_file_head_incident-support.kdbx",
+      "url": "https://4.migbot.com.br/ftp/incident-support.kdbx",
+      "evidence": "HEAD /ftp/incident-support.kdbx respondeu 200, tipo application/octet-stream, tamanho 3246 bytes; nenhum corpo de arquivo foi lido",
+      "impact": "O servidor anuncia o recurso e seus metadados. Isso não comprova leitura por GET, conteúdo sensível ou presença de credenciais.",
+      "recommendation": "Revise a necessidade de publicar esse arquivo. Se for privado, negue o acesso anônimo e verifique GET e HEAD no mesmo controle de autorização.",
+      "code_hint": "# Nginx: location /ftp/ { autoindex off; deny all; }"
+    },
+    {
+      "id": "ftp_listing-65e2d54cd901",
+      "title": "Listagem pública de /ftp/",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "ftp_listing",
+      "url": "https://4.migbot.com.br/ftp/",
+      "evidence": "GET /ftp/ respondeu 200 com padrão de índice de diretório; arquivos não acessados",
+      "impact": "Visitantes anônimos podem descobrir nomes de arquivos disponíveis nesse diretório.",
+      "recommendation": "Desative o índice de diretório em /ftp/ e limite o acesso aos arquivos necessários por rota autenticada.",
+      "code_hint": "# Express: remova serve-index de /ftp/; no Nginx: autoindex off;"
+    },
+    {
+      "id": "public_metrics-57c88ab0fb9b",
+      "title": "Métricas Prometheus públicas",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "public_metrics",
+      "url": "https://4.migbot.com.br/metrics",
+      "evidence": "GET /metrics respondeu 200 com formato Prometheus; valores não registrados",
+      "impact": "Visitantes anônimos podem consultar metadados operacionais e indicadores do serviço.",
+      "recommendation": "Proteja /metrics na borda por rede interna ou autenticação e valide que anônimos recebem 403/404.",
+      "code_hint": "# Express: app.get('/metrics', internalOnly, metricsHandler)"
+    },
+    {
+      "id": "sql_error_exposure-70d5e72808c2",
+      "title": "Erro SQLite exposto por entrada de busca",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "sql_error_exposure",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "evidence": "GET com q=apple respondeu 200; q=apple%27 respondeu 500 com marcador SQLITE_ERROR. Nenhuma extração ou bypass foi tentado.",
+      "impact": "A entrada pode causar falha na consulta e revelar detalhes internos. Isso não comprova, isoladamente, exploração de SQL injection.",
+      "recommendation": "No handler Express da busca, valide q, use parâmetros preparados na consulta SQLite e retorne erro genérico ao cliente; mantenha o detalhe só no log interno.",
+      "code_hint": "const rows = db.prepare('SELECT ... FROM Products WHERE name LIKE ?').all(`%${q}%`); // SQLite\n// Express: catch (err) { logger.error(err); res.status(500).json({ error: 'internal_error' }); }"
+    },
+    {
+      "id": "missing_csp-8ff0abadd3a0",
+      "title": "CSP não declarada",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "missing_csp",
+      "url": "https://4.migbot.com.br//",
+      "evidence": "HTTP 200: cabeçalho Content-Security-Policy ausente",
+      "impact": "A página não restringe por política as fontes de script, imagem, conexão e outros recursos.",
+      "recommendation": "Mapeie as origens usadas pela SPA, teste em Report-Only e depois aplique CSP.",
+      "code_hint": "Content-Security-Policy-Report-Only: default-src 'self'; object-src 'none'; base-uri 'self'"
+    },
+    {
+      "id": "missing_hsts-06d4aa3e8a88",
+      "title": "HSTS ausente",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "missing_hsts",
+      "url": "https://4.migbot.com.br//",
+      "evidence": "HTTP 200: cabeçalho Strict-Transport-Security ausente",
+      "impact": "Sem HSTS, o navegador não recebe uma política explícita para voltar somente por HTTPS.",
+      "recommendation": "Envie HSTS apenas após confirmar que o domínio funciona integralmente em HTTPS.",
+      "code_hint": "Strict-Transport-Security: max-age=31536000"
+    },
+    {
+      "id": "missing_referrer_policy-253b1b85b972",
+      "title": "Política de Referer não declarada",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "missing_referrer_policy",
+      "url": "https://4.migbot.com.br//",
+      "evidence": "HTTP 200: cabeçalho Referrer-Policy ausente",
+      "impact": "URLs completas podem ser enviadas como Referer a outros destinos dependendo do navegador.",
+      "recommendation": "Defina uma política explícita de Referer compatível com os fluxos da aplicação.",
+      "code_hint": "Referrer-Policy: strict-origin-when-cross-origin"
+    }
+  ],
+  "recommendations": [
+    {
+      "finding_id": "ftp_file_head_incident-support.kdbx-8cc84ca64260",
+      "source": "deterministic",
+      "guidance": "Revise a necessidade de publicar esse arquivo. Se for privado, negue o acesso anônimo e verifique GET e HEAD no mesmo controle de autorização.",
+      "code_hint": "# Nginx: location /ftp/ { autoindex off; deny all; }"
+    },
+    {
+      "finding_id": "ftp_listing-65e2d54cd901",
+      "source": "deterministic",
+      "guidance": "Desative o índice de diretório em /ftp/ e limite o acesso aos arquivos necessários por rota autenticada.",
+      "code_hint": "# Express: remova serve-index de /ftp/; no Nginx: autoindex off;"
+    },
+    {
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "source": "deterministic",
+      "guidance": "Proteja /metrics na borda por rede interna ou autenticação e valide que anônimos recebem 403/404.",
+      "code_hint": "# Express: app.get('/metrics', internalOnly, metricsHandler)"
+    },
+    {
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "source": "deterministic",
+      "guidance": "No handler Express da busca, valide q, use parâmetros preparados na consulta SQLite e retorne erro genérico ao cliente; mantenha o detalhe só no log interno.",
+      "code_hint": "const rows = db.prepare('SELECT ... FROM Products WHERE name LIKE ?').all(`%${q}%`); // SQLite\n// Express: catch (err) { logger.error(err); res.status(500).json({ error: 'internal_error' }); }"
+    },
+    {
+      "finding_id": "missing_csp-8ff0abadd3a0",
+      "source": "deterministic",
+      "guidance": "Mapeie as origens usadas pela SPA, teste em Report-Only e depois aplique CSP.",
+      "code_hint": "Content-Security-Policy-Report-Only: default-src 'self'; object-src 'none'; base-uri 'self'"
+    },
+    {
+      "finding_id": "missing_hsts-06d4aa3e8a88",
+      "source": "deterministic",
+      "guidance": "Envie HSTS apenas após confirmar que o domínio funciona integralmente em HTTPS.",
+      "code_hint": "Strict-Transport-Security: max-age=31536000"
+    },
+    {
+      "finding_id": "missing_referrer_policy-253b1b85b972",
+      "source": "deterministic",
+      "guidance": "Defina uma política explícita de Referer compatível com os fluxos da aplicação.",
+      "code_hint": "Referrer-Policy: strict-origin-when-cross-origin"
+    }
+  ],
+  "observations": [
+    {
+      "type": "framework_inventory",
+      "family": "Angular",
+      "framework": "Angular",
+      "version": "22.2.2",
+      "certainty": "exact",
+      "evidence": [
+        {
+          "kind": "runtime_ng_version",
+          "version": "22.2.2",
+          "asset": "chunk-Cv2YgWUq.js"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "runtime_ng_version",
+          "version": "22.2.2",
+          "asset": "chunk-Cv2YgWUq.js"
+        }
+      ],
+      "advisories": [
+        {
+          "id": "GHSA-ffj9-42qx-f38h",
+          "cve": null,
+          "package": "@angular/upgrade",
+          "status": "not_confirmed",
+          "reason": "Package @angular/upgrade not confirmed; Hybrid AngularJS app, downgradeComponent, co-located directive and user-controlled data must be verified.",
+          "url": "https://github.com/angular/angular/security/advisories/GHSA-ffj9-42qx-f38h",
+          "evaluated_version": "22.2.2"
+        }
+      ],
+      "advisories_for_review": [
+        {
+          "id": "GHSA-ffj9-42qx-f38h",
+          "cve_id": null,
+          "package": "@angular/upgrade",
+          "title": "XSS in hybrid Angular/AngularJS downgradeComponent",
+          "source": "https://github.com/angular/angular/security/advisories/GHSA-ffj9-42qx-f38h",
+          "status": "not_confirmed",
+          "evaluated_version": "22.2.2",
+          "reason": "Package @angular/upgrade not confirmed; Hybrid AngularJS app, downgradeComponent, co-located directive and user-controlled data must be verified."
+        }
+      ],
+      "confirmed_cves": [],
+      "catalog_checked_at": "2026-11-12",
+      "catalog_source": "https://github.com/angular/angular/security/advisories",
+      "manifest_version_conflict": false,
+      "note": "Version and package overlap alone never confirms an exploitable CVE."
+    },
+    {
+      "type": "beginner_challenges",
+      "url": "https://4.migbot.com.br/api/Challenges",
+      "difficulty_counts": {
+        "1": 13,
+        "2": 19
+      },
+      "tutorial_names": [
+        "Score Board",
+        "DOM XSS",
+        "Bonus Payload",
+        "Privacy Policy",
+        "Reflected XSS",
+        "Exposed Credentials",
+        "Login Admin",
+        "Admin Section",
+        "Password Strength",
+        "View Basket",
+        "Forged Feedback",
+        "Login Jim"
+      ]
+    }
+  ],
+  "summary": {
+    "requests": 11,
+    "findings": 7,
+    "selected_checks": [
+      "headers",
+      "cookies",
+      "framework_inventory",
+      "ftp_listing",
+      "public_metrics",
+      "sql_error_exposure",
+      "beginner_challenges"
+    ],
+    "available_checks": [
+      "headers",
+      "cookies",
+      "framework_inventory",
+      "ftp_listing",
+      "public_metrics",
+      "sql_error_exposure",
+      "beginner_challenges"
+    ],
+    "ruleset_hash": "4c57948a4d53c983",
+    "by_severity": {
+      "medium": 4,
+      "low": 3
+    },
+    "by_status": {
+      "confirmed": 7
+    },
+    "audit_events": 52
+  }
+}
