@@ -2,7 +2,7 @@
 
 Pipeline funcional e limitada para receber uma URL HTTPS autorizada, identificar o framework, testar superfícies públicas, registrar evidências, sugerir correções e detectar regressões. O escopo padrão está em [`scope.json`](scope.json): até **11 requisições GET/HEAD**, intervalo mínimo de 1 segundo, até três bundles JavaScript e 512 KiB por resposta. O fragmento `#/` é rota de navegador e não integra a requisição HTTP.
 
-Veja o [plano das oito funcionalidades](docs/PLANO_FUNCIONALIDADES.md), os [resultados controlados de 12/11/2026](docs/RESULTADOS_2026-11-12.md) e a [reversa do código público](docs/REVERSA_UPSTREAM.md). Os relatórios históricos documentam as campanhas anteriores; a reversa é uma etapa nova e não muda retroativamente seus achados.
+Veja o [plano das oito funcionalidades](docs/PLANO_FUNCIONALIDADES.md), a [análise multiagente por URL](docs/ANALISE_MULTIAGENTE.md) e os [resultados controlados de 12/11/2026](docs/RESULTADOS_2026-11-12.md). As evidências históricas da demonstração permanecem disponíveis; a análise multiagente usa somente os dados de cada campanha.
 
 ## Executar
 
@@ -11,6 +11,7 @@ Requer Python 3.11 ou superior; não há dependências Python obrigatórias.
 ```bash
 python3 -m pentest_pipeline scan --config scope.json
 python3 -m pentest_pipeline scan --config scope.json --target 'https://4.migbot.com.br//#/tokensale-ico-ea'
+python3 -m pentest_pipeline scan --config scope.json --target 'https://example.org/'
 python3 -m pentest_pipeline scan --config scope.json --approve-quoted-search
 python3 -m pentest_pipeline monitor --config scope.json --baseline reports/baseline.json
 python3 -m pentest_pipeline.web_server
@@ -22,7 +23,7 @@ O monitor compara apenas execuções com o mesmo alvo, configuração de escopo 
 
 A interface web local abre com `python3 -m pentest_pipeline.web_server`. Informe a URL HTTPS pública, confirme que tem autorização para testá-la e insira a chave OpenAI para a campanha. Se `OPENAI_API_KEY` já estiver no ambiente do servidor, o campo pode ficar vazio. A chave é usada em memória e não entra no relatório, nos eventos ou no Git. A interface permite acompanhar o plano dos agentes, decidir a única ação condicionada declarada, parar a campanha e baixar o relatório. A fila de aprovação expira em cinco minutos; rejeição, expiração e interrupção não executam o par de busca. Cada requisição ainda passa pelas regras de escopo e volume.
 
-Para URLs fora do laboratório `4.migbot.com.br`, a pipeline limita os testes a inventário de framework, cabeçalhos, cookies, `robots.txt` e `security.txt`. Checks próprios do Juice Shop só são habilitados para o host exato. Fragmentos SPA são aceitos para navegação, mas removidos antes de qualquer requisição. URLs com credenciais, query, host privado ou esquema diferente de HTTPS são recusadas.
+O agente multiagente analisa qualquer URL HTTPS pública autorizada usando o HTML, os scripts permitidos, o inventário de tecnologia e os resultados HTTP da própria campanha. O perfil genérico limita os testes a inventário de framework, cabeçalhos, cookies, `robots.txt` e `security.txt`; checks adicionais da demonstração só são habilitados no escopo configurado para aquele host. Fragmentos SPA são aceitos para navegação, mas removidos antes de qualquer requisição. URLs com credenciais, query, host privado ou esquema diferente de HTTPS são recusadas.
 
 ### Orientação opcional por IA
 
@@ -33,7 +34,7 @@ python3 -m pentest_pipeline scan --config scope.json --ai
 # Para incluir o par sintético de busca no CLI, acrescente --approve-quoted-search.
 ```
 
-`OpenAIPlanner` seleciona até quatro checks opcionais de uma lista fixa após o GET inicial. `OpenAIAdvisor` oferece dicas para os achados. `OpenAISourceReviewer` prioriza a revisão de hipóteses de um commit público fixado, quando essa etapa é aplicável. Os três usam a [Responses API](https://developers.openai.com/api/docs/guides/migrate-to-responses?api-mode=responses), `store: false` e saída JSON estruturada. O planejador recebe só origem e metadados HTTP sanitizados; o orientador recebe IDs, classificações e evidências resumidas de até cinco achados; o revisor do código recebe apenas IDs e metadados curados de hipóteses e devolve somente ID e prioridade. O texto de motivo, próximo passo e limite vem do catálogo local. Corpos do site, bundles, valores de cookies, arquivos e material privado de assinatura não são enviados. O modelo não recebe ferramentas de rede, não altera a severidade, não confirma uma hipótese no alvo e não decide se uma CVE está confirmada. Se a IA falhar, as regras locais continuam e a falha é registrada sem expor a chave. `.env` e `reports/` são ignorados pelo Git.
+`OpenAIPlanner` seleciona até quatro checks opcionais de uma lista fixa após o GET inicial. `OpenAIAdvisor` oferece dicas para os achados. `OpenAITargetReviewer` prioriza apenas hipóteses geradas a partir de sinais desta campanha. As chamadas usam a [Responses API](https://developers.openai.com/api/docs/guides/migrate-to-responses?api-mode=responses), `store: false` e saída JSON estruturada. O planejador recebe origem e metadados HTTP sanitizados; o orientador recebe IDs, classificações e evidências resumidas de até cinco achados; o revisor recebe somente IDs, checks, estados e severidades tipados, sem corpo de HTML, JavaScript ou resposta. O modelo não recebe ferramentas de rede, não altera a severidade, não confirma uma hipótese e não decide se uma CVE está confirmada. Se a IA falhar, as regras locais continuam e a falha é registrada sem expor a chave. `.env` e `reports/` são ignorados pelo Git.
 
 O inventário Angular lê, sem executar, até três JavaScripts públicos referenciados pelo HTML e procura um marcador de versão específico. Compara a versão a um catálogo **limitado** de advisories oficiais datado de 12/11/2026. Um CVE só é exibido como possível quando o pacote e a faixa de versão coincidem; exploração exige ainda verificar o código e as condições do aviso. Sem versão exata ou pacote confirmado, o resultado permanece inconclusivo. No alvo, o bundle indica Angular 22.2.2; não há CVE confirmada. Veja [a avaliação Angular](docs/ANGULAR_CVES.md).
 
@@ -54,12 +55,12 @@ flowchart LR
     T --> R[Agente de triagem]
     R --> F[Agente de correção]
     F --> A[IA opcional]
-    F --> SR[Reversa local paralela]
-    SR --> SC[Catálogo do commit]
-    SR --> TS[Sinais do alvo]
-    SR --> DM[Correspondência do deploy]
-    SC & TS & DM --> CO[Correlação com limites]
-    CO --> SA[IA revisora opcional]
+    F --> MA[Análise local paralela]
+    MA --> TI[Inventário de tecnologia]
+    MA --> ER[Revisão das evidências]
+    MA --> HB[Hipóteses derivadas dos sinais]
+    TI & ER & HB --> CO[Consolidação com limites]
+    CO --> SA[IA priorizadora opcional]
     R --> M[Agente monitor]
     D & I & T --> G[Gateway HTTP limitado]
     G --> AL[Host exato permitido]
@@ -75,13 +76,11 @@ flowchart LR
 | Testes | Confere cabeçalhos e cookies; lê somente índices de `/ftp/`, formato de `/metrics` e compara `q=apple` com `q=apple%27` na busca. |
 | Triagem | Deduplica e atribui severidade, estado e confiança a cada evidência. |
 | Correção | Anexa dicas condicionais de configuração e código; não presume acesso ao repositório da aplicação. |
-| Reversa do código público | Três agentes locais executam em paralelo: conferem o catálogo fixado do Juice Shop, resumem sinais já testados e avaliam a correspondência do deploy. A correlação preserva todas as hipóteses como não verificadas no alvo. |
-| Revisão da fonte por IA | Prioriza hipóteses a partir de metadados curados; os próximos passos vêm do catálogo local. Não envia novas requisições ao alvo nem cria achados. |
+| Análise multiagente do alvo | Três agentes locais executam em paralelo: inventariam a tecnologia observada, revisam a suficiência das evidências e formulam hipóteses limitadas aos sinais da campanha. A análise funciona para qualquer URL aceita pelo escopo. |
+| Priorização opcional por IA | Ordena hipóteses existentes para revisão humana. Não envia novas requisições ao alvo nem cria achados. |
 | Monitor | Compara duas execuções completas por identificador estável de achado. |
 
-O site alvo é uma SPA; os arquivos desta pasta implementam o **avaliador**, não o código da aplicação avaliada. Por isso, as sugestões Express/SQLite são exemplos baseados no erro observado e precisam ser adaptadas ao servidor real.
-
-A reversa usa o [commit fixo `266448a` do OWASP Juice Shop](https://github.com/juice-shop/juice-shop/commit/266448aba68cd8ba5915f526a128da4fa7bc3f9f) como referência. Ela é ativada apenas para a origem HTTPS exata `4.migbot.com.br:443`. Seus 14 registros ficam em `observations`, separados de `findings`: versão Angular e semelhança visual não provam que o deploy executa aquele commit. Somente o erro SQLite da busca e o índice `/ftp/` têm sinais dinâmicos correlatos; esses sinais não confirmam exploração ou leitura de conteúdo. Consulte [evidências e limites da reversa](docs/REVERSA_UPSTREAM.md).
+Os arquivos desta pasta implementam o **avaliador**, não o código da aplicação avaliada. As dicas de correção devem ser adaptadas à tecnologia do servidor real. A [análise multiagente](docs/ANALISE_MULTIAGENTE.md) registra seus sinais e hipóteses em `observations`, separados de `findings`; sinais passivos não demonstram exploração. Na demonstração, o erro SQLite da busca e o índice `/ftp/` têm [provas e limites próprios](docs/RESULTADOS_2026-11-12.md), preservados sem extrapolar para outras URLs. A captura histórica de `/ftp/` aparece nos novos relatórios da demo apenas se origem, rota e hash do arquivo corresponderem, com legenda que a separa da execução atual.
 
 ## Modelo de segurança
 
@@ -90,7 +89,7 @@ A reversa usa o [commit fixo `266448a` do OWASP Juice Shop](https://github.com/j
 - O limite de requisições, o intervalo, o timeout e o teto de corpo estão em `scope.json`. Corpos são analisados em memória e descartados; o log guarda status, metadados limitados e hash SHA-256. URLs são registradas sem query e valores de cookies não são persistidos. A evidência cita somente os dois valores sintéticos usados no teste de busca.
 - Cada decisão, requisição, resposta, teste, classificação, orientação e parada produz evento com horário UTC. Estados dos achados: `confirmed` para observação reproduzida, `inconclusive` para sinal que precisa de contexto e `discarded` quando uma hipótese for examinada e refutada. Se faltar cobertura de um teste declarado, a campanha fica `inconclusive`; o monitor só compara campanhas `completed`.
 - Ausência de cabeçalho indica configuração a revisar, não prova exploração. A diferença 200/500 com `SQLITE_ERROR` indica erro SQL exposto e entrada mal tratada; não comprova extração, bypass ou SQL injection explorável.
-- Hipóteses retiradas de código público são rotuladas como referências de upstream, com commit e linhas fixas. A IA só prioriza a revisão; a triagem dos achados do alvo continua baseada em evidência HTTP. A reversa paralela não abre conexões: as requisições permanecem sequenciais no gateway limitado.
+- As hipóteses da análise multiagente são derivadas apenas dos sinais desta campanha e permanecem separadas dos achados HTTP. A IA só prioriza revisão futura. Os agentes paralelos não abrem conexões: as requisições permanecem sequenciais no gateway limitado.
 - Respostas HTTP e JavaScript do alvo são dados não confiáveis: não viram instruções para a IA ou para o executor. Evidência de diretório requer marcador de índice e MIME HTML; métricas exigem formato Prometheus; `HEAD 403` não vira vazamento. Conteúdo de SPA que responde 200 em qualquer rota fica inconclusivo quando faltam os marcadores esperados. Consulte [a análise de `/ftp`](docs/FTP_ANALISE.md) e [a avaliação de prompt injection](docs/PROMPT_INJECTION.md).
 
 ## API para integração

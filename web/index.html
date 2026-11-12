@@ -21,7 +21,7 @@
           <a class="active" href="#overview"><span aria-hidden="true">◈</span> Visão geral</a>
           <a href="#pipeline"><span aria-hidden="true">◇</span> Pipeline</a>
           <a href="#framework"><span aria-hidden="true">▣</span> Framework</a>
-          <a href="#source-review"><span aria-hidden="true">⌘</span> Reversa</a>
+          <a href="#target-analysis"><span aria-hidden="true">⌘</span> Análise</a>
           <a href="#findings"><span aria-hidden="true">▤</span> Achados</a>
           <a href="#recommendations"><span aria-hidden="true">✦</span> Correções</a>
           <a href="#audit"><span aria-hidden="true">⌁</span> Auditoria</a>
@@ -86,7 +86,7 @@
           </section>
 
           <section class="basics-panel" id="basics" aria-labelledby="basics-title">
-            <div><span class="section-index">PONTO DE PARTIDA</span><h2 id="basics-title">Dificuldades mais básicas</h2><p>Quando o alvo é o Juice Shop, o catálogo público indica os níveis iniciais e a ordem sugerida.</p></div>
+            <div><span class="section-index">PONTO DE PARTIDA</span><h2 id="basics-title">Dificuldades mais básicas</h2><p>Quando o alvo oferece um catálogo público de desafios, os níveis iniciais e tutoriais aparecem aqui.</p></div>
             <div class="basics-counts"><span><strong id="difficulty-one">—</strong> NÍVEL 1</span><span><strong id="difficulty-two">—</strong> NÍVEL 2</span></div>
             <ol id="tutorial-list" class="tutorial-list"><li>Os nomes aparecem após uma campanha concluída.</li></ol>
           </section>
@@ -115,18 +115,20 @@
             </div>
           </section>
 
-          <section id="source-review" class="content-section" aria-labelledby="source-review-title">
-            <div class="section-heading"><div><span class="section-index">02 / CÓDIGO PÚBLICO</span><h2 id="source-review-title">Reversa do código público</h2><p>Hipóteses de um commit do Juice Shop, avaliadas por agentes paralelos e comparadas apenas com sinais já coletados.</p></div><span id="source-review-count" class="section-tag">AGUARDANDO</span></div>
-            <div class="source-review-panel">
-              <p id="source-review-caveat" class="source-review-caveat">O vínculo entre esse código público e a implantação do alvo ainda não foi verificado. Hipóteses desta área não entram na contagem de achados.</p>
-              <div id="source-review-meta" class="source-review-meta"></div>
+          <section id="target-analysis" class="content-section" aria-labelledby="target-analysis-title">
+            <div class="section-heading"><div><span class="section-index">02 / ANÁLISE DO ALVO</span><h2 id="target-analysis-title">Análise multiagente do alvo</h2><p>Agentes paralelos analisam somente dados coletados da URL desta campanha e indicam verificações futuras.</p></div><span id="target-analysis-count" class="section-tag">AGUARDANDO</span></div>
+            <div class="analysis-panel">
+              <p id="target-analysis-caveat" class="analysis-caveat">As hipóteses são pistas derivadas desta campanha. Elas não entram em Achados verificados sem prova específica no alvo.</p>
+              <div id="target-analysis-meta" class="analysis-meta"></div>
               <h3>Agentes da análise local</h3>
-              <div id="source-agent-runs" class="source-agent-grid"><p class="source-review-empty">Aguardando uma campanha para correlacionar código, sinais e versão.</p></div>
-              <h3>Sinais correlatos no alvo</h3>
-              <div id="source-target-signals" class="source-signal-list"><p class="source-review-empty">Nenhum sinal associado ainda.</p></div>
-              <h3>Hipóteses do commit</h3>
-              <div id="source-hypotheses" class="source-hypothesis-list"><p class="source-review-empty">Nenhuma hipótese avaliada nesta campanha.</p></div>
-              <div class="source-ai-panel"><div class="source-ai-heading"><h3>Prioridades sugeridas pela IA</h3><span id="source-ai-status" class="section-tag">AGUARDANDO</span></div><p>A IA prioriza revisão futura. Suas sugestões não confirmam falhas no alvo.</p><div id="source-ai-priorities" class="source-priority-list"><p class="source-review-empty">Nenhuma prioridade gerada.</p></div></div>
+              <div id="target-agent-runs" class="analysis-agent-grid"><p class="analysis-empty">Aguardando dados da campanha.</p></div>
+              <h3>Tecnologia observada</h3>
+              <div id="target-technology" class="analysis-technology"><p class="analysis-empty">O inventário aparece após a coleta.</p></div>
+              <h3>Sinais usados nesta análise</h3>
+              <div id="target-signals" class="analysis-signal-list"><p class="analysis-empty">Nenhum sinal associado ainda.</p></div>
+              <h3>Hipóteses para verificar</h3>
+              <div id="target-hypotheses" class="analysis-hypothesis-list"><p class="analysis-empty">Nenhuma hipótese avaliada nesta campanha.</p></div>
+              <div class="analysis-ai-panel"><div class="analysis-ai-heading"><h3>Prioridades sugeridas pela IA</h3><span id="target-ai-status" class="section-tag">AGUARDANDO</span></div><p>A IA ordena verificações futuras; sugestões não confirmam falhas.</p><div id="target-ai-priorities" class="analysis-priority-list"><p class="analysis-empty">Nenhuma prioridade gerada.</p></div></div>
             </div>
           </section>
 

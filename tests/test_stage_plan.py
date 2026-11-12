@@ -35,49 +35,49 @@ class _FakeTransport:
 
 
 class StagePlanTests(TestCase):
-    def test_known_lab_runs_parallel_source_review_without_new_findings(self) -> None:
-        config = ScopeConfig.for_target_url("https://4.migbot.com.br/#/")
-
+    def test_any_target_runs_parallel_analysis_without_new_findings(self) -> None:
         class Reviewer:
             model = "mock-model"
 
             def review(self, items):
-                self_items = list(items)
-                self_assert = all(item["target_status"] == "unverified_on_target"
-                                  for item in self_items)
-                if not self_assert:
-                    raise AssertionError("Source hypothesis was promoted")
-                return [{"id": "sql_search", "priority": "high",
-                         "rationale": "Revisar o código do upstream.",
-                         "next_step": "Verificar o handler em ambiente autorizado.",
-                         "limitation": "O commit do alvo não foi confirmado."}]
+                if not all(item["status"] == "unverified_on_target" for item in items):
+                    raise AssertionError("A follow-up hypothesis was promoted")
+                first = items[0]
+                return [{"id": first["id"], "priority": "medium",
+                         "rationale": "Priorizado por IA sem confirmação de falha.",
+                         "next_step": first["verification"],
+                         "limitation": first["limitations"]}]
 
-        with patch("pentest_pipeline.pipeline.BoundedTransport", _FakeTransport):
-            result = run_scan(config, selected_checks=(), ai_source_reviewer=Reviewer())
+        for target in ("https://4.migbot.com.br/#/", "https://example.com/#/"):
+            with self.subTest(target=target):
+                config = ScopeConfig.for_target_url(target)
+                with patch("pentest_pipeline.pipeline.BoundedTransport", _FakeTransport):
+                    result = run_scan(config, selected_checks=(), ai_target_reviewer=Reviewer())
 
-        review = next(item for item in result.observations
-                      if item.get("type") == "upstream_source_review")
-        ai = next(item for item in result.observations
-                  if item.get("type") == "upstream_ai_review")
-        self.assertEqual(len(review["hypotheses"]), 14)
-        self.assertEqual(ai["status"], "completed")
-        self.assertEqual(ai["priorities"][0]["id"], "sql_search")
-        self.assertEqual(result.summary["findings"], len(result.findings))
-        self.assertEqual([item for item in result.findings
-                          if item.check == "source_review"], [])
-        events = result.actions
-        self.assertLess(next(i for i, event in enumerate(events)
-                             if event.get("step_id") == "source_review"),
-                        next(i for i, event in enumerate(events)
-                             if event.get("type") == "agent_start"))
-        self.assertIn("Reversa do código público", render_markdown(result))
+                analysis = next(item for item in result.observations
+                                if item.get("type") == "target_multiagent_analysis")
+                ai = next(item for item in result.observations
+                          if item.get("type") == "target_ai_review")
+                self.assertEqual(analysis["status"], "completed")
+                self.assertEqual(len(analysis["agent_runs"]), 3)
+                self.assertEqual(ai["status"], "completed")
+                self.assertEqual(ai["priorities"][0]["id"], analysis["hypotheses"][0]["id"])
+                self.assertEqual(result.summary["findings"], len(result.findings))
+                self.assertTrue(all(item["status"] == "unverified_on_target"
+                                    for item in analysis["hypotheses"]))
+                events = result.actions
+                self.assertLess(next(i for i, event in enumerate(events)
+                                     if event.get("step_id") == "target_analysis"),
+                                next(i for i, event in enumerate(events)
+                                     if event.get("type") == "agent_start"))
+                self.assertIn("Análise multiagente do alvo", render_markdown(result))
 
-    def test_source_review_accepts_exact_origin_without_trailing_slash(self) -> None:
+    def test_target_analysis_accepts_exact_origin_without_trailing_slash(self) -> None:
         config = ScopeConfig(target_url="https://4.MIGBOT.com.br",
                              allowed_hosts=("4.migbot.com.br",), max_assets=0)
         with patch("pentest_pipeline.pipeline.BoundedTransport", _FakeTransport):
             result = run_scan(config, selected_checks=())
-        self.assertTrue(any(item.get("type") == "upstream_source_review"
+        self.assertTrue(any(item.get("type") == "target_multiagent_analysis"
                             for item in result.observations))
 
     def test_each_selected_check_has_a_plan_before_its_request(self) -> None:
