@@ -369,5 +369,29 @@ class WebConsoleLoadedReportTests(unittest.TestCase):
                     worker.join(timeout=3)
 
 
+class WebConsolePresentationTests(unittest.TestCase):
+    def test_icons_have_semantic_svg_sources_and_no_ambiguous_glyphs(self):
+        root = Path(__file__).resolve().parents[1]
+        html = (root / "web" / "index.html").read_text(encoding="utf-8")
+        script = (root / "web" / "app.js").read_text(encoding="utf-8")
+        self.assertIn('data-icon="history"', html)
+        self.assertIn('data-icon="shield-check"', html)
+        self.assertIn("const ICON_PATHS", script)
+        for glyph in ("⌖", "◈", "✧", "◇", "▤", "⌘", "⌁", "◷", "◉"):
+            self.assertNotIn(glyph, html + script)
+
+    def test_summary_copy_and_responsive_overflow_guards_are_present(self):
+        root = Path(__file__).resolve().parents[1]
+        script = (root / "web" / "app.js").read_text(encoding="utf-8")
+        styles = (root / "web" / "style.css").read_text(encoding="utf-8")
+        self.assertIn('metricTile("ALTA CONFIANÇA"', script)
+        self.assertIn('"resultados que exigem contexto"', script)
+        self.assertIn(".phase-copy{display:flex;flex:1", styles)
+        self.assertIn('history.scrollRestoration = "manual"', script)
+        self.assertIn("scroll-margin-top:78px", styles)
+        self.assertIn("@media(max-width:380px)", styles)
+        self.assertIn(".tabs{overflow-x:auto}", styles)
+
+
 if __name__ == "__main__":
     unittest.main()
