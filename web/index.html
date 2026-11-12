@@ -64,6 +64,7 @@
                   <button id="start-btn" class="button button-primary" type="submit"><span aria-hidden="true">▶</span> Iniciar campanha</button>
                   <button id="stop-btn" class="button button-danger" type="button" disabled><span aria-hidden="true">■</span> Interromper</button>
                   <a id="download-btn" class="button button-ghost disabled" href="/api/report.md" download aria-disabled="true"><span aria-hidden="true">↓</span> Relatório</a>
+                  <a id="download-json-btn" class="button button-ghost disabled" href="/api/report.json" download aria-disabled="true"><span aria-hidden="true">↓</span> JSON</a>
                 </div>
               </form>
               <p id="action-message" class="action-message" role="status" aria-live="polite"></p>
@@ -93,6 +94,7 @@
             <div class="section-heading"><div><span class="section-index">01 / FLUXO</span><h2 id="pipeline-title">Pipeline de agentes</h2><p>O planejamento por IA escolhe apenas verificações permitidas; o executor mantém o controle da rede.</p></div><span class="section-tag">7 ETAPAS</span></div>
             <div id="pipeline-grid" class="pipeline-grid"></div>
             <p id="plan-status" class="monitor-delta">O plano de testes aparece quando a campanha começar.</p>
+            <div class="stage-plan-panel"><h3>Plano antes da execução</h3><div id="stage-plan-list" class="stage-plan-list"><p class="stage-plan-empty">Hipótese, ação, resultado esperado e condição de parada aparecem aqui.</p></div></div>
             <p id="monitor-delta" class="monitor-delta">A comparação de regressões aparece após duas campanhas completas no mesmo alvo.</p>
           </section>
 
@@ -135,7 +137,16 @@
               <article><span class="guardrail-icon">▣</span><h3>Interrupção auditável</h3><p>O botão Parar sinaliza o executor, que preserva os resultados já capturados e encerra entre ações.</p></article>
               <article><span class="guardrail-icon">◇</span><h3>Aprovação humana</h3><p>Credenciais privilegiadas, mudança de estado, aumento de intensidade e exploração encadeada ficam fora desta campanha automática.</p></article>
             </div>
-            <div class="approval-note"><span aria-hidden="true">ⓘ</span><p><strong>Fila de aprovação:</strong> nenhuma ação pendente nesta execução. Testes que exigem aprovação precisam de escopo e implementação específicos antes de serem habilitados.</p></div>
+            <div class="policy-grid" aria-label="Política da campanha">
+              <article><h3>Permitidas</h3><p id="policy-allowed">Leituras limitadas pela origem e pelo orçamento.</p></article>
+              <article><h3>Condicionadas</h3><p id="policy-conditioned">Ações declaradas exigem decisão explícita.</p></article>
+              <article><h3>Proibidas</h3><p id="policy-denied">Mutação, extração de arquivos, força bruta e destinos fora do escopo.</p></article>
+            </div>
+            <section class="approval-panel" aria-labelledby="approval-title">
+              <h3 id="approval-title">Fila de aprovação humana</h3>
+              <p>A decisão libera apenas a ação declarada; o gateway ainda valida origem, método, cadência e limite.</p>
+              <div id="approval-list" class="approval-list"><p>Nenhuma ação aguardando decisão.</p></div>
+            </section>
           </section>
         </main>
         <footer>HUBBITS / DESAFIO 03 <span>·</span> Evidência local, escopo explícito e parada verificável.</footer>

@@ -6,7 +6,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import threading
 import unittest
 
-from pentest_pipeline import ScopeConfig, ScopeError, compare_runs, run_scan
+from pentest_pipeline import ScopeConfig, ScopeError, compare_runs, render_markdown, run_scan
 from pentest_pipeline.agents import SurfaceTestAgent
 from pentest_pipeline.scope import safe_url
 from pentest_pipeline.transport import BoundedTransport, NetworkFailure, Response
@@ -214,7 +214,7 @@ class SurfaceChecksTests(unittest.TestCase):
                                  ftp_path="/ftp/", metrics_path="/metrics",
                                  search_path="/rest/products/search",
                                  challenge_path="/api/Challenges")
-            result = run_scan(config)
+            result = run_scan(config, approved_actions=("quoted_search",))
             checks = {finding.check for finding in result.findings}
             self.assertEqual(result.status, "completed")
             self.assertEqual(result.summary["requests"], 6)
@@ -225,10 +225,27 @@ class SurfaceChecksTests(unittest.TestCase):
             self.assertEqual(seen, ["/", "/ftp/", "/metrics",
                                     "/rest/products/search?q=apple",
                                     "/rest/products/search?q=apple%27", "/api/Challenges"])
+            for finding in result.findings:
+                with self.subTest(check=finding.check):
+                    self.assertTrue(finding.excerpt)
+                    self.assertTrue(finding.proof)
+                    self.assertTrue(finding.limitations)
+            metrics = next(item for item in result.findings if item.check == "public_metrics")
+            sql_error = next(item for item in result.findings if item.check == "sql_error_exposure")
+            ftp = next(item for item in result.findings if item.check == "ftp_listing")
+            self.assertEqual(metrics.excerpt, "# HELP process_test")
+            self.assertEqual(sql_error.excerpt, "SQLITE_ERROR")
+            self.assertEqual(ftp.excerpt, "listing directory /ftp/")
+            self.assertIn("application/json", sql_error.proof)
+            self.assertIn("text/plain", sql_error.proof)
             stored = str(result.to_dict())
-            self.assertNotIn("secret.txt", stored)
-            self.assertNotIn("secret_value", stored)
-            self.assertNotIn("private_stack_detail", stored)
+            markdown = render_markdown(result)
+            for confidential in ("secret.txt", "secret_value", "private_stack_detail"):
+                self.assertNotIn(confidential, stored)
+                self.assertNotIn(confidential, markdown)
+            self.assertIn("Trecho sanitizado", markdown)
+            self.assertIn("Prova do teste", markdown)
+            self.assertIn("Limites da conclusão", markdown)
         finally:
             server.shutdown()
             server.server_close()

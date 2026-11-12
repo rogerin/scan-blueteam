@@ -1,0 +1,1326 @@
+{
+  "run_id": "20261112T142641Z-5f3c4aa3",
+  "target": "https://4.migbot.com.br//",
+  "campaign_name": "Hackathon Hubbits - Desafio 3",
+  "started_at": "2026-11-12T14:26:41.099023+00:00",
+  "ended_at": "2026-11-12T14:26:59.136154+00:00",
+  "status": "completed",
+  "stop_reason": "planned_tests_complete",
+  "actions": [
+    {
+      "timestamp": "2026-11-12T14:26:41.107842+00:00",
+      "type": "stage_plan",
+      "phase": "scope",
+      "message": "Plano da etapa registrado antes da execução",
+      "step_id": "scope",
+      "check_id": "scope",
+      "hypothesis": "O alvo e a política permitem uma campanha de leitura de baixo impacto.",
+      "action": "Validar origem exata, métodos GET/HEAD, cadência e limites declarados.",
+      "expected_result": "Escopo aceito ou recusado antes de qualquer requisição.",
+      "stop_condition": "Recusar imediatamente qualquer origem, método ou limite inválido."
+    },
+    {
+      "timestamp": "2026-11-12T14:26:41.107929+00:00",
+      "type": "decision",
+      "phase": "scope",
+      "message": "Campaign scope validated",
+      "target": "https://4.migbot.com.br//",
+      "allowed_hosts": [
+        "4.migbot.com.br"
+      ],
+      "methods": [
+        "GET",
+        "HEAD"
+      ],
+      "max_requests": 11,
+      "min_interval_seconds": 1.0
+    },
+    {
+      "timestamp": "2026-11-12T14:26:41.107935+00:00",
+      "type": "stage_plan",
+      "phase": "discovery",
+      "message": "Plano da etapa registrado antes da execução",
+      "step_id": "discovery",
+      "check_id": "discovery",
+      "hypothesis": "A página informada revela apenas recursos públicos do próprio alvo.",
+      "action": "Fazer GET da página e identificar referências locais a JavaScript.",
+      "expected_result": "Registrar status, metadados e até o limite de assets configurado.",
+      "stop_condition": "Parar se o operador interromper, o orçamento acabar, a requisição sair do escopo ou ocorrer falha de rede."
+    },
+    {
+      "timestamp": "2026-11-12T14:26:41.240328+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br//",
+      "request_number": 1
+    },
+    {
+      "timestamp": "2026-11-12T14:26:41.705817+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br//",
+      "status": 200,
+      "elapsed_ms": 465,
+      "body_bytes": 10351,
+      "truncated": false,
+      "body_sha256": "2827d932e8058a5eaa6b3519f024c5af7aac2bb2725cc92cbd03bb60140dbc8d",
+      "headers": {
+        "Content-Type": "text/html; charset=UTF-8",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:26:41.706843+00:00",
+      "type": "decision",
+      "phase": "discovery",
+      "message": "Discovery complete",
+      "script_references": 8,
+      "in_scope_assets": 3
+    },
+    {
+      "timestamp": "2026-11-12T14:26:41.706878+00:00",
+      "type": "stage_plan",
+      "phase": "planning",
+      "message": "Plano da etapa registrado antes da execução",
+      "step_id": "check_selection",
+      "check_id": "check_selection",
+      "hypothesis": "A campanha pode escolher somente checks declarados pela política.",
+      "action": "Aplicar a seleção do operador ou o perfil determinístico permitido.",
+      "expected_result": "Lista de IDs permitidos registrada antes das verificações.",
+      "stop_condition": "Recusar qualquer ID fora da lista de checks disponível."
+    },
+    {
+      "timestamp": "2026-11-12T14:26:41.706905+00:00",
+      "type": "decision",
+      "phase": "planning",
+      "message": "Operator selected allowed checks",
+      "check_ids": [
+        "headers",
+        "cookies",
+        "framework_inventory",
+        "ftp_listing",
+        "public_metrics",
+        "sql_error_exposure",
+        "beginner_challenges"
+      ],
+      "source": "operator",
+      "fallback": false
+    },
+    {
+      "timestamp": "2026-11-12T14:26:41.706920+00:00",
+      "type": "stage_plan",
+      "phase": "discovery",
+      "message": "Plano da etapa registrado antes da execução",
+      "step_id": "asset_fetch",
+      "check_id": "asset_fetch",
+      "hypothesis": "Scripts locais podem conter marcadores de versão para inventário passivo.",
+      "action": "Buscar somente os scripts locais descobertos, dentro do limite de assets.",
+      "expected_result": "Metadados e corpos limitados em memória, sem persistir o JavaScript.",
+      "stop_condition": "Parar se o operador interromper, o orçamento acabar, a requisição sair do escopo ou ocorrer falha de rede."
+    },
+    {
+      "timestamp": "2026-11-12T14:26:42.241461+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rolldown-runtime-BoHGiXSq.js",
+      "request_number": 2
+    },
+    {
+      "timestamp": "2026-11-12T14:26:42.893906+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rolldown-runtime-BoHGiXSq.js",
+      "status": 200,
+      "elapsed_ms": 652,
+      "body_bytes": 250,
+      "truncated": false,
+      "body_sha256": "68e9792c539bcfd8cb3a9516d0b216cfa70fcbd0fc02738f58ee7196f91e29fb",
+      "headers": {
+        "Content-Type": "application/javascript; charset=UTF-8",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:26:43.246568+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/chunk-DBPdFzgj.js",
+      "request_number": 3
+    },
+    {
+      "timestamp": "2026-11-12T14:26:43.563821+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/chunk-DBPdFzgj.js",
+      "status": 200,
+      "elapsed_ms": 317,
+      "body_bytes": 2458,
+      "truncated": false,
+      "body_sha256": "97f1c69840855dfd1497f72d325d97f1c93caf45ed10ee0599c2967757a8b8aa",
+      "headers": {
+        "Content-Type": "application/javascript; charset=UTF-8",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:26:44.251681+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/chunk-Cv2YgWUq.js",
+      "request_number": 4
+    },
+    {
+      "timestamp": "2026-11-12T14:26:44.688721+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/chunk-Cv2YgWUq.js",
+      "status": 200,
+      "elapsed_ms": 436,
+      "body_bytes": 367621,
+      "truncated": false,
+      "body_sha256": "fbc703799bc777df67e696f42cd8889e0fdf977d0bdc19071c931f7d1501cdd1",
+      "headers": {
+        "Content-Type": "application/javascript; charset=UTF-8",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:26:44.688786+00:00",
+      "type": "stage_plan",
+      "phase": "discovery",
+      "message": "Plano da etapa registrado antes da execução",
+      "step_id": "framework_inventory",
+      "check_id": "framework_inventory",
+      "hypothesis": "Marcadores públicos permitem identificar família ou versão do framework.",
+      "action": "Inspecionar localmente HTML e scripts já obtidos, sem nova requisição.",
+      "expected_result": "Inventário com grau de certeza; avisos sem aplicabilidade presumida.",
+      "stop_condition": "Não confirmar CVE sem pacote, versão e condição aplicável verificados."
+    },
+    {
+      "timestamp": "2026-11-12T14:26:44.703047+00:00",
+      "type": "observation",
+      "phase": "discovery",
+      "message": "Framework inventory evaluated",
+      "family": "Angular",
+      "version": "22.2.2",
+      "certainty": "exact",
+      "advisory_count": 1
+    },
+    {
+      "timestamp": "2026-11-12T14:26:44.703089+00:00",
+      "type": "stage_plan",
+      "phase": "surface_checks",
+      "message": "Plano da etapa registrado antes da execução",
+      "step_id": "ftp_listing",
+      "check_id": "ftp_listing",
+      "hypothesis": "Uma rota de arquivos pode exibir um índice público de nomes.",
+      "action": "Fazer GET da rota configurada e HEAD apenas de nomes listados permitidos.",
+      "expected_result": "Confirmar índice por título e links diretos; HEAD prova só metadados.",
+      "stop_condition": "Não baixar arquivos nem afirmar leitura de conteúdo; Parar se o operador interromper, o orçamento acabar, a requisição sair do escopo ou ocorrer falha de rede."
+    },
+    {
+      "timestamp": "2026-11-12T14:26:44.703093+00:00",
+      "type": "stage_plan",
+      "phase": "surface_checks",
+      "message": "Plano da etapa registrado antes da execução",
+      "step_id": "public_metrics",
+      "check_id": "public_metrics",
+      "hypothesis": "A rota de métricas pode responder anonimamente em formato Prometheus.",
+      "action": "Fazer GET da rota configurada e reconhecer apenas marcadores de formato.",
+      "expected_result": "Status e formato confirmados, sem armazenar valores de métricas.",
+      "stop_condition": "Não registrar corpo, valores ou possíveis segredos; Parar se o operador interromper, o orçamento acabar, a requisição sair do escopo ou ocorrer falha de rede."
+    },
+    {
+      "timestamp": "2026-11-12T14:26:44.703096+00:00",
+      "type": "stage_plan",
+      "phase": "surface_checks",
+      "message": "Plano da etapa registrado antes da execução",
+      "step_id": "sql_error_exposure",
+      "check_id": "sql_error_exposure",
+      "hypothesis": "Uma entrada de busca pontual pode revelar erro interno ao cliente.",
+      "action": "Após aprovação humana explícita, comparar uma busca benigna com uma variante de aspas predefinida.",
+      "expected_result": "Controle JSON válido e erro SQL explícito ou resultado inconclusivo.",
+      "stop_condition": "Não executar sem aprovação; não fazer extração, bypass ou novas variantes; Parar se o operador interromper, o orçamento acabar, a requisição sair do escopo ou ocorrer falha de rede."
+    },
+    {
+      "timestamp": "2026-11-12T14:26:44.703099+00:00",
+      "type": "stage_plan",
+      "phase": "surface_checks",
+      "message": "Plano da etapa registrado antes da execução",
+      "step_id": "beginner_challenges",
+      "check_id": "beginner_challenges",
+      "hypothesis": "O catálogo público pode informar desafios de dificuldade inicial.",
+      "action": "Fazer GET da rota configurada e contar apenas itens iniciais.",
+      "expected_result": "Contagem e nomes de tutoriais, sem tentar resolver desafios.",
+      "stop_condition": "Parar se o operador interromper, o orçamento acabar, a requisição sair do escopo ou ocorrer falha de rede."
+    },
+    {
+      "timestamp": "2026-11-12T14:26:45.256718+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/ftp/",
+      "request_number": 5
+    },
+    {
+      "timestamp": "2026-11-12T14:26:45.566408+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/ftp/",
+      "status": 200,
+      "elapsed_ms": 309,
+      "body_bytes": 11641,
+      "truncated": false,
+      "body_sha256": "1a3c507a1d6068a9f30e08be33d613de8ecb03b7697886f3f82b2691aba80cdd",
+      "headers": {
+        "Content-Type": "text/html; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:26:45.570317+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Checked public FTP index",
+      "check": "ftp_listing",
+      "status": 200,
+      "outcome": "listing"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:46.261753+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/metrics",
+      "request_number": 6
+    },
+    {
+      "timestamp": "2026-11-12T14:26:46.601709+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/metrics",
+      "status": 200,
+      "elapsed_ms": 340,
+      "body_bytes": 26257,
+      "truncated": false,
+      "body_sha256": "3aa6aa9f31fff6a21c155ca6b0fb64ba2cd46069c71e08a1cb4619646914be6e",
+      "headers": {
+        "Content-Type": "text/plain; version=0.0.4; charset=utf-8"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:26:46.602063+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Checked public metrics endpoint",
+      "check": "public_metrics",
+      "status": 200,
+      "outcome": "prometheus"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:46.602167+00:00",
+      "type": "decision",
+      "phase": "approval",
+      "message": "Conditional search check explicitly approved by CLI operator",
+      "action_id": "quoted_search",
+      "approved": true
+    },
+    {
+      "timestamp": "2026-11-12T14:26:47.266869+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "request_number": 7
+    },
+    {
+      "timestamp": "2026-11-12T14:26:47.573922+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "status": 200,
+      "elapsed_ms": 307,
+      "body_bytes": 1617,
+      "truncated": false,
+      "body_sha256": "084d85f6fb39b3a6876774690acd01f784cba5e85ddc2435ff396c4d657ed21e",
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:26:48.271961+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "request_number": 8
+    },
+    {
+      "timestamp": "2026-11-12T14:26:49.022770+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "status": 500,
+      "elapsed_ms": 751,
+      "body_bytes": 1361,
+      "truncated": false,
+      "body_sha256": "7364680cd6b508c59e9589effa11292ef43653805f5f791daedf407a7c37965f",
+      "headers": {
+        "Content-Type": "text/html; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:26:49.023178+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Compared benign and quoted search inputs",
+      "check": "sql_error_exposure",
+      "baseline_status": 200,
+      "quoted_status": 500,
+      "sqlite_error_marker": true,
+      "outcome": "confirmed"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:49.272202+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/api/Challenges",
+      "request_number": 9
+    },
+    {
+      "timestamp": "2026-11-12T14:26:49.704325+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/api/Challenges",
+      "status": 200,
+      "elapsed_ms": 432,
+      "body_bytes": 67772,
+      "truncated": false,
+      "body_sha256": "6157b3195a6b60b9ccfa49444454a70806780320519082cf3c046d20fbf93a9b",
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:26:49.706528+00:00",
+      "type": "observation",
+      "phase": "discovery",
+      "message": "Beginner challenges counted",
+      "difficulty_counts": {
+        "1": 13,
+        "2": 19
+      },
+      "tutorial_names": [
+        "Score Board",
+        "DOM XSS",
+        "Bonus Payload",
+        "Privacy Policy",
+        "Reflected XSS",
+        "Exposed Credentials",
+        "Login Admin",
+        "Admin Section",
+        "Password Strength",
+        "View Basket",
+        "Forged Feedback",
+        "Login Jim"
+      ]
+    },
+    {
+      "timestamp": "2026-11-12T14:26:50.277251+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "HEAD",
+      "url": "https://4.migbot.com.br/ftp/incident-support.kdbx",
+      "request_number": 10
+    },
+    {
+      "timestamp": "2026-11-12T14:26:50.548852+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "HEAD",
+      "url": "https://4.migbot.com.br/ftp/incident-support.kdbx",
+      "status": 200,
+      "elapsed_ms": 271,
+      "body_bytes": 0,
+      "truncated": false,
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "Content-Type": "application/octet-stream",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:26:50.548909+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Checked listed file with HEAD only",
+      "filename": "incident-support.kdbx",
+      "status": 200
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.282209+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "HEAD",
+      "url": "https://4.migbot.com.br/ftp/package.json.bak",
+      "request_number": 11
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588411+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "HEAD",
+      "url": "https://4.migbot.com.br/ftp/package.json.bak",
+      "status": 403,
+      "elapsed_ms": 306,
+      "body_bytes": 0,
+      "truncated": false,
+      "body_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "headers": {
+        "Content-Type": "text/html; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588424+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Checked listed file with HEAD only",
+      "filename": "package.json.bak",
+      "status": 403
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588438+00:00",
+      "type": "stage_plan",
+      "phase": "checks",
+      "message": "Plano da etapa registrado antes da execução",
+      "step_id": "headers",
+      "check_id": "headers",
+      "hypothesis": "Cabeçalhos da resposta inicial podem revelar lacunas de configuração.",
+      "action": "Comparar os nomes e valores de cabeçalhos já recebidos com regras fixas.",
+      "expected_result": "Presença ou ausência nesta resposta, sem inferir exploração.",
+      "stop_condition": "Não extrapolar o resultado para outras rotas ou respostas."
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588442+00:00",
+      "type": "stage_plan",
+      "phase": "checks",
+      "message": "Plano da etapa registrado antes da execução",
+      "step_id": "cookies",
+      "check_id": "cookies",
+      "hypothesis": "Atributos de cookies recebidos podem ser avaliados sem expor valores.",
+      "action": "Analisar somente atributos dos Set-Cookie da resposta já obtida.",
+      "expected_result": "Atributos presentes ou ausentes, com valor do cookie omitido.",
+      "stop_condition": "Não afirmar risco de sessão sem verificar a finalidade do cookie."
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588453+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked Strict-Transport-Security",
+      "check": "missing_hsts",
+      "outcome": "absent"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588469+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked X-Content-Type-Options",
+      "check": "missing_nosniff",
+      "outcome": "present"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588472+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked Referrer-Policy",
+      "check": "missing_referrer_policy",
+      "outcome": "absent"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588484+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked Content-Security-Policy",
+      "check": "missing_csp",
+      "outcome": "absent"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588494+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked frame protection",
+      "check": "missing_frame_protection",
+      "outcome": "present"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588636+00:00",
+      "type": "stage_plan",
+      "phase": "triage",
+      "message": "Plano da etapa registrado antes da execução",
+      "step_id": "triage",
+      "check_id": "triage",
+      "hypothesis": "Os sinais obtidos podem ser classificados sem presumir exploração.",
+      "action": "Deduplicar achados e atribuir severidade, estado e confiança.",
+      "expected_result": "Achados confirmados, inconclusivos ou descartados separados por regra.",
+      "stop_condition": "Não elevar observações sem evidência ao estado confirmado."
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588646+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "ftp_file_head_incident-support.kdbx-8cc84ca64260",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588648+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "ftp_listing-65e2d54cd901",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588649+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588651+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588652+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "missing_csp-8ff0abadd3a0",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588654+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "missing_hsts-06d4aa3e8a88",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588655+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "missing_referrer_policy-253b1b85b972",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588657+00:00",
+      "type": "stage_plan",
+      "phase": "remediation",
+      "message": "Plano da etapa registrado antes da execução",
+      "step_id": "remediation",
+      "check_id": "remediation",
+      "hypothesis": "Achados classificados permitem sugestões condicionais de correção.",
+      "action": "Associar orientações e trechos de código locais aos achados.",
+      "expected_result": "Dicas revisáveis e ligadas ao ID do achado.",
+      "stop_condition": "Não executar código ou alterar o alvo."
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588662+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "ftp_file_head_incident-support.kdbx-8cc84ca64260",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588665+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "ftp_listing-65e2d54cd901",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588667+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588668+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588670+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "missing_csp-8ff0abadd3a0",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588672+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "missing_hsts-06d4aa3e8a88",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588673+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "missing_referrer_policy-253b1b85b972",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588676+00:00",
+      "type": "stage_plan",
+      "phase": "ai",
+      "message": "Plano da etapa registrado antes da execução",
+      "step_id": "ai_advisor",
+      "check_id": "ai_advisor",
+      "hypothesis": "Evidências redigidas permitem à IA sugerir correções para revisão.",
+      "action": "Enviar no máximo cinco achados sanitizados ao modelo sem ferramentas.",
+      "expected_result": "Sugestões associadas apenas a IDs existentes ou dicas locais preservadas.",
+      "stop_condition": "Descartar IDs inventados e nunca alterar a classificação dos achados."
+    },
+    {
+      "timestamp": "2026-11-12T14:26:51.588679+00:00",
+      "type": "decision",
+      "phase": "ai",
+      "message": "Sending redacted findings to optional AI advisor",
+      "finding_count": 5,
+      "model": "gpt-6-luna"
+    },
+    {
+      "timestamp": "2026-11-12T14:26:59.136100+00:00",
+      "type": "recommendation",
+      "phase": "ai",
+      "message": "AI advice received for human review",
+      "recommendation_count": 5
+    },
+    {
+      "timestamp": "2026-11-12T14:26:59.136140+00:00",
+      "type": "stop",
+      "phase": "control",
+      "message": "Planned non-destructive campaign ended",
+      "request_count": 11
+    }
+  ],
+  "findings": [
+    {
+      "id": "ftp_file_head_incident-support.kdbx-8cc84ca64260",
+      "title": "Recurso anunciado em /ftp/: incident-support.kdbx",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "ftp_file_head_incident-support.kdbx",
+      "url": "https://4.migbot.com.br/ftp/incident-support.kdbx",
+      "evidence": "HEAD /ftp/incident-support.kdbx respondeu 200, tipo application/octet-stream, tamanho 3246 bytes; nenhum corpo de arquivo foi lido",
+      "impact": "O servidor anuncia o recurso e seus metadados. Isso não comprova leitura por GET, conteúdo sensível ou presença de credenciais.",
+      "recommendation": "Revise a necessidade de publicar esse arquivo. Se for privado, negue o acesso anônimo e verifique GET e HEAD no mesmo controle de autorização.",
+      "code_hint": "# Nginx: location /ftp/ { autoindex off; deny all; }",
+      "excerpt": "Content-Type: application/octet-stream; Content-Length: 3246",
+      "proof": "O nome constava no índice; HEAD /ftp/incident-support.kdbx: HTTP 200; Content-Type: application/octet-stream; 3246 bytes anunciados.",
+      "limitations": "HEAD 200 confirma metadados; não comprova GET, conteúdo, senha ou credenciais.",
+      "reproduction": "Confirme o nome no índice /ftp/ e faça somente HEAD na URL do achado; compare status, Content-Type e Content-Length. Não faça GET.",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "screenshot_sha256": ""
+    },
+    {
+      "id": "ftp_listing-65e2d54cd901",
+      "title": "Listagem pública de /ftp/",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "ftp_listing",
+      "url": "https://4.migbot.com.br/ftp/",
+      "evidence": "GET /ftp/ respondeu 200 com padrão de índice de diretório; arquivos não acessados",
+      "impact": "Visitantes anônimos podem descobrir nomes de arquivos disponíveis nesse diretório.",
+      "recommendation": "Desative o índice de diretório em /ftp/ e limite o acesso aos arquivos necessários por rota autenticada.",
+      "code_hint": "# Express: remova serve-index de /ftp/; no Nginx: autoindex off;",
+      "excerpt": "listing directory /ftp/",
+      "proof": "GET /ftp/: HTTP 200; Content-Type: text/html; título e link filho válidos; SHA-256 capturado: 1a3c507a1d60…",
+      "limitations": "A listagem confirma nomes; não comprova leitura dos arquivos anunciados.",
+      "reproduction": "Faça um GET em /ftp/; confira HTTP 200, tipo HTML, título de índice e ao menos um link filho da mesma origem. Não abra arquivos.",
+      "screenshot": "/evidence/ftp-listagem.png",
+      "screenshot_caption": "Captura direta separada do índice /ftp/ em 12/11/2026. Mostra nomes públicos naquele momento; não é o corpo da resposta desta execução nem comprova leitura dos arquivos.",
+      "screenshot_sha256": "bc24f75789d8ec2cf314e89dcffb135ba3d9457bd9e8c68cef94ecf354354bba"
+    },
+    {
+      "id": "public_metrics-57c88ab0fb9b",
+      "title": "Métricas Prometheus públicas",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "public_metrics",
+      "url": "https://4.migbot.com.br/metrics",
+      "evidence": "GET /metrics respondeu 200 com formato Prometheus; valores não registrados",
+      "impact": "Visitantes anônimos podem consultar metadados operacionais e indicadores do serviço.",
+      "recommendation": "Proteja /metrics na borda por rede interna ou autenticação e valide que anônimos recebem 403/404.",
+      "code_hint": "# Express: app.get('/metrics', internalOnly, metricsHandler)",
+      "excerpt": "# HELP juiceshop_llm_input_tokens_total",
+      "proof": "GET /metrics: HTTP 200; Content-Type: text/plain; linha de métrica reconhecida; SHA-256 capturado: 3aa6aa9f31ff…",
+      "limitations": "O marcador prova formato de métricas; valores e possíveis segredos não foram retidos.",
+      "reproduction": "Faça um GET em /metrics; confira HTTP 200, tipo Prometheus e uma linha # HELP ou # TYPE. Não publique valores de métricas.",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "screenshot_sha256": ""
+    },
+    {
+      "id": "sql_error_exposure-70d5e72808c2",
+      "title": "Erro SQLite exposto por entrada de busca",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "sql_error_exposure",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "evidence": "GET com q=apple respondeu 200; q=apple%27 respondeu 500 com marcador SQLITE_ERROR. Nenhuma extração ou bypass foi tentado.",
+      "impact": "A entrada pode causar falha na consulta e revelar detalhes internos. Isso não comprova, isoladamente, exploração de SQL injection.",
+      "recommendation": "No handler Express da busca, valide q, use parâmetros preparados na consulta SQLite e retorne erro genérico ao cliente; mantenha o detalhe só no log interno.",
+      "code_hint": "const rows = db.prepare('SELECT ... FROM Products WHERE name LIKE ?').all(`%${q}%`); // SQLite\n// Express: catch (err) { logger.error(err); res.status(500).json({ error: 'internal_error' }); }",
+      "excerpt": "SQLITE_ERROR",
+      "proof": "q=apple: HTTP 200 (application/json); q=apple%27: HTTP 500 (text/html); SQLITE_ERROR; SHA-256 capturado: 7364680cd6b5…",
+      "limitations": "Confirma erro SQL exposto; não comprova extração, bypass ou injeção explorável.",
+      "reproduction": "Após aprovação humana (ou --approve-quoted-search no CLI), compare q=apple com q=apple%27, uma requisição de cada; confira JSON 200 e erro 5xx com SQLITE_ERROR. Não tente extração.",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "screenshot_sha256": ""
+    },
+    {
+      "id": "missing_csp-8ff0abadd3a0",
+      "title": "Cabeçalho Content-Security-Policy ausente",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "missing_csp",
+      "url": "https://4.migbot.com.br//",
+      "evidence": "HTTP 200: cabeçalho Content-Security-Policy ausente",
+      "impact": "Sem esse cabeçalho, a resposta não declara uma política CSP HTTP; políticas via HTML não foram avaliadas.",
+      "recommendation": "Mapeie as origens usadas pela SPA, teste em Report-Only e depois aplique CSP.",
+      "code_hint": "Content-Security-Policy-Report-Only: default-src 'self'; object-src 'none'; base-uri 'self'",
+      "excerpt": "Content-Security-Policy: <ausente>",
+      "proof": "GET da página HTML: HTTP 200; Content-Type: text/html; CSP não veio na resposta.",
+      "limitations": "Confirma ausência do cabeçalho nesta resposta; meta CSP não foi avaliada e XSS não foi testado.",
+      "reproduction": "Faça um GET na página indicada e confira nos cabeçalhos da resposta a ausência da política citada. Não infira exploração.",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "screenshot_sha256": ""
+    },
+    {
+      "id": "missing_hsts-06d4aa3e8a88",
+      "title": "HSTS ausente",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "missing_hsts",
+      "url": "https://4.migbot.com.br//",
+      "evidence": "HTTP 200: cabeçalho Strict-Transport-Security ausente",
+      "impact": "Sem HSTS, o navegador não recebe uma política explícita para voltar somente por HTTPS.",
+      "recommendation": "Envie HSTS apenas após confirmar que o domínio funciona integralmente em HTTPS.",
+      "code_hint": "Strict-Transport-Security: max-age=31536000",
+      "excerpt": "Strict-Transport-Security: <ausente>",
+      "proof": "GET da página: HTTP 200; Content-Type: text/html; Strict-Transport-Security não veio na resposta.",
+      "limitations": "Confirma ausência nesta resposta; não demonstra exploração.",
+      "reproduction": "Faça um GET na página indicada e confira nos cabeçalhos da resposta a ausência da política citada. Não infira exploração.",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "screenshot_sha256": ""
+    },
+    {
+      "id": "missing_referrer_policy-253b1b85b972",
+      "title": "Cabeçalho Referrer-Policy ausente",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "missing_referrer_policy",
+      "url": "https://4.migbot.com.br//",
+      "evidence": "HTTP 200: cabeçalho Referrer-Policy ausente",
+      "impact": "Sem esse cabeçalho, a política de Referer depende do navegador ou de outra declaração não avaliada.",
+      "recommendation": "Defina uma política explícita de Referer compatível com os fluxos da aplicação.",
+      "code_hint": "Referrer-Policy: strict-origin-when-cross-origin",
+      "excerpt": "Referrer-Policy: <ausente>",
+      "proof": "GET da página: HTTP 200; Content-Type: text/html; Referrer-Policy não veio na resposta.",
+      "limitations": "Confirma ausência do cabeçalho nesta resposta; políticas em HTML ou outras rotas não foram avaliadas.",
+      "reproduction": "Faça um GET na página indicada e confira nos cabeçalhos da resposta a ausência da política citada. Não infira exploração.",
+      "screenshot": "",
+      "screenshot_caption": "",
+      "screenshot_sha256": ""
+    }
+  ],
+  "recommendations": [
+    {
+      "finding_id": "ftp_file_head_incident-support.kdbx-8cc84ca64260",
+      "source": "deterministic",
+      "guidance": "Revise a necessidade de publicar esse arquivo. Se for privado, negue o acesso anônimo e verifique GET e HEAD no mesmo controle de autorização.",
+      "code_hint": "# Nginx: location /ftp/ { autoindex off; deny all; }"
+    },
+    {
+      "finding_id": "ftp_listing-65e2d54cd901",
+      "source": "deterministic",
+      "guidance": "Desative o índice de diretório em /ftp/ e limite o acesso aos arquivos necessários por rota autenticada.",
+      "code_hint": "# Express: remova serve-index de /ftp/; no Nginx: autoindex off;"
+    },
+    {
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "source": "deterministic",
+      "guidance": "Proteja /metrics na borda por rede interna ou autenticação e valide que anônimos recebem 403/404.",
+      "code_hint": "# Express: app.get('/metrics', internalOnly, metricsHandler)"
+    },
+    {
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "source": "deterministic",
+      "guidance": "No handler Express da busca, valide q, use parâmetros preparados na consulta SQLite e retorne erro genérico ao cliente; mantenha o detalhe só no log interno.",
+      "code_hint": "const rows = db.prepare('SELECT ... FROM Products WHERE name LIKE ?').all(`%${q}%`); // SQLite\n// Express: catch (err) { logger.error(err); res.status(500).json({ error: 'internal_error' }); }"
+    },
+    {
+      "finding_id": "missing_csp-8ff0abadd3a0",
+      "source": "deterministic",
+      "guidance": "Mapeie as origens usadas pela SPA, teste em Report-Only e depois aplique CSP.",
+      "code_hint": "Content-Security-Policy-Report-Only: default-src 'self'; object-src 'none'; base-uri 'self'"
+    },
+    {
+      "finding_id": "missing_hsts-06d4aa3e8a88",
+      "source": "deterministic",
+      "guidance": "Envie HSTS apenas após confirmar que o domínio funciona integralmente em HTTPS.",
+      "code_hint": "Strict-Transport-Security: max-age=31536000"
+    },
+    {
+      "finding_id": "missing_referrer_policy-253b1b85b972",
+      "source": "deterministic",
+      "guidance": "Defina uma política explícita de Referer compatível com os fluxos da aplicação.",
+      "code_hint": "Referrer-Policy: strict-origin-when-cross-origin"
+    },
+    {
+      "finding_id": "ftp_file_head_incident-support.kdbx-8cc84ca64260",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "Revise se o arquivo precisa ser publicado. Se for privado, exija autorização e aplique o mesmo controle a requisições HEAD e GET.",
+      "code_hint": "Na configuração do servidor ou middleware que entrega /ftp/, desative acesso anônimo ao arquivo; não dependa apenas de ocultar o link.",
+      "verification": "Revise as regras de acesso para confirmar que HEAD e GET usam a mesma autorização e que usuários anônimos não podem obter o arquivo privado."
+    },
+    {
+      "finding_id": "ftp_listing-65e2d54cd901",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "Desative a listagem de diretório em /ftp/ e permita somente o acesso necessário aos arquivos, por rotas autorizadas.",
+      "code_hint": "Se o servidor ou framework oferecer índice automático de diretório, desative-o para /ftp/; restrinja arquivos individuais conforme a necessidade.",
+      "verification": "Confirme na configuração que o índice está desativado e que o acesso aos arquivos é limitado conforme a política definida."
+    },
+    {
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "Restrinja /metrics à rede interna ou proteja a rota com autenticação, conforme a arquitetura disponível.",
+      "code_hint": "Aplique o controle na borda, no proxy ou na aplicação, conforme a tecnologia utilizada, e evite exposição pública das métricas.",
+      "verification": "Revise a configuração de rede e autorização para confirmar que clientes anônimos não têm acesso a /metrics."
+    },
+    {
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "Valide a entrada q, use parâmetros preparados na consulta SQLite e retorne uma mensagem genérica ao cliente; mantenha detalhes técnicos apenas em logs internos protegidos.",
+      "code_hint": "No handler Express da busca, vincule q como parâmetro da consulta em vez de concatená-lo ao SQL e trate erros sem expor detalhes do banco.",
+      "verification": "Revise o handler e o tratamento de erros para confirmar o uso de parâmetros e a ausência de detalhes internos nas respostas ao cliente."
+    },
+    {
+      "finding_id": "missing_csp-8ff0abadd3a0",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "Defina uma CSP compatível com as origens e recursos realmente usados pela SPA. Considere começar em modo Report-Only antes de aplicar a política.",
+      "code_hint": "Configure Content-Security-Policy na aplicação ou no servidor de borda; ajuste as diretivas após mapear os recursos legítimos.",
+      "verification": "Revise a política implantada e confirme que o cabeçalho é emitido nas respostas aplicáveis sem bloquear os recursos necessários."
+    }
+  ],
+  "observations": [
+    {
+      "type": "framework_inventory",
+      "family": "Angular",
+      "framework": "Angular",
+      "version": "22.2.2",
+      "certainty": "exact",
+      "evidence": [
+        {
+          "kind": "runtime_ng_version",
+          "version": "22.2.2",
+          "asset": "chunk-Cv2YgWUq.js"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "runtime_ng_version",
+          "version": "22.2.2",
+          "asset": "chunk-Cv2YgWUq.js"
+        }
+      ],
+      "advisories": [
+        {
+          "id": "GHSA-ffj9-42qx-f38h",
+          "cve": null,
+          "package": "@angular/upgrade",
+          "status": "not_confirmed",
+          "reason": "Package @angular/upgrade not confirmed; Hybrid AngularJS app, downgradeComponent, co-located directive and user-controlled data must be verified.",
+          "url": "https://github.com/angular/angular/security/advisories/GHSA-ffj9-42qx-f38h",
+          "evaluated_version": "22.2.2"
+        }
+      ],
+      "advisories_for_review": [
+        {
+          "id": "GHSA-ffj9-42qx-f38h",
+          "cve_id": null,
+          "package": "@angular/upgrade",
+          "title": "XSS in hybrid Angular/AngularJS downgradeComponent",
+          "source": "https://github.com/angular/angular/security/advisories/GHSA-ffj9-42qx-f38h",
+          "status": "not_confirmed",
+          "evaluated_version": "22.2.2",
+          "reason": "Package @angular/upgrade not confirmed; Hybrid AngularJS app, downgradeComponent, co-located directive and user-controlled data must be verified."
+        }
+      ],
+      "confirmed_cves": [],
+      "catalog_checked_at": "2026-11-12",
+      "catalog_source": "https://github.com/angular/angular/security/advisories",
+      "manifest_version_conflict": false,
+      "note": "Version and package overlap alone never confirms an exploitable CVE."
+    },
+    {
+      "type": "beginner_challenges",
+      "url": "https://4.migbot.com.br/api/Challenges",
+      "difficulty_counts": {
+        "1": 13,
+        "2": 19
+      },
+      "tutorial_names": [
+        "Score Board",
+        "DOM XSS",
+        "Bonus Payload",
+        "Privacy Policy",
+        "Reflected XSS",
+        "Exposed Credentials",
+        "Login Admin",
+        "Admin Section",
+        "Password Strength",
+        "View Basket",
+        "Forged Feedback",
+        "Login Jim"
+      ]
+    },
+    {
+      "type": "ai_advisor",
+      "model": "gpt-6-luna",
+      "status": "completed",
+      "recommendation_count": 5
+    },
+    {
+      "type": "agent_plan",
+      "steps": [
+        {
+          "timestamp": "2026-11-12T14:26:41.107842+00:00",
+          "phase": "scope",
+          "step_id": "scope",
+          "check_id": "scope",
+          "hypothesis": "O alvo e a política permitem uma campanha de leitura de baixo impacto.",
+          "action": "Validar origem exata, métodos GET/HEAD, cadência e limites declarados.",
+          "expected_result": "Escopo aceito ou recusado antes de qualquer requisição.",
+          "stop_condition": "Recusar imediatamente qualquer origem, método ou limite inválido."
+        },
+        {
+          "timestamp": "2026-11-12T14:26:41.107935+00:00",
+          "phase": "discovery",
+          "step_id": "discovery",
+          "check_id": "discovery",
+          "hypothesis": "A página informada revela apenas recursos públicos do próprio alvo.",
+          "action": "Fazer GET da página e identificar referências locais a JavaScript.",
+          "expected_result": "Registrar status, metadados e até o limite de assets configurado.",
+          "stop_condition": "Parar se o operador interromper, o orçamento acabar, a requisição sair do escopo ou ocorrer falha de rede."
+        },
+        {
+          "timestamp": "2026-11-12T14:26:41.706878+00:00",
+          "phase": "planning",
+          "step_id": "check_selection",
+          "check_id": "check_selection",
+          "hypothesis": "A campanha pode escolher somente checks declarados pela política.",
+          "action": "Aplicar a seleção do operador ou o perfil determinístico permitido.",
+          "expected_result": "Lista de IDs permitidos registrada antes das verificações.",
+          "stop_condition": "Recusar qualquer ID fora da lista de checks disponível."
+        },
+        {
+          "timestamp": "2026-11-12T14:26:41.706920+00:00",
+          "phase": "discovery",
+          "step_id": "asset_fetch",
+          "check_id": "asset_fetch",
+          "hypothesis": "Scripts locais podem conter marcadores de versão para inventário passivo.",
+          "action": "Buscar somente os scripts locais descobertos, dentro do limite de assets.",
+          "expected_result": "Metadados e corpos limitados em memória, sem persistir o JavaScript.",
+          "stop_condition": "Parar se o operador interromper, o orçamento acabar, a requisição sair do escopo ou ocorrer falha de rede."
+        },
+        {
+          "timestamp": "2026-11-12T14:26:44.688786+00:00",
+          "phase": "discovery",
+          "step_id": "framework_inventory",
+          "check_id": "framework_inventory",
+          "hypothesis": "Marcadores públicos permitem identificar família ou versão do framework.",
+          "action": "Inspecionar localmente HTML e scripts já obtidos, sem nova requisição.",
+          "expected_result": "Inventário com grau de certeza; avisos sem aplicabilidade presumida.",
+          "stop_condition": "Não confirmar CVE sem pacote, versão e condição aplicável verificados."
+        },
+        {
+          "timestamp": "2026-11-12T14:26:44.703089+00:00",
+          "phase": "surface_checks",
+          "step_id": "ftp_listing",
+          "check_id": "ftp_listing",
+          "hypothesis": "Uma rota de arquivos pode exibir um índice público de nomes.",
+          "action": "Fazer GET da rota configurada e HEAD apenas de nomes listados permitidos.",
+          "expected_result": "Confirmar índice por título e links diretos; HEAD prova só metadados.",
+          "stop_condition": "Não baixar arquivos nem afirmar leitura de conteúdo; Parar se o operador interromper, o orçamento acabar, a requisição sair do escopo ou ocorrer falha de rede."
+        },
+        {
+          "timestamp": "2026-11-12T14:26:44.703093+00:00",
+          "phase": "surface_checks",
+          "step_id": "public_metrics",
+          "check_id": "public_metrics",
+          "hypothesis": "A rota de métricas pode responder anonimamente em formato Prometheus.",
+          "action": "Fazer GET da rota configurada e reconhecer apenas marcadores de formato.",
+          "expected_result": "Status e formato confirmados, sem armazenar valores de métricas.",
+          "stop_condition": "Não registrar corpo, valores ou possíveis segredos; Parar se o operador interromper, o orçamento acabar, a requisição sair do escopo ou ocorrer falha de rede."
+        },
+        {
+          "timestamp": "2026-11-12T14:26:44.703096+00:00",
+          "phase": "surface_checks",
+          "step_id": "sql_error_exposure",
+          "check_id": "sql_error_exposure",
+          "hypothesis": "Uma entrada de busca pontual pode revelar erro interno ao cliente.",
+          "action": "Após aprovação humana explícita, comparar uma busca benigna com uma variante de aspas predefinida.",
+          "expected_result": "Controle JSON válido e erro SQL explícito ou resultado inconclusivo.",
+          "stop_condition": "Não executar sem aprovação; não fazer extração, bypass ou novas variantes; Parar se o operador interromper, o orçamento acabar, a requisição sair do escopo ou ocorrer falha de rede."
+        },
+        {
+          "timestamp": "2026-11-12T14:26:44.703099+00:00",
+          "phase": "surface_checks",
+          "step_id": "beginner_challenges",
+          "check_id": "beginner_challenges",
+          "hypothesis": "O catálogo público pode informar desafios de dificuldade inicial.",
+          "action": "Fazer GET da rota configurada e contar apenas itens iniciais.",
+          "expected_result": "Contagem e nomes de tutoriais, sem tentar resolver desafios.",
+          "stop_condition": "Parar se o operador interromper, o orçamento acabar, a requisição sair do escopo ou ocorrer falha de rede."
+        },
+        {
+          "timestamp": "2026-11-12T14:26:51.588438+00:00",
+          "phase": "checks",
+          "step_id": "headers",
+          "check_id": "headers",
+          "hypothesis": "Cabeçalhos da resposta inicial podem revelar lacunas de configuração.",
+          "action": "Comparar os nomes e valores de cabeçalhos já recebidos com regras fixas.",
+          "expected_result": "Presença ou ausência nesta resposta, sem inferir exploração.",
+          "stop_condition": "Não extrapolar o resultado para outras rotas ou respostas."
+        },
+        {
+          "timestamp": "2026-11-12T14:26:51.588442+00:00",
+          "phase": "checks",
+          "step_id": "cookies",
+          "check_id": "cookies",
+          "hypothesis": "Atributos de cookies recebidos podem ser avaliados sem expor valores.",
+          "action": "Analisar somente atributos dos Set-Cookie da resposta já obtida.",
+          "expected_result": "Atributos presentes ou ausentes, com valor do cookie omitido.",
+          "stop_condition": "Não afirmar risco de sessão sem verificar a finalidade do cookie."
+        },
+        {
+          "timestamp": "2026-11-12T14:26:51.588636+00:00",
+          "phase": "triage",
+          "step_id": "triage",
+          "check_id": "triage",
+          "hypothesis": "Os sinais obtidos podem ser classificados sem presumir exploração.",
+          "action": "Deduplicar achados e atribuir severidade, estado e confiança.",
+          "expected_result": "Achados confirmados, inconclusivos ou descartados separados por regra.",
+          "stop_condition": "Não elevar observações sem evidência ao estado confirmado."
+        },
+        {
+          "timestamp": "2026-11-12T14:26:51.588657+00:00",
+          "phase": "remediation",
+          "step_id": "remediation",
+          "check_id": "remediation",
+          "hypothesis": "Achados classificados permitem sugestões condicionais de correção.",
+          "action": "Associar orientações e trechos de código locais aos achados.",
+          "expected_result": "Dicas revisáveis e ligadas ao ID do achado.",
+          "stop_condition": "Não executar código ou alterar o alvo."
+        },
+        {
+          "timestamp": "2026-11-12T14:26:51.588676+00:00",
+          "phase": "ai",
+          "step_id": "ai_advisor",
+          "check_id": "ai_advisor",
+          "hypothesis": "Evidências redigidas permitem à IA sugerir correções para revisão.",
+          "action": "Enviar no máximo cinco achados sanitizados ao modelo sem ferramentas.",
+          "expected_result": "Sugestões associadas apenas a IDs existentes ou dicas locais preservadas.",
+          "stop_condition": "Descartar IDs inventados e nunca alterar a classificação dos achados."
+        }
+      ]
+    },
+    {
+      "type": "visual_evidence",
+      "finding_id": "ftp_listing-65e2d54cd901",
+      "source_url": "https://4.migbot.com.br/ftp/",
+      "captured_at": "2026-11-12",
+      "method": "browser_screenshot",
+      "path": "docs/evidence/ftp-listagem.png",
+      "sha256": "bc24f75789d8ec2cf314e89dcffb135ba3d9457bd9e8c68cef94ecf354354bba",
+      "limitations": "Captura feita separadamente; prova somente a listagem de nomes naquele momento."
+    },
+    {
+      "type": "editorial_revision",
+      "at": "2026-11-12T14:30:19.006837+00:00",
+      "changes": [
+        "CSP e Referrer-Policy foram nomeados como ausência de cabeçalho na resposta observada; políticas via HTML não foram avaliadas.",
+        "O roteiro da comparação sintética de busca passou a mencionar aprovação explícita; não houve nova requisição por esta revisão.",
+        "O resumo do escopo foi anexado a partir da configuração e do alvo registrados para exibição coerente no console."
+      ],
+      "network_requests": 0
+    }
+  ],
+  "summary": {
+    "requests": 11,
+    "findings": 7,
+    "selected_checks": [
+      "headers",
+      "cookies",
+      "framework_inventory",
+      "ftp_listing",
+      "public_metrics",
+      "sql_error_exposure",
+      "beginner_challenges"
+    ],
+    "available_checks": [
+      "headers",
+      "cookies",
+      "framework_inventory",
+      "ftp_listing",
+      "public_metrics",
+      "sql_error_exposure",
+      "beginner_challenges"
+    ],
+    "ruleset_hash": "5958539167ab8ef9",
+    "by_severity": {
+      "medium": 4,
+      "low": 3
+    },
+    "by_status": {
+      "confirmed": 7
+    },
+    "audit_events": 69,
+    "scope": {
+      "target": "https://4.migbot.com.br//",
+      "allowed_hosts": [
+        "4.migbot.com.br"
+      ],
+      "allowed_ports": [
+        443
+      ],
+      "allowed_methods": [
+        "GET",
+        "HEAD"
+      ],
+      "max_requests": 11,
+      "min_interval_seconds": 1.0,
+      "max_response_bytes": 524288,
+      "timeout_seconds": 8.0,
+      "conditional_actions": [
+        "quoted_search"
+      ]
+    }
+  }
+}

@@ -2,6 +2,8 @@
 
 Pipeline funcional e limitada para receber uma URL HTTPS autorizada, identificar o framework, testar superfícies públicas, registrar evidências, sugerir correções e detectar regressões. O escopo padrão está em [`scope.json`](scope.json): até **11 requisições GET/HEAD**, intervalo mínimo de 1 segundo, até três bundles JavaScript e 512 KiB por resposta. O fragmento `#/` é rota de navegador e não integra a requisição HTTP.
 
+Veja o [plano das oito funcionalidades](docs/PLANO_FUNCIONALIDADES.md) e os [resultados controlados de 12/11/2026](docs/RESULTADOS_2026-11-12.md), com provas, limites e captura direta vinculada apenas à listagem de `/ftp/`.
+
 ## Executar
 
 Requer Python 3.11 ou superior; não há dependências Python obrigatórias.
@@ -9,15 +11,16 @@ Requer Python 3.11 ou superior; não há dependências Python obrigatórias.
 ```bash
 python3 -m pentest_pipeline scan --config scope.json
 python3 -m pentest_pipeline scan --config scope.json --target 'https://4.migbot.com.br//#/tokensale-ico-ea'
+python3 -m pentest_pipeline scan --config scope.json --approve-quoted-search
 python3 -m pentest_pipeline monitor --config scope.json --baseline reports/baseline.json
 python3 -m pentest_pipeline.web_server
 python3 -m unittest discover -s tests -v
 ```
 
-O comando `scan` grava `evidence.json` e `report.md` em `reports/<run_id>/`. `monitor` cria o baseline na primeira execução e, nas seguintes, grava `diff.json` com achados novos, resolvidos, alterados e estáveis. Retorna código 2 quando há achado novo ou alterado; execução incompleta não é comparada nem substitui o baseline. Use `--update-baseline` somente depois de revisar o diff. `Ctrl+C` solicita parada; o evento de parada fica na trilha de auditoria.
+O comando `scan` grava `evidence.json` e `report.md` em `reports/<run_id>/`. `monitor` cria o baseline na primeira execução e, nas seguintes, grava `diff.json` com achados novos, resolvidos, alterados e estáveis. Retorna código 2 quando há achado novo ou alterado; execução incompleta não é comparada nem substitui o baseline. Use `--update-baseline` somente depois de revisar o diff. `Ctrl+C` solicita parada; o evento de parada fica na trilha de auditoria. O par sintético de busca requer `--approve-quoted-search` no CLI; sem isso, o check é pulado e a cobertura fica inconclusiva.
 O monitor compara apenas execuções com o mesmo alvo, configuração de escopo e hash das regras de teste. Uma mudança no detector exige novo baseline revisado; não é interpretada como mudança no alvo.
 
-A interface web local abre com `python3 -m pentest_pipeline.web_server`. Informe a URL HTTPS pública, confirme que tem autorização para testá-la e insira a chave OpenAI para a campanha. Se `OPENAI_API_KEY` já estiver no ambiente do servidor, o campo pode ficar vazio. A chave é usada em memória e não entra no relatório, nos eventos ou no Git. A interface permite acompanhar o plano dos agentes, parar a campanha e baixar o relatório.
+A interface web local abre com `python3 -m pentest_pipeline.web_server`. Informe a URL HTTPS pública, confirme que tem autorização para testá-la e insira a chave OpenAI para a campanha. Se `OPENAI_API_KEY` já estiver no ambiente do servidor, o campo pode ficar vazio. A chave é usada em memória e não entra no relatório, nos eventos ou no Git. A interface permite acompanhar o plano dos agentes, decidir a única ação condicionada declarada, parar a campanha e baixar o relatório. A fila de aprovação expira em cinco minutos; rejeição, expiração e interrupção não executam o par de busca. Cada requisição ainda passa pelas regras de escopo e volume.
 
 Para URLs fora do laboratório `4.migbot.com.br`, a pipeline limita os testes a inventário de framework, cabeçalhos, cookies, `robots.txt` e `security.txt`. Checks próprios do Juice Shop só são habilitados para o host exato. Fragmentos SPA são aceitos para navegação, mas removidos antes de qualquer requisição. URLs com credenciais, query, host privado ou esquema diferente de HTTPS são recusadas.
 
@@ -27,6 +30,7 @@ Para URLs fora do laboratório `4.migbot.com.br`, a pipeline limita os testes a 
 export OPENAI_API_KEY="..."
 export PENTEST_AI_MODEL="gpt-6-luna"  # opcional; este é o padrão
 python3 -m pentest_pipeline scan --config scope.json --ai
+# Para incluir o par sintético de busca no CLI, acrescente --approve-quoted-search.
 ```
 
 `OpenAIPlanner` seleciona até quatro checks opcionais de uma lista fixa após o GET inicial. `OpenAIAdvisor` oferece dicas para os achados. Ambos usam a [Responses API](https://developers.openai.com/api/docs/guides/migrate-to-responses?api-mode=responses), `store: false` e saída JSON estruturada. O planejador recebe só origem e metadados HTTP sanitizados; o orientador recebe IDs, classificações e evidências resumidas de até cinco achados. Corpos do site, bundles, valores de cookies e arquivos não são enviados. O modelo não recebe ferramentas de rede, não altera a severidade e não decide se uma CVE está confirmada. Se a IA falhar, o executor usa o perfil seguro e registra a falha sem expor a chave. `.env` e `reports/` são ignorados pelo Git.
@@ -43,6 +47,10 @@ flowchart LR
     D --> P[IA escolhe checks permitidos]
     P --> I[Inventário Angular e advisories]
     I --> T[Agente de testes]
+    T --> H{Ação condicionada?}
+    H -->|sim| Q[Fila de aprovação]
+    Q -->|aprovada| G
+    Q -->|rejeitada ou expirada| E
     T --> R[Agente de triagem]
     R --> F[Agente de correção]
     F --> A[IA opcional]
@@ -87,4 +95,4 @@ snapshot = result.to_dict()  # JSON serializável; run_scan não grava arquivos
 markdown = render_markdown(result)
 ```
 
-O evento tem `timestamp`, `type`, `phase` e `message`, além de metadados seguros para a fase. `result` contém `run_id`, `status`, `stop_reason`, `findings`, `observations`, `recommendations`, `actions` e `summary`.
+O evento tem `timestamp`, `type`, `phase` e `message`, além de metadados seguros para a fase. `result` contém `run_id`, `status`, `stop_reason`, `findings`, `observations`, `recommendations`, `actions` e `summary`. Cada achado inclui trecho sanitizado, prova, limite, reprodução controlada e, quando houver captura direta pertinente, caminho local e hash da imagem. O plano por etapa registra hipótese, ação, resultado esperado e condição de parada antes do check.

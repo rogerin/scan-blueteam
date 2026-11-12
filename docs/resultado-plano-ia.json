@@ -1,0 +1,792 @@
+{
+  "run_id": "20261112T141427Z-04a62dbb",
+  "target": "https://4.migbot.com.br//",
+  "campaign_name": "Hackathon Hubbits - Desafio 3",
+  "started_at": "2026-11-12T14:14:27.016893+00:00",
+  "ended_at": "2026-11-12T14:14:48.218353+00:00",
+  "status": "completed",
+  "stop_reason": "planned_tests_complete",
+  "actions": [
+    {
+      "timestamp": "2026-11-12T14:14:27.022771+00:00",
+      "type": "decision",
+      "phase": "scope",
+      "message": "Campaign scope validated",
+      "target": "https://4.migbot.com.br//",
+      "allowed_hosts": [
+        "4.migbot.com.br"
+      ],
+      "methods": [
+        "GET",
+        "HEAD"
+      ],
+      "max_requests": 11,
+      "min_interval_seconds": 1.0
+    },
+    {
+      "timestamp": "2026-11-12T14:14:27.067175+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br//",
+      "request_number": 1
+    },
+    {
+      "timestamp": "2026-11-12T14:14:27.397728+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br//",
+      "status": 200,
+      "elapsed_ms": 330,
+      "body_bytes": 10351,
+      "truncated": false,
+      "body_sha256": "2827d932e8058a5eaa6b3519f024c5af7aac2bb2725cc92cbd03bb60140dbc8d",
+      "headers": {
+        "Content-Type": "text/html; charset=UTF-8",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:14:27.398576+00:00",
+      "type": "decision",
+      "phase": "discovery",
+      "message": "Discovery complete",
+      "script_references": 8,
+      "in_scope_assets": 3
+    },
+    {
+      "timestamp": "2026-11-12T14:14:33.867763+00:00",
+      "type": "decision",
+      "phase": "planning",
+      "message": "Plan selected from allowed checks",
+      "check_ids": [
+        "headers",
+        "cookies",
+        "framework_inventory",
+        "public_metrics",
+        "sql_error_exposure",
+        "beginner_challenges"
+      ],
+      "source": "ai",
+      "fallback": false
+    },
+    {
+      "timestamp": "2026-11-12T14:14:33.870640+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rolldown-runtime-BoHGiXSq.js",
+      "request_number": 2
+    },
+    {
+      "timestamp": "2026-11-12T14:14:34.447905+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rolldown-runtime-BoHGiXSq.js",
+      "status": 200,
+      "elapsed_ms": 577,
+      "body_bytes": 250,
+      "truncated": false,
+      "body_sha256": "68e9792c539bcfd8cb3a9516d0b216cfa70fcbd0fc02738f58ee7196f91e29fb",
+      "headers": {
+        "Content-Type": "application/javascript; charset=UTF-8",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:14:34.873618+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/chunk-DBPdFzgj.js",
+      "request_number": 3
+    },
+    {
+      "timestamp": "2026-11-12T14:14:35.190521+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/chunk-DBPdFzgj.js",
+      "status": 200,
+      "elapsed_ms": 317,
+      "body_bytes": 2458,
+      "truncated": false,
+      "body_sha256": "97f1c69840855dfd1497f72d325d97f1c93caf45ed10ee0599c2967757a8b8aa",
+      "headers": {
+        "Content-Type": "application/javascript; charset=UTF-8",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:14:35.878704+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/chunk-Cv2YgWUq.js",
+      "request_number": 4
+    },
+    {
+      "timestamp": "2026-11-12T14:14:36.308665+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/chunk-Cv2YgWUq.js",
+      "status": 200,
+      "elapsed_ms": 429,
+      "body_bytes": 367621,
+      "truncated": false,
+      "body_sha256": "fbc703799bc777df67e696f42cd8889e0fdf977d0bdc19071c931f7d1501cdd1",
+      "headers": {
+        "Content-Type": "application/javascript; charset=UTF-8",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:14:36.322914+00:00",
+      "type": "observation",
+      "phase": "discovery",
+      "message": "Framework inventory evaluated",
+      "family": "Angular",
+      "version": "22.2.2",
+      "certainty": "exact",
+      "advisory_count": 1
+    },
+    {
+      "timestamp": "2026-11-12T14:14:36.882760+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/metrics",
+      "request_number": 5
+    },
+    {
+      "timestamp": "2026-11-12T14:14:37.193355+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/metrics",
+      "status": 200,
+      "elapsed_ms": 310,
+      "body_bytes": 26241,
+      "truncated": false,
+      "body_sha256": "325fd436ab01d52220a6ca1a97a1b9798f7862f9b2f71a7dc8afc1f4435bdced",
+      "headers": {
+        "Content-Type": "text/plain; version=0.0.4; charset=utf-8"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:14:37.193678+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Checked public metrics endpoint",
+      "check": "public_metrics",
+      "status": 200,
+      "outcome": "prometheus"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:37.883038+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "request_number": 6
+    },
+    {
+      "timestamp": "2026-11-12T14:14:38.510749+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "status": 200,
+      "elapsed_ms": 627,
+      "body_bytes": 1617,
+      "truncated": false,
+      "body_sha256": "084d85f6fb39b3a6876774690acd01f784cba5e85ddc2435ff396c4d657ed21e",
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:14:38.887203+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "request_number": 7
+    },
+    {
+      "timestamp": "2026-11-12T14:14:39.224507+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "status": 500,
+      "elapsed_ms": 337,
+      "body_bytes": 1361,
+      "truncated": false,
+      "body_sha256": "7364680cd6b508c59e9589effa11292ef43653805f5f791daedf407a7c37965f",
+      "headers": {
+        "Content-Type": "text/html; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:14:39.224620+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Compared benign and quoted search inputs",
+      "check": "sql_error_exposure",
+      "baseline_status": 200,
+      "quoted_status": 500,
+      "sqlite_error_marker": true,
+      "outcome": "confirmed"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:39.889642+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/api/Challenges",
+      "request_number": 8
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207376+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/api/Challenges",
+      "status": 200,
+      "elapsed_ms": 318,
+      "body_bytes": 67772,
+      "truncated": false,
+      "body_sha256": "6157b3195a6b60b9ccfa49444454a70806780320519082cf3c046d20fbf93a9b",
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207781+00:00",
+      "type": "observation",
+      "phase": "discovery",
+      "message": "Beginner challenges counted",
+      "difficulty_counts": {
+        "1": 13,
+        "2": 19
+      },
+      "tutorial_names": [
+        "Score Board",
+        "DOM XSS",
+        "Bonus Payload",
+        "Privacy Policy",
+        "Reflected XSS",
+        "Exposed Credentials",
+        "Login Admin",
+        "Admin Section",
+        "Password Strength",
+        "View Basket",
+        "Forged Feedback",
+        "Login Jim"
+      ]
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207798+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked Strict-Transport-Security",
+      "check": "missing_hsts",
+      "outcome": "absent"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207810+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked X-Content-Type-Options",
+      "check": "missing_nosniff",
+      "outcome": "present"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207813+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked Referrer-Policy",
+      "check": "missing_referrer_policy",
+      "outcome": "absent"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207820+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked Content-Security-Policy",
+      "check": "missing_csp",
+      "outcome": "absent"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207826+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked frame protection",
+      "check": "missing_frame_protection",
+      "outcome": "present"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207940+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207942+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207943+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "missing_csp-8ff0abadd3a0",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207945+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "missing_hsts-06d4aa3e8a88",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207946+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "missing_referrer_policy-253b1b85b972",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207951+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207953+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207955+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "missing_csp-8ff0abadd3a0",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207956+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "missing_hsts-06d4aa3e8a88",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207958+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "missing_referrer_policy-253b1b85b972",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:40.207961+00:00",
+      "type": "decision",
+      "phase": "ai",
+      "message": "Sending redacted findings to optional AI advisor",
+      "finding_count": 5,
+      "model": "gpt-6-luna"
+    },
+    {
+      "timestamp": "2026-11-12T14:14:48.218295+00:00",
+      "type": "recommendation",
+      "phase": "ai",
+      "message": "AI advice received for human review",
+      "recommendation_count": 5
+    },
+    {
+      "timestamp": "2026-11-12T14:14:48.218340+00:00",
+      "type": "stop",
+      "phase": "control",
+      "message": "Planned non-destructive campaign ended",
+      "request_count": 8
+    }
+  ],
+  "findings": [
+    {
+      "id": "public_metrics-57c88ab0fb9b",
+      "title": "Métricas Prometheus públicas",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "public_metrics",
+      "url": "https://4.migbot.com.br/metrics",
+      "evidence": "GET /metrics respondeu 200 com formato Prometheus; valores não registrados",
+      "impact": "Visitantes anônimos podem consultar metadados operacionais e indicadores do serviço.",
+      "recommendation": "Proteja /metrics na borda por rede interna ou autenticação e valide que anônimos recebem 403/404.",
+      "code_hint": "# Express: app.get('/metrics', internalOnly, metricsHandler)",
+      "excerpt": "# HELP juiceshop_llm_input_tokens_total",
+      "proof": "GET /metrics: HTTP 200; Content-Type: text/plain; linha de métrica reconhecida; SHA-256 capturado: 325fd436ab01…",
+      "limitations": "O marcador prova formato de métricas; valores e possíveis segredos não foram retidos.",
+      "reproduction": "Faça um GET em /metrics; confira HTTP 200, tipo Prometheus e uma linha # HELP ou # TYPE. Não publique valores de métricas."
+    },
+    {
+      "id": "sql_error_exposure-70d5e72808c2",
+      "title": "Erro SQLite exposto por entrada de busca",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "sql_error_exposure",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "evidence": "GET com q=apple respondeu 200; q=apple%27 respondeu 500 com marcador SQLITE_ERROR. Nenhuma extração ou bypass foi tentado.",
+      "impact": "A entrada pode causar falha na consulta e revelar detalhes internos. Isso não comprova, isoladamente, exploração de SQL injection.",
+      "recommendation": "No handler Express da busca, valide q, use parâmetros preparados na consulta SQLite e retorne erro genérico ao cliente; mantenha o detalhe só no log interno.",
+      "code_hint": "const rows = db.prepare('SELECT ... FROM Products WHERE name LIKE ?').all(`%${q}%`); // SQLite\n// Express: catch (err) { logger.error(err); res.status(500).json({ error: 'internal_error' }); }",
+      "excerpt": "SQLITE_ERROR",
+      "proof": "q=apple: HTTP 200 (application/json); q=apple%27: HTTP 500 (text/html); SQLITE_ERROR; SHA-256 capturado: 7364680cd6b5…",
+      "limitations": "Confirma erro SQL exposto; não comprova extração, bypass ou injeção explorável.",
+      "reproduction": "Após aprovação humana (ou --approve-quoted-search no CLI), compare q=apple com q=apple%27, uma requisição de cada; confira JSON 200 e erro 5xx com SQLITE_ERROR. Não tente extração."
+    },
+    {
+      "id": "missing_csp-8ff0abadd3a0",
+      "title": "Cabeçalho Content-Security-Policy ausente",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "missing_csp",
+      "url": "https://4.migbot.com.br//",
+      "evidence": "HTTP 200: cabeçalho Content-Security-Policy ausente",
+      "impact": "Sem esse cabeçalho, a resposta não declara uma política CSP HTTP; políticas via HTML não foram avaliadas.",
+      "recommendation": "Mapeie as origens usadas pela SPA, teste em Report-Only e depois aplique CSP.",
+      "code_hint": "Content-Security-Policy-Report-Only: default-src 'self'; object-src 'none'; base-uri 'self'",
+      "excerpt": "Content-Security-Policy: <ausente>",
+      "proof": "GET da página HTML: HTTP 200; Content-Type: text/html; CSP não veio na resposta.",
+      "limitations": "Confirma ausência do cabeçalho nesta resposta; meta CSP não foi avaliada e XSS não foi testado.",
+      "reproduction": "Faça um GET na página indicada e confira nos cabeçalhos da resposta a ausência da política citada. Não infira exploração."
+    },
+    {
+      "id": "missing_hsts-06d4aa3e8a88",
+      "title": "HSTS ausente",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "missing_hsts",
+      "url": "https://4.migbot.com.br//",
+      "evidence": "HTTP 200: cabeçalho Strict-Transport-Security ausente",
+      "impact": "Sem HSTS, o navegador não recebe uma política explícita para voltar somente por HTTPS.",
+      "recommendation": "Envie HSTS apenas após confirmar que o domínio funciona integralmente em HTTPS.",
+      "code_hint": "Strict-Transport-Security: max-age=31536000",
+      "excerpt": "Strict-Transport-Security: <ausente>",
+      "proof": "GET da página: HTTP 200; Content-Type: text/html; Strict-Transport-Security não veio na resposta.",
+      "limitations": "Confirma ausência nesta resposta; não demonstra exploração.",
+      "reproduction": "Faça um GET na página indicada e confira nos cabeçalhos da resposta a ausência da política citada. Não infira exploração."
+    },
+    {
+      "id": "missing_referrer_policy-253b1b85b972",
+      "title": "Cabeçalho Referrer-Policy ausente",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "missing_referrer_policy",
+      "url": "https://4.migbot.com.br//",
+      "evidence": "HTTP 200: cabeçalho Referrer-Policy ausente",
+      "impact": "Sem esse cabeçalho, a política de Referer depende do navegador ou de outra declaração não avaliada.",
+      "recommendation": "Defina uma política explícita de Referer compatível com os fluxos da aplicação.",
+      "code_hint": "Referrer-Policy: strict-origin-when-cross-origin",
+      "excerpt": "Referrer-Policy: <ausente>",
+      "proof": "GET da página: HTTP 200; Content-Type: text/html; Referrer-Policy não veio na resposta.",
+      "limitations": "Confirma ausência do cabeçalho nesta resposta; políticas em HTML ou outras rotas não foram avaliadas.",
+      "reproduction": "Faça um GET na página indicada e confira nos cabeçalhos da resposta a ausência da política citada. Não infira exploração."
+    }
+  ],
+  "recommendations": [
+    {
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "source": "deterministic",
+      "guidance": "Proteja /metrics na borda por rede interna ou autenticação e valide que anônimos recebem 403/404.",
+      "code_hint": "# Express: app.get('/metrics', internalOnly, metricsHandler)"
+    },
+    {
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "source": "deterministic",
+      "guidance": "No handler Express da busca, valide q, use parâmetros preparados na consulta SQLite e retorne erro genérico ao cliente; mantenha o detalhe só no log interno.",
+      "code_hint": "const rows = db.prepare('SELECT ... FROM Products WHERE name LIKE ?').all(`%${q}%`); // SQLite\n// Express: catch (err) { logger.error(err); res.status(500).json({ error: 'internal_error' }); }"
+    },
+    {
+      "finding_id": "missing_csp-8ff0abadd3a0",
+      "source": "deterministic",
+      "guidance": "Mapeie as origens usadas pela SPA, teste em Report-Only e depois aplique CSP.",
+      "code_hint": "Content-Security-Policy-Report-Only: default-src 'self'; object-src 'none'; base-uri 'self'"
+    },
+    {
+      "finding_id": "missing_hsts-06d4aa3e8a88",
+      "source": "deterministic",
+      "guidance": "Envie HSTS apenas após confirmar que o domínio funciona integralmente em HTTPS.",
+      "code_hint": "Strict-Transport-Security: max-age=31536000"
+    },
+    {
+      "finding_id": "missing_referrer_policy-253b1b85b972",
+      "source": "deterministic",
+      "guidance": "Defina uma política explícita de Referer compatível com os fluxos da aplicação.",
+      "code_hint": "Referrer-Policy: strict-origin-when-cross-origin"
+    },
+    {
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "Restrinja /metrics na borda à rede interna ou exija autenticação, sem expor detalhes operacionais a usuários anônimos.",
+      "code_hint": "Configure a regra no proxy, gateway ou mecanismo de controle de acesso disponível; permita somente origens administrativas autorizadas.",
+      "verification": "Revise a configuração implantada e os registros de acesso para confirmar que a rota está limitada às origens autorizadas."
+    },
+    {
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "Valide a entrada q, use parâmetros preparados na consulta SQLite e retorne uma mensagem genérica ao cliente; mantenha detalhes do erro apenas em logs internos.",
+      "code_hint": "No handler Express, use placeholders e vincule q como parâmetro, em vez de concatená-lo à consulta.",
+      "verification": "Revise o handler e o tratamento de erros para confirmar o uso de parâmetros e a ausência de detalhes SQLite nas respostas."
+    },
+    {
+      "finding_id": "missing_csp-8ff0abadd3a0",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "Defina uma CSP compatível com as origens necessárias pela aplicação; comece em Report-Only e aplique a política após avaliar os relatórios.",
+      "code_hint": "Configure o cabeçalho no servidor, proxy ou middleware disponível; evite diretivas permissivas sem necessidade.",
+      "verification": "Revise a política implantada e os relatórios existentes para identificar incompatibilidades antes de aplicá-la."
+    },
+    {
+      "finding_id": "missing_hsts-06d4aa3e8a88",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "Configure HSTS somente após confirmar que o domínio funciona integralmente em HTTPS.",
+      "code_hint": "Defina Strict-Transport-Security na camada que entrega as respostas HTTPS; inclua subdomínios apenas se todos estiverem preparados para HTTPS.",
+      "verification": "Confirme, por revisão da configuração e do estado de HTTPS do domínio, que a política corresponde à cobertura pretendida."
+    },
+    {
+      "finding_id": "missing_referrer_policy-253b1b85b972",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "Defina uma política explícita de Referrer compatível com os fluxos da aplicação e que minimize a divulgação de URLs a outros domínios.",
+      "code_hint": "Configure o cabeçalho Referrer-Policy no servidor, proxy ou middleware disponível; considere strict-origin-when-cross-origin se adequado aos fluxos.",
+      "verification": "Revise a configuração implantada e confirme que a política escolhida atende aos requisitos de navegação e privacidade."
+    }
+  ],
+  "observations": [
+    {
+      "type": "ai_plan",
+      "model": "gpt-6-luna",
+      "status": "completed",
+      "selected_checks": [
+        "headers",
+        "cookies",
+        "framework_inventory",
+        "public_metrics",
+        "sql_error_exposure",
+        "beginner_challenges"
+      ],
+      "fallback": false
+    },
+    {
+      "type": "framework_inventory",
+      "family": "Angular",
+      "framework": "Angular",
+      "version": "22.2.2",
+      "certainty": "exact",
+      "evidence": [
+        {
+          "kind": "runtime_ng_version",
+          "version": "22.2.2",
+          "asset": "chunk-Cv2YgWUq.js"
+        }
+      ],
+      "signals": [
+        {
+          "kind": "runtime_ng_version",
+          "version": "22.2.2",
+          "asset": "chunk-Cv2YgWUq.js"
+        }
+      ],
+      "advisories": [
+        {
+          "id": "GHSA-ffj9-42qx-f38h",
+          "cve": null,
+          "package": "@angular/upgrade",
+          "status": "not_confirmed",
+          "reason": "Package @angular/upgrade not confirmed; Hybrid AngularJS app, downgradeComponent, co-located directive and user-controlled data must be verified.",
+          "url": "https://github.com/angular/angular/security/advisories/GHSA-ffj9-42qx-f38h",
+          "evaluated_version": "22.2.2"
+        }
+      ],
+      "advisories_for_review": [
+        {
+          "id": "GHSA-ffj9-42qx-f38h",
+          "cve_id": null,
+          "package": "@angular/upgrade",
+          "title": "XSS in hybrid Angular/AngularJS downgradeComponent",
+          "source": "https://github.com/angular/angular/security/advisories/GHSA-ffj9-42qx-f38h",
+          "status": "not_confirmed",
+          "evaluated_version": "22.2.2",
+          "reason": "Package @angular/upgrade not confirmed; Hybrid AngularJS app, downgradeComponent, co-located directive and user-controlled data must be verified."
+        }
+      ],
+      "confirmed_cves": [],
+      "catalog_checked_at": "2026-11-12",
+      "catalog_source": "https://github.com/angular/angular/security/advisories",
+      "manifest_version_conflict": false,
+      "note": "Version and package overlap alone never confirms an exploitable CVE."
+    },
+    {
+      "type": "beginner_challenges",
+      "url": "https://4.migbot.com.br/api/Challenges",
+      "difficulty_counts": {
+        "1": 13,
+        "2": 19
+      },
+      "tutorial_names": [
+        "Score Board",
+        "DOM XSS",
+        "Bonus Payload",
+        "Privacy Policy",
+        "Reflected XSS",
+        "Exposed Credentials",
+        "Login Admin",
+        "Admin Section",
+        "Password Strength",
+        "View Basket",
+        "Forged Feedback",
+        "Login Jim"
+      ]
+    },
+    {
+      "type": "ai_advisor",
+      "model": "gpt-6-luna",
+      "status": "completed",
+      "recommendation_count": 5
+    },
+    {
+      "type": "editorial_revision",
+      "at": "2026-11-12T14:30:19.005148+00:00",
+      "changes": [
+        "CSP e Referrer-Policy foram nomeados como ausência de cabeçalho na resposta observada; políticas via HTML não foram avaliadas.",
+        "O roteiro da comparação sintética de busca passou a mencionar aprovação explícita; não houve nova requisição por esta revisão.",
+        "O resumo do escopo foi anexado a partir da configuração e do alvo registrados para exibição coerente no console."
+      ],
+      "network_requests": 0
+    }
+  ],
+  "summary": {
+    "requests": 8,
+    "findings": 5,
+    "selected_checks": [
+      "headers",
+      "cookies",
+      "framework_inventory",
+      "public_metrics",
+      "sql_error_exposure",
+      "beginner_challenges"
+    ],
+    "available_checks": [
+      "headers",
+      "cookies",
+      "framework_inventory",
+      "ftp_listing",
+      "public_metrics",
+      "sql_error_exposure",
+      "beginner_challenges"
+    ],
+    "ruleset_hash": "a26d3181ff024f79",
+    "by_severity": {
+      "medium": 2,
+      "low": 3
+    },
+    "by_status": {
+      "confirmed": 5
+    },
+    "audit_events": 41,
+    "scope": {
+      "target": "https://4.migbot.com.br//",
+      "allowed_hosts": [
+        "4.migbot.com.br"
+      ],
+      "allowed_ports": [
+        443
+      ],
+      "allowed_methods": [
+        "GET",
+        "HEAD"
+      ],
+      "max_requests": 11,
+      "min_interval_seconds": 1.0,
+      "max_response_bytes": 524288,
+      "timeout_seconds": 8.0,
+      "conditional_actions": []
+    }
+  }
+}

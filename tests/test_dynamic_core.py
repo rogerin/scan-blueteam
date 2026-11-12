@@ -2,11 +2,14 @@ from __future__ import annotations
 
 from email.message import Message
 from urllib.parse import urlsplit
+import threading
+import time
 import unittest
 from unittest.mock import patch
 
 from pentest_pipeline import ScopeConfig, ScopeError, run_scan
-from pentest_pipeline.agents import SurfaceTestAgent
+from pentest_pipeline.agents import SurfaceTestAgent, TestAgent
+from pentest_pipeline.approvals import ApprovalQueue
 from pentest_pipeline.transport import Response
 
 
@@ -81,6 +84,61 @@ class DynamicScopeTests(unittest.TestCase):
 
 
 class FalsePositiveTests(unittest.TestCase):
+    def test_empty_policy_headers_are_not_called_absent(self) -> None:
+        config = ScopeConfig(target_url="https://4.migbot.com.br/", allowed_hosts=("4.migbot.com.br",),
+                             max_requests=1, max_assets=0)
+        home = response(config.target_url, 200, b"<html></html>", "text/html",
+                        Strict_Transport_Security="max-age=31536000",
+                        X_Content_Type_Options="nosniff", X_Frame_Options="DENY",
+                        Referrer_Policy="", Content_Security_Policy="")
+        findings = TestAgent().run(home, [], FakeTransport(config), selected_checks=("headers",))
+        policies = {finding.check: finding for finding in findings}
+        self.assertEqual(policies["missing_referrer_policy"].status, "inconclusive")
+        self.assertEqual(policies["missing_csp"].status, "inconclusive")
+        self.assertIn("<vazio>", policies["missing_referrer_policy"].excerpt)
+        self.assertIn("<vazio>", policies["missing_csp"].excerpt)
+
+    def test_quoted_search_never_runs_without_explicit_approval(self) -> None:
+        config = ScopeConfig(target_url="https://4.migbot.com.br/", allowed_hosts=("4.migbot.com.br",),
+                             max_requests=2, max_assets=0, search_path="/rest/products/search")
+        transport = FakeTransport(config)
+        findings, observations, complete = SurfaceTestAgent().run(config, transport)
+        self.assertEqual(findings, [])
+        self.assertEqual(transport.seen, [])
+        self.assertFalse(complete)
+        self.assertEqual(observations[0]["status"], "not_executed")
+        self.assertTrue(any(item["type"] == "denied" and item["phase"] == "approval"
+                            for item in transport.actions))
+
+    def test_quoted_search_waits_for_queue_decision_before_requests(self) -> None:
+        config = ScopeConfig(target_url="https://4.migbot.com.br/", allowed_hosts=("4.migbot.com.br",),
+                             max_requests=2, max_assets=0, search_path="/rest/products/search")
+        transport = FakeTransport(config, responses={
+            ("GET", "/rest/products/search"): response(config.target_url, 200, b"[]", "application/json"),
+        })
+        queue = ApprovalQueue(["quoted_search"])
+        finished = []
+        worker = threading.Thread(target=lambda: finished.append(SurfaceTestAgent().run(
+            config, transport, approval_queue=queue)))
+        worker.start()
+        try:
+            deadline = time.monotonic() + 2
+            while not queue.snapshot() and time.monotonic() < deadline:
+                time.sleep(0.01)
+            pending = queue.snapshot()
+            self.assertEqual(len(pending), 1)
+            self.assertEqual(transport.request_count, 0)
+            self.assertTrue(queue.decide(pending[0]["id"], True))
+            worker.join(timeout=2)
+            self.assertFalse(worker.is_alive())
+            self.assertEqual(transport.request_count, 2)
+            self.assertEqual(queue.snapshot()[0]["status"], "approved")
+            self.assertEqual(len(finished), 1)
+        finally:
+            if worker.is_alive():
+                queue.decide(queue.snapshot()[0]["id"], False)
+                worker.join(timeout=2)
+
     def test_spa_fallback_does_not_confirm_ftp_or_metrics(self) -> None:
         config = ScopeConfig(target_url="https://4.migbot.com.br/", allowed_hosts=("4.migbot.com.br",),
                              max_assets=0, ftp_path="/ftp/", metrics_path="/metrics")
@@ -94,6 +152,35 @@ class FalsePositiveTests(unittest.TestCase):
         self.assertEqual(observations, [])
         self.assertFalse(complete)
         self.assertEqual(transport.seen, [("GET", "/ftp/"), ("GET", "/metrics")])
+
+    def test_index_heading_with_only_external_or_parent_links_is_inconclusive(self) -> None:
+        config = ScopeConfig(target_url="https://4.migbot.com.br/", allowed_hosts=("4.migbot.com.br",),
+                             max_requests=1, max_assets=0, ftp_path="/ftp/")
+        body = (b"<title>listing directory /ftp/</title>"
+                b"<a href='../'>parent</a><a href='https://outside.example/file'>external</a>")
+        transport = FakeTransport(config, responses={
+            ("GET", "/ftp/"): response(config.target_url, 200, body),
+        })
+        findings, _, complete = SurfaceTestAgent().run(config, transport)
+        self.assertEqual(findings, [])
+        self.assertFalse(complete)
+
+    def test_spa_control_cannot_confirm_sql_error_exposure(self) -> None:
+        config = ScopeConfig(target_url="https://4.migbot.com.br/", allowed_hosts=("4.migbot.com.br",),
+                             max_requests=2, max_assets=0, search_path="/rest/products/search")
+
+        class QueryTransport(FakeTransport):
+            def request(self, url, *, method="GET", phase="test"):
+                self.config.assert_request(url, method)
+                self.request_count += 1
+                if urlsplit(url).query == "q=apple":
+                    return response(url, 200, b"<html>SPA fallback</html>", "text/html")
+                return response(url, 500, b"SQLITE_ERROR stack-detail", "text/html")
+
+        findings, _, complete = SurfaceTestAgent().run(
+            config, QueryTransport(config), approved_actions=frozenset({"quoted_search"}))
+        self.assertEqual(findings, [])
+        self.assertFalse(complete)
 
     def test_success_with_markers_but_wrong_mime_is_inconclusive(self) -> None:
         config = ScopeConfig(target_url="https://4.migbot.com.br/", allowed_hosts=("4.migbot.com.br",),
@@ -141,6 +228,10 @@ class FalsePositiveTests(unittest.TestCase):
         self.assertEqual({item.check for item in findings},
                          {"ftp_listing", "ftp_file_head_incident-support.kdbx"})
         self.assertIn("nenhum corpo", findings[1].evidence)
+        head = next(item for item in findings if item.check.startswith("ftp_file_head_"))
+        self.assertIn("HEAD /ftp/incident-support.kdbx", head.proof)
+        self.assertIn("não comprova GET", head.limitations)
+        self.assertEqual(head.excerpt, "Content-Type: application/octet-stream; Content-Length: 3246")
         self.assertEqual(transport.seen, [("GET", "/ftp/"),
                                           ("HEAD", "/ftp/incident-support.kdbx"),
                                           ("HEAD", "/ftp/package.json.bak")])

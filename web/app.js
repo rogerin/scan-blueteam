@@ -3,7 +3,7 @@
 const stages = [
   { id: "scope", number: "01", icon: "⌖", title: "Guardião do escopo", description: "Valida origem, método, orçamento e condição de parada antes de qualquer ação." },
   { id: "discovery", number: "02", icon: "◈", title: "Descoberta", description: "Identifica a aplicação e as rotas públicas incluídas na campanha." },
-  { id: "planning", number: "03", icon: "✧", title: "Plano por IA", description: "Seleciona verificações de uma lista permitida e registra a decisão." },
+  { id: "planning", number: "03", icon: "✧", title: "Plano do agente", description: "Seleciona verificações declaradas e registra a origem da decisão." },
   { id: "checks", number: "04", icon: "◇", title: "Testes seguros", description: "Executa verificações de leitura com cadência e volume limitados." },
   { id: "triage", number: "05", icon: "▤", title: "Triagem", description: "Classifica evidência, severidade e confiança sem inferir exploração." },
   { id: "remediation", number: "06", icon: "✦", title: "Correção", description: "Relaciona os achados a dicas de código e testes de regressão." },
@@ -16,6 +16,12 @@ const checkLabels = {
   beginner_challenges: "desafios iniciais", robots_txt: "robots.txt",
   security_txt: "security.txt", framework_inventory: "inventário do framework",
 };
+const stepLabels = {
+  scope: "Escopo", discovery: "Descoberta", check_selection: "Seleção dos checks",
+  ai_planning: "Prioridades da IA", asset_fetch: "Coleta de scripts",
+  framework_inventory: "Inventário de framework", headers: "Cabeçalhos",
+  cookies: "Cookies", triage: "Triagem", remediation: "Correção", ai_advisor: "Revisão por IA",
+};
 
 const $ = (id) => document.getElementById(id);
 const text = (node, value) => { node.textContent = value == null ? "" : String(value); };
@@ -25,6 +31,10 @@ const node = (tag, className, content) => {
   if (content !== undefined) text(element, content);
   return element;
 };
+const safeScreenshotPath = (value) => typeof value === "string"
+  && value.length <= 200
+  && /^\/evidence\/[A-Za-z0-9][A-Za-z0-9._-]*\.png$/.test(value)
+  && !value.includes("..") ? value : "";
 
 function formatTime(raw) {
   if (!raw) return "--:--:--";
@@ -80,6 +90,33 @@ function renderBasics(observations, campaignStatus) {
   } else {
     names.forEach((name) => list.append(node("li", "", name)));
   }
+}
+
+function renderStagePlan(observations, events) {
+  const holder = $("stage-plan-list");
+  holder.replaceChildren();
+  const saved = observations.find((item) => item.type === "agent_plan");
+  const steps = Array.isArray(saved?.steps) && saved.steps.length
+    ? saved.steps : events.filter((item) => item.type === "stage_plan");
+  if (!steps.length) {
+    holder.append(node("p", "stage-plan-empty", "Hipótese, ação, resultado esperado e condição de parada aparecem aqui."));
+    return;
+  }
+  steps.forEach((step) => {
+    const card = node("article", "stage-plan-step");
+    const id = step.step_id || step.check_id || "";
+    card.append(node("h4", "", stepLabels[id] || checkLabels[id] || id || "Etapa"));
+    const facts = [
+      ["Hipótese", step.hypothesis], ["Ação", step.action],
+      ["Resultado esperado", step.expected_result], ["Condição de parada", step.stop_condition],
+    ];
+    facts.forEach(([label, value]) => {
+      const item = node("div", "stage-plan-fact");
+      item.append(node("strong", "", label), node("span", "", value || "Não informado"));
+      card.append(item);
+    });
+    holder.append(card);
+  });
 }
 
 function renderAIStatus(observations, scope, events) {
@@ -196,6 +233,25 @@ function renderFindings(findings) {
     list.append(empty);
     return;
   }
+  const categories = [
+    ["confirmed", "Observações confirmadas"],
+    ["inconclusive", "Inconclusivos"],
+    ["discarded", "Descartados registrados"],
+  ];
+  const buckets = new Map();
+  categories.forEach(([status, label]) => {
+    const section = node("section", `finding-group finding-group-${status}`);
+    const count = findings.filter((item) => (item.status === "confirmed" ? "confirmed"
+      : item.status === "discarded" ? "discarded" : "inconclusive") === status).length;
+    section.append(node("h3", "finding-group-heading", `${label} · ${count}`));
+    const body = node("div", "finding-group-list");
+    body.setAttribute("data-empty", status === "discarded"
+      ? "Nenhum candidato descartado foi registrado nesta execução."
+      : "Nenhum registro nesta categoria.");
+    section.append(body);
+    list.append(section);
+    buckets.set(status, body);
+  });
   findings.forEach((finding, index) => {
     const row = node("article", "finding");
     const head = node("div", "finding-head");
@@ -203,7 +259,7 @@ function renderFindings(findings) {
     const info = node("div");
     info.append(node("h3", "", finding.title || finding.name || finding.id || `Achado ${index + 1}`));
     const meta = node("div", "finding-meta");
-    const statusLabels = { confirmed: "confirmado", inconclusive: "inconclusivo", discarded: "descartado" };
+    const statusLabels = { confirmed: "observação confirmada", inconclusive: "inconclusivo", discarded: "descartado" };
     const confidenceLabels = { high: "confiança alta", medium: "confiança média", low: "confiança baixa" };
     [finding.id, statusLabels[finding.status] || finding.status || finding.state,
       confidenceLabels[finding.confidence] || finding.confidence].filter(Boolean)
@@ -216,16 +272,69 @@ function renderFindings(findings) {
     row.append(head);
     const detail = node("div", "finding-detail");
     const description = finding.description || finding.summary || finding.impact;
-    if (description) detail.append(node("p", "", description));
-    const evidence = readable(finding.evidence);
-    if (evidence) {
-      const evidenceLine = node("p");
-      evidenceLine.append(node("strong", "", "Evidência: "), node("code", "", evidence));
-      detail.append(evidenceLine);
+    if (description) detail.append(node("p", "finding-impact", description));
+
+    const evidenceGrid = node("div", "finding-evidence-grid");
+    const fields = [
+      { label: "Trecho observado", value: finding.excerpt, fallback: "Trecho não registrado nesta execução.", code: true },
+      { label: "Prova do teste", value: finding.proof, fallback: "Prova detalhada não registrada nesta execução." },
+      { label: "Evidência", value: finding.evidence, fallback: "Evidência detalhada não registrada nesta execução." },
+    ];
+    fields.forEach(({ label, value, fallback, code }) => {
+      const card = node("div", "finding-evidence-card");
+      card.append(node("h4", "finding-evidence-label", label));
+      const content = readable(value).trim() || fallback;
+      card.append(node(code ? "pre" : "p", code ? "finding-excerpt" : "finding-evidence-text", content));
+      evidenceGrid.append(card);
+    });
+    detail.append(evidenceGrid);
+
+    const screenshotPath = safeScreenshotPath(finding.screenshot);
+    if (screenshotPath) {
+      const caption = typeof finding.screenshot_caption === "string" && finding.screenshot_caption.trim()
+        ? finding.screenshot_caption.trim()
+        : "Origem visual não informada; este registro não comprova, por si só, uma captura direta do alvo.";
+      const visual = node("figure", "finding-screenshot");
+      const preview = node("a", "finding-screenshot-preview");
+      preview.href = screenshotPath;
+      preview.target = "_blank";
+      preview.rel = "noopener noreferrer";
+      preview.setAttribute("aria-label", "Abrir imagem de evidência em nova aba");
+      const image = node("img");
+      image.src = screenshotPath;
+      image.alt = "Prévia do registro visual de evidência";
+      image.loading = "lazy";
+      image.decoding = "async";
+      preview.append(image);
+      const annotation = node("div", "finding-screenshot-annotation");
+      const open = node("a", "finding-screenshot-open", "Abrir imagem ↗");
+      open.href = screenshotPath;
+      open.target = "_blank";
+      open.rel = "noopener noreferrer";
+      annotation.append(node("h4", "finding-evidence-label", "Registro visual"),
+        node("figcaption", "", caption), open);
+      if (/^[0-9a-f]{64}$/.test(finding.screenshot_sha256 || "")) {
+        annotation.append(node("small", "finding-image-hash", `SHA-256: ${finding.screenshot_sha256}`));
+      }
+      visual.append(preview, annotation);
+      detail.append(visual);
     }
-    if (finding.limitations) detail.append(node("p", "", `Limite: ${readable(finding.limitations)}`));
+
+    if (finding.reproduction) {
+      const reproduction = node("div", "finding-reproduction");
+      reproduction.append(node("strong", "", "Reprodução controlada"), node("p", "", finding.reproduction));
+      detail.append(reproduction);
+    }
+
+    const limitation = node("div", "finding-limitation");
+    limitation.append(node("strong", "", "Limite da conclusão"),
+      node("p", "", readable(finding.limitations).trim()
+        || "Limites específicos não registrados nesta execução; reexecute a campanha para revisar este achado."));
+    detail.append(limitation);
     row.append(detail);
-    list.append(row);
+    const category = finding.status === "confirmed" ? "confirmed"
+      : finding.status === "discarded" ? "discarded" : "inconclusive";
+    buckets.get(category).append(row);
   });
 }
 
@@ -262,10 +371,54 @@ function renderAudit(events) {
   list.replaceChildren();
   events.forEach((event) => {
     const item = node("li");
-    item.append(node("span", "audit-time", formatTime(event.timestamp)), node("span", "audit-phase", event.phase || event.type || "ação"), node("span", "", event.message || readable(event)));
+    const metadata = [event.method, event.url, Number.isInteger(event.status) ? `HTTP ${event.status}` : "",
+      event.action_id, event.approval_id ? `decisão ${event.status || ""}` : "",
+      typeof event.body_sha256 === "string" && /^[0-9a-f]{64}$/.test(event.body_sha256)
+        ? `SHA-256 ${event.body_sha256.slice(0, 12)}…` : ""].filter(Boolean).join(" · ");
+    item.append(node("span", "audit-time", formatTime(event.timestamp)),
+      node("span", "audit-phase", event.phase || event.type || "ação"),
+      node("span", "", `${event.message || readable(event)}${metadata ? ` · ${metadata}` : ""}`));
     list.append(item);
   });
   list.scrollTop = list.scrollHeight;
+}
+
+function renderApprovals(approvals, scope) {
+  const list = $("approval-list");
+  list.replaceChildren();
+  const allowed = Array.isArray(scope.allowed_methods) ? scope.allowed_methods.join("/") : "GET/HEAD";
+  text($("policy-allowed"), `${allowed} na origem HTTPS autorizada; até ${scope.max_requests ?? "?"} requisições, intervalo mínimo de ${scope.min_interval_seconds ?? "?"} s e ${scope.max_response_bytes ?? "?"} bytes por resposta.`);
+  const conditional = Array.isArray(scope.conditional_actions) && scope.conditional_actions.includes("quoted_search");
+  text($("policy-conditioned"), conditional
+    ? "Comparação de busca sintética com aspas: só executa após aprovação explícita nesta campanha."
+    : "Nenhuma ação condicionada foi declarada para este alvo.");
+  text($("policy-denied"), "POST/PUT/DELETE, força bruta, extração de arquivos, exploração encadeada e destinos fora da origem autorizada.");
+  if (!Array.isArray(approvals) || !approvals.length) {
+    list.append(node("p", "approval-empty", "Nenhuma ação aguardando decisão nesta execução."));
+    return;
+  }
+  const labels = { pending: "Aguardando decisão", approved: "Aprovada", rejected: "Rejeitada", cancelled: "Cancelada", expired: "Expirada" };
+  approvals.forEach((item) => {
+    if (!item || !/^[0-9a-f]{32}$/.test(item.id || "")) return;
+    const card = node("article", "approval-item");
+    const title = node("div", "approval-item-head");
+    title.append(node("strong", "", item.action_id === "quoted_search" ? "Comparação de busca sintética" : "Ação condicionada"),
+      node("span", "", labels[item.status] || "Estado desconhecido"));
+    card.append(title, node("p", "", item.reason || "Motivo não informado"),
+      node("small", "", item.target || "Origem não informada"));
+    if (item.expires_at) card.append(node("small", "approval-expiry", `Prazo: ${formatTime(item.expires_at)}`));
+    if (item.status === "pending") {
+      const buttons = node("div", "approval-actions");
+      const approve = node("button", "button button-primary", "Aprovar esta ação");
+      const reject = node("button", "button button-ghost", "Rejeitar");
+      [approve, reject].forEach((button) => { button.type = "button"; });
+      approve.addEventListener("click", () => action("/api/approval/decision", { approval_id: item.id, approve: true }));
+      reject.addEventListener("click", () => action("/api/approval/decision", { approval_id: item.id, approve: false }));
+      buttons.append(approve, reject);
+      card.append(buttons);
+    }
+    list.append(card);
+  });
 }
 
 function render(snapshot) {
@@ -299,15 +452,19 @@ function render(snapshot) {
   $("target-url").disabled = snapshot.running;
   $("api-key").disabled = snapshot.running;
   $("authorization-confirmed").disabled = snapshot.running;
-  $("download-btn").classList.toggle("disabled", !snapshot.report_available);
-  $("download-btn").setAttribute("aria-disabled", String(!snapshot.report_available));
+  ["download-btn", "download-json-btn"].forEach((id) => {
+    $(id).classList.toggle("disabled", !snapshot.report_available);
+    $(id).setAttribute("aria-disabled", String(!snapshot.report_available));
+  });
   renderStages(snapshot);
+  renderStagePlan(observations, events.length ? events : actions);
   renderBasics(observations, snapshot.running ? "running" : result.status);
   renderFrameworkInventory(observations);
   renderAIStatus(observations, scope, events.length ? events : actions);
   renderFindings(findings);
   renderRecommendations(recommendations, findings);
   renderAudit(events.length ? events : actions);
+  renderApprovals(snapshot.approvals, scope);
   if (snapshot.error) message(snapshot.error, true);
 }
 
@@ -390,7 +547,9 @@ $("campaign-form").addEventListener("submit", async (event) => {
   }
 });
 $("stop-btn").addEventListener("click", () => action("/api/campaign/stop"));
-$("download-btn").addEventListener("click", (event) => { if (event.currentTarget.classList.contains("disabled")) event.preventDefault(); });
+["download-btn", "download-json-btn"].forEach((id) => $(id).addEventListener("click", (event) => {
+  if (event.currentTarget.classList.contains("disabled")) event.preventDefault();
+}));
 document.querySelectorAll(".side-nav a").forEach((link) => link.addEventListener("click", () => {
   document.querySelectorAll(".side-nav a").forEach((item) => item.classList.remove("active"));
   link.classList.add("active");
