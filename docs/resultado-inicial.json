@@ -1,0 +1,625 @@
+{
+  "run_id": "20261112T125521Z-d02cc79b",
+  "target": "https://4.migbot.com.br/",
+  "campaign_name": "Hackathon Hubbits - Desafio 3",
+  "started_at": "2026-11-12T12:55:21.059145+00:00",
+  "ended_at": "2026-11-12T12:55:37.188025+00:00",
+  "status": "completed",
+  "stop_reason": "planned_tests_complete",
+  "actions": [
+    {
+      "timestamp": "2026-11-12T12:55:21.078272+00:00",
+      "type": "decision",
+      "phase": "scope",
+      "message": "Campaign scope validated",
+      "target": "https://4.migbot.com.br/",
+      "allowed_hosts": [
+        "4.migbot.com.br"
+      ],
+      "methods": [
+        "GET",
+        "HEAD"
+      ],
+      "max_requests": 8,
+      "min_interval_seconds": 1.0
+    },
+    {
+      "timestamp": "2026-11-12T12:55:21.228416+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/",
+      "request_number": 1
+    },
+    {
+      "timestamp": "2026-11-12T12:55:22.214485+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/",
+      "status": 200,
+      "elapsed_ms": 986,
+      "body_bytes": 10351,
+      "truncated": false,
+      "body_sha256": "2827d932e8058a5eaa6b3519f024c5af7aac2bb2725cc92cbd03bb60140dbc8d",
+      "headers": {
+        "Content-Type": "text/html; charset=UTF-8",
+        "access-control-allow-origin": "<present>",
+        "Cache-Control": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T12:55:22.214508+00:00",
+      "type": "decision",
+      "phase": "discovery",
+      "message": "Asset discovery skipped",
+      "status": 200,
+      "content_type": "text/html; charset=utf-8"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:22.231241+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/ftp/",
+      "request_number": 2
+    },
+    {
+      "timestamp": "2026-11-12T12:55:22.824195+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/ftp/",
+      "status": 200,
+      "elapsed_ms": 593,
+      "body_bytes": 11641,
+      "truncated": false,
+      "body_sha256": "1a3c507a1d6068a9f30e08be33d613de8ecb03b7697886f3f82b2691aba80cdd",
+      "headers": {
+        "Content-Type": "text/html; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T12:55:22.824268+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Checked public FTP index",
+      "check": "ftp_listing",
+      "status": 200,
+      "outcome": "listing"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:23.236358+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/metrics",
+      "request_number": 3
+    },
+    {
+      "timestamp": "2026-11-12T12:55:23.905556+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/metrics",
+      "status": 200,
+      "elapsed_ms": 669,
+      "body_bytes": 26232,
+      "truncated": false,
+      "body_sha256": "dfab172656b4bdd394a1e6c66623de941750fb5d66077d1c62ccc33b7c5f4149",
+      "headers": {
+        "Content-Type": "text/plain; version=0.0.4; charset=utf-8"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T12:55:23.905594+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Checked public metrics endpoint",
+      "check": "public_metrics",
+      "status": 200,
+      "outcome": "prometheus"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:24.241544+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "request_number": 4
+    },
+    {
+      "timestamp": "2026-11-12T12:55:24.931321+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "status": 200,
+      "elapsed_ms": 690,
+      "body_bytes": 1617,
+      "truncated": false,
+      "body_sha256": "084d85f6fb39b3a6876774690acd01f784cba5e85ddc2435ff396c4d657ed21e",
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T12:55:25.244281+00:00",
+      "type": "request",
+      "phase": "surface_checks",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "request_number": 5
+    },
+    {
+      "timestamp": "2026-11-12T12:55:26.040484+00:00",
+      "type": "response",
+      "phase": "surface_checks",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "status": 500,
+      "elapsed_ms": 796,
+      "body_bytes": 1361,
+      "truncated": false,
+      "body_sha256": "7364680cd6b508c59e9589effa11292ef43653805f5f791daedf407a7c37965f",
+      "headers": {
+        "Content-Type": "text/html; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T12:55:26.040507+00:00",
+      "type": "test",
+      "phase": "surface_checks",
+      "message": "Compared benign and quoted search inputs",
+      "check": "sql_error_exposure",
+      "baseline_status": 200,
+      "quoted_status": 500,
+      "sqlite_error_marker": true,
+      "outcome": "confirmed"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:26.249497+00:00",
+      "type": "request",
+      "phase": "discovery",
+      "message": "Bounded request started",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/api/Challenges",
+      "request_number": 6
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.346760+00:00",
+      "type": "response",
+      "phase": "discovery",
+      "message": "Response recorded without body content",
+      "method": "GET",
+      "url": "https://4.migbot.com.br/api/Challenges",
+      "status": 200,
+      "elapsed_ms": 1097,
+      "body_bytes": 67774,
+      "truncated": false,
+      "body_sha256": "4f630d413c30aba0cc0fefa4f83f96a69491fc8b928f06e0919a2b87f616f17a",
+      "headers": {
+        "Content-Type": "application/json; charset=utf-8",
+        "access-control-allow-origin": "<present>",
+        "x-content-type-options": "<present>",
+        "x-frame-options": "<present>"
+      }
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347792+00:00",
+      "type": "observation",
+      "phase": "discovery",
+      "message": "Beginner challenges counted",
+      "difficulty_counts": {
+        "1": 13,
+        "2": 19
+      },
+      "tutorial_names": [
+        "Score Board",
+        "DOM XSS",
+        "Bonus Payload",
+        "Privacy Policy",
+        "Reflected XSS",
+        "Exposed Credentials",
+        "Login Admin",
+        "Admin Section",
+        "Password Strength",
+        "View Basket",
+        "Forged Feedback",
+        "Login Jim"
+      ]
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347826+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked Strict-Transport-Security",
+      "check": "missing_hsts",
+      "outcome": "absent"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347852+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked X-Content-Type-Options",
+      "check": "missing_nosniff",
+      "outcome": "present"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347858+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked Referrer-Policy",
+      "check": "missing_referrer_policy",
+      "outcome": "absent"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347872+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked Content-Security-Policy",
+      "check": "missing_csp",
+      "outcome": "absent"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347888+00:00",
+      "type": "test",
+      "phase": "checks",
+      "message": "Checked frame protection",
+      "check": "missing_frame_protection",
+      "outcome": "present"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347916+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "ftp_listing-65e2d54cd901",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347920+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347923+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347927+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "missing_csp-86cbe373453a",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347930+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "missing_hsts-711328775d47",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347933+00:00",
+      "type": "triage",
+      "phase": "triage",
+      "message": "Finding classified",
+      "finding_id": "missing_referrer_policy-0714c97acd0c",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347943+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "ftp_listing-65e2d54cd901",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347949+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347953+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347956+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "missing_csp-86cbe373453a",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347960+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "missing_hsts-711328775d47",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347963+00:00",
+      "type": "recommendation",
+      "phase": "remediation",
+      "message": "Code guidance attached",
+      "finding_id": "missing_referrer_policy-0714c97acd0c",
+      "source": "deterministic"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:27.347974+00:00",
+      "type": "decision",
+      "phase": "ai",
+      "message": "Sending redacted findings to optional AI advisor",
+      "finding_count": 5,
+      "model": "gpt-6-luna"
+    },
+    {
+      "timestamp": "2026-11-12T12:55:37.187970+00:00",
+      "type": "recommendation",
+      "phase": "ai",
+      "message": "AI advice received for human review",
+      "recommendation_count": 5
+    },
+    {
+      "timestamp": "2026-11-12T12:55:37.188010+00:00",
+      "type": "stop",
+      "phase": "control",
+      "message": "Planned non-destructive campaign ended",
+      "request_count": 6
+    }
+  ],
+  "findings": [
+    {
+      "id": "ftp_listing-65e2d54cd901",
+      "title": "Listagem pública de /ftp/",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "ftp_listing",
+      "url": "https://4.migbot.com.br/ftp/",
+      "evidence": "GET /ftp/ respondeu 200 com padrão de índice de diretório; arquivos não acessados",
+      "impact": "Visitantes anônimos podem descobrir nomes de arquivos disponíveis nesse diretório.",
+      "recommendation": "Desative o índice de diretório em /ftp/ e limite o acesso aos arquivos necessários por rota autenticada.",
+      "code_hint": "# Express: remova serve-index de /ftp/; no Nginx: autoindex off;"
+    },
+    {
+      "id": "public_metrics-57c88ab0fb9b",
+      "title": "Métricas Prometheus públicas",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "public_metrics",
+      "url": "https://4.migbot.com.br/metrics",
+      "evidence": "GET /metrics respondeu 200 com formato Prometheus; valores não registrados",
+      "impact": "Visitantes anônimos podem consultar metadados operacionais e indicadores do serviço.",
+      "recommendation": "Proteja /metrics na borda por rede interna ou autenticação e valide que anônimos recebem 403/404.",
+      "code_hint": "# Express: app.get('/metrics', internalOnly, metricsHandler)"
+    },
+    {
+      "id": "sql_error_exposure-70d5e72808c2",
+      "title": "Erro SQLite exposto por entrada de busca",
+      "severity": "medium",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "sql_error_exposure",
+      "url": "https://4.migbot.com.br/rest/products/search",
+      "evidence": "GET com q=apple respondeu 200; q=apple%27 respondeu 500 com marcador SQLITE_ERROR. Nenhuma extração ou bypass foi tentado.",
+      "impact": "A entrada pode causar falha na consulta e revelar detalhes internos. Isso não comprova, isoladamente, exploração de SQL injection.",
+      "recommendation": "No handler Express da busca, valide q, use parâmetros preparados na consulta SQLite e retorne erro genérico ao cliente; mantenha o detalhe só no log interno.",
+      "code_hint": "const rows = db.prepare('SELECT ... FROM Products WHERE name LIKE ?').all(`%${q}%`); // SQLite\n// Express: catch (err) { logger.error(err); res.status(500).json({ error: 'internal_error' }); }"
+    },
+    {
+      "id": "missing_csp-86cbe373453a",
+      "title": "CSP não declarada",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "missing_csp",
+      "url": "https://4.migbot.com.br/",
+      "evidence": "HTTP 200: cabeçalho Content-Security-Policy ausente",
+      "impact": "A página não restringe por política as fontes de script, imagem, conexão e outros recursos.",
+      "recommendation": "Mapeie as origens usadas pela SPA, teste em Report-Only e depois aplique CSP.",
+      "code_hint": "Content-Security-Policy-Report-Only: default-src 'self'; object-src 'none'; base-uri 'self'"
+    },
+    {
+      "id": "missing_hsts-711328775d47",
+      "title": "HSTS ausente",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "missing_hsts",
+      "url": "https://4.migbot.com.br/",
+      "evidence": "HTTP 200: cabeçalho Strict-Transport-Security ausente",
+      "impact": "Sem HSTS, o navegador não recebe uma política explícita para voltar somente por HTTPS.",
+      "recommendation": "Envie HSTS apenas após confirmar que o domínio funciona integralmente em HTTPS.",
+      "code_hint": "Strict-Transport-Security: max-age=31536000"
+    },
+    {
+      "id": "missing_referrer_policy-0714c97acd0c",
+      "title": "Política de Referer não declarada",
+      "severity": "low",
+      "status": "confirmed",
+      "confidence": "high",
+      "check": "missing_referrer_policy",
+      "url": "https://4.migbot.com.br/",
+      "evidence": "HTTP 200: cabeçalho Referrer-Policy ausente",
+      "impact": "URLs completas podem ser enviadas como Referer a outros destinos dependendo do navegador.",
+      "recommendation": "Defina uma política explícita de Referer compatível com os fluxos da aplicação.",
+      "code_hint": "Referrer-Policy: strict-origin-when-cross-origin"
+    }
+  ],
+  "recommendations": [
+    {
+      "finding_id": "ftp_listing-65e2d54cd901",
+      "source": "deterministic",
+      "guidance": "Desative o índice de diretório em /ftp/ e limite o acesso aos arquivos necessários por rota autenticada.",
+      "code_hint": "# Express: remova serve-index de /ftp/; no Nginx: autoindex off;"
+    },
+    {
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "source": "deterministic",
+      "guidance": "Proteja /metrics na borda por rede interna ou autenticação e valide que anônimos recebem 403/404.",
+      "code_hint": "# Express: app.get('/metrics', internalOnly, metricsHandler)"
+    },
+    {
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "source": "deterministic",
+      "guidance": "No handler Express da busca, valide q, use parâmetros preparados na consulta SQLite e retorne erro genérico ao cliente; mantenha o detalhe só no log interno.",
+      "code_hint": "const rows = db.prepare('SELECT ... FROM Products WHERE name LIKE ?').all(`%${q}%`); // SQLite\n// Express: catch (err) { logger.error(err); res.status(500).json({ error: 'internal_error' }); }"
+    },
+    {
+      "finding_id": "missing_csp-86cbe373453a",
+      "source": "deterministic",
+      "guidance": "Mapeie as origens usadas pela SPA, teste em Report-Only e depois aplique CSP.",
+      "code_hint": "Content-Security-Policy-Report-Only: default-src 'self'; object-src 'none'; base-uri 'self'"
+    },
+    {
+      "finding_id": "missing_hsts-711328775d47",
+      "source": "deterministic",
+      "guidance": "Envie HSTS apenas após confirmar que o domínio funciona integralmente em HTTPS.",
+      "code_hint": "Strict-Transport-Security: max-age=31536000"
+    },
+    {
+      "finding_id": "missing_referrer_policy-0714c97acd0c",
+      "source": "deterministic",
+      "guidance": "Defina uma política explícita de Referer compatível com os fluxos da aplicação.",
+      "code_hint": "Referrer-Policy: strict-origin-when-cross-origin"
+    },
+    {
+      "finding_id": "ftp_listing-65e2d54cd901",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "Desative a listagem de diretórios em /ftp/ e disponibilize somente os arquivos necessários por rotas com controle de acesso adequado.",
+      "code_hint": "Na configuração do servidor ou framework que atende /ftp/, desabilite directory listing/autoindex; restrinja os arquivos por autenticação ou autorização quando necessário.",
+      "verification": "Confirme pela configuração que o índice está desabilitado e que usuários não autorizados não conseguem acessar os arquivos restritos."
+    },
+    {
+      "finding_id": "public_metrics-57c88ab0fb9b",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "Restrinja /metrics à rede interna ou exija autenticação na borda, conforme o ambiente de implantação.",
+      "code_hint": "Configure a política de acesso do proxy, gateway ou servidor para bloquear solicitações anônimas a /metrics.",
+      "verification": "Valide, em revisão controlada da configuração, que acesso anônimo recebe 403/404 e que o acesso autorizado continua disponível."
+    },
+    {
+      "finding_id": "sql_error_exposure-70d5e72808c2",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "No handler Express indicado, valide q, use parâmetros preparados na consulta SQLite e retorne uma mensagem genérica ao cliente; mantenha detalhes técnicos apenas em logs internos protegidos.",
+      "code_hint": "Use placeholders na consulta SQLite e vincule q como parâmetro; trate erros sem incluir mensagens do banco na resposta HTTP.",
+      "verification": "Revise o código e os testes existentes para confirmar o uso de parâmetros e respostas genéricas em caso de erro, sem expor detalhes SQLite."
+    },
+    {
+      "finding_id": "missing_csp-86cbe373453a",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "Identifique as origens necessárias pela aplicação, implemente uma política CSP inicialmente em Report-Only e, após ajustar a política, aplique-a em modo de bloqueio.",
+      "code_hint": "Configure Content-Security-Policy-Report-Only no servidor ou middleware; migre para Content-Security-Policy quando a política estiver validada.",
+      "verification": "Confira os cabeçalhos de resposta e revise os relatórios de violação antes de habilitar o bloqueio."
+    },
+    {
+      "finding_id": "missing_hsts-711328775d47",
+      "source": "ai",
+      "model": "gpt-6-luna",
+      "guidance": "Adicione HSTS somente depois de confirmar que o domínio funciona integralmente por HTTPS; avalie subdomínios e preload antes de incluir essas diretivas.",
+      "code_hint": "Configure Strict-Transport-Security no servidor ou proxy TLS com um max-age apropriado; inclua includeSubDomains ou preload apenas se aplicável.",
+      "verification": "Confirme que o domínio atende por HTTPS e que as respostas HTTPS incluem o cabeçalho HSTS esperado."
+    }
+  ],
+  "observations": [
+    {
+      "type": "beginner_challenges",
+      "url": "https://4.migbot.com.br/api/Challenges",
+      "difficulty_counts": {
+        "1": 13,
+        "2": 19
+      },
+      "tutorial_names": [
+        "Score Board",
+        "DOM XSS",
+        "Bonus Payload",
+        "Privacy Policy",
+        "Reflected XSS",
+        "Exposed Credentials",
+        "Login Admin",
+        "Admin Section",
+        "Password Strength",
+        "View Basket",
+        "Forged Feedback",
+        "Login Jim"
+      ]
+    },
+    {
+      "type": "ai_advisor",
+      "model": "gpt-6-luna",
+      "status": "completed",
+      "recommendation_count": 5
+    }
+  ],
+  "summary": {
+    "requests": 6,
+    "findings": 6,
+    "ruleset_hash": "0302b5023683cc91",
+    "by_severity": {
+      "medium": 3,
+      "low": 3
+    },
+    "by_status": {
+      "confirmed": 6
+    },
+    "audit_events": 38
+  }
+}

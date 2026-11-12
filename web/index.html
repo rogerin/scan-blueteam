@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="dark">
+    <title>Hubbits · Pentest com IA</title>
+    <link rel="stylesheet" href="/style.css">
+    <script src="/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Ir para o conteúdo</a>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Navegação da campanha">
+        <a class="brand" href="#overview" aria-label="Hubbits Pentest, início">
+          <span class="brand-mark" aria-hidden="true">H<span>·</span></span>
+          <span class="brand-copy"><strong>HUBBITS</strong><small>PENTEST LAB</small></span>
+        </a>
+        <div class="side-label">CAMPANHA</div>
+        <nav class="side-nav">
+          <a class="active" href="#overview"><span aria-hidden="true">◈</span> Visão geral</a>
+          <a href="#pipeline"><span aria-hidden="true">◇</span> Pipeline</a>
+          <a href="#findings"><span aria-hidden="true">▤</span> Achados</a>
+          <a href="#recommendations"><span aria-hidden="true">✦</span> Correções</a>
+          <a href="#audit"><span aria-hidden="true">⌁</span> Auditoria</a>
+          <a href="#guardrails"><span aria-hidden="true">⬡</span> Escopo</a>
+        </nav>
+        <div class="sidebar-bottom">
+          <span class="sidebar-pulse" aria-hidden="true"></span>
+          <div><strong>Ambiente controlado</strong><small>Juice Shop · desafio 03</small></div>
+        </div>
+      </aside>
+
+      <div class="main-column">
+        <header class="topbar">
+          <div class="crumb">DESAFIO 03 <span>/</span> CONSOLE DA CAMPANHA</div>
+          <div class="topbar-right"><span class="topbar-dot" aria-hidden="true"></span> OPERAÇÃO LOCAL <span class="topbar-divider"></span> <span id="clock">—</span></div>
+        </header>
+
+        <main id="main">
+          <section class="hero" id="overview" aria-labelledby="hero-title">
+            <div class="hero-copy">
+              <div class="eyebrow"><span class="eyebrow-line"></span> PENTEST COM AGENTES · MVP FUNCIONAL</div>
+              <h1 id="hero-title">Entenda a superfície.<br><em>Teste com limites.</em></h1>
+              <p>Uma campanha observável para o alvo fornecido: cada ação passa pelo escopo, gera evidência e termina sob controle do operador.</p>
+              <div class="hero-actions">
+                <button id="start-btn" class="button button-primary" type="button"><span aria-hidden="true">▶</span> Iniciar campanha</button>
+                <button id="stop-btn" class="button button-danger" type="button" disabled><span aria-hidden="true">■</span> Interromper</button>
+                <a id="download-btn" class="button button-ghost disabled" href="/api/report.md" download aria-disabled="true"><span aria-hidden="true">↓</span> Relatório</a>
+              </div>
+              <p id="action-message" class="action-message" role="status" aria-live="polite"></p>
+            </div>
+            <div class="hero-panel" aria-label="Estado da campanha">
+              <div class="panel-top"><span>STATUS DA OPERAÇÃO</span><span class="panel-icon" aria-hidden="true">◉</span></div>
+              <div class="status-visual"><span class="status-ring"><span></span></span><div><strong id="hero-status">Aguardando</strong><small id="hero-substatus">Pronto para uma execução controlada</small></div></div>
+              <div class="target-box"><span>ALVO AUTORIZADO</span><strong id="target-display">Carregando escopo...</strong></div>
+              <div class="panel-footer"><span>ESCOPO FIXO</span><span>PARADA MANUAL</span><span>EVIDÊNCIA LOCAL</span></div>
+            </div>
+          </section>
+
+          <section class="metrics" aria-label="Resumo da execução">
+            <article class="metric"><span>AÇÕES REGISTRADAS</span><strong id="metric-actions">00</strong><small>trilha cronológica</small></article>
+            <article class="metric"><span>ACHADOS</span><strong id="metric-findings">00</strong><small>com evidência e confiança</small></article>
+            <article class="metric"><span>REQUISIÇÕES</span><strong id="metric-requests">00</strong><small id="metric-request-limit">limite configurado</small></article>
+            <article class="metric metric-accent"><span>CONTROLE</span><strong id="metric-control">ATIVO</strong><small>GET/HEAD · baixo volume</small></article>
+          </section>
+
+          <section class="basics-panel" id="basics" aria-labelledby="basics-title">
+            <div><span class="section-index">PONTO DE PARTIDA</span><h2 id="basics-title">Dificuldades mais básicas</h2><p>O catálogo público do laboratório indica quantos desafios estão nos níveis iniciais e a ordem sugerida para começar.</p></div>
+            <div class="basics-counts"><span><strong id="difficulty-one">—</strong> NÍVEL 1</span><span><strong id="difficulty-two">—</strong> NÍVEL 2</span></div>
+            <ol id="tutorial-list" class="tutorial-list"><li>Os nomes aparecem após uma campanha concluída.</li></ol>
+          </section>
+
+          <section id="pipeline" class="content-section" aria-labelledby="pipeline-title">
+            <div class="section-heading"><div><span class="section-index">01 / FLUXO</span><h2 id="pipeline-title">Pipeline de agentes</h2><p>Cada agente recebe somente o resultado da etapa anterior e opera dentro do escopo.</p></div><span class="section-tag">6 ETAPAS</span></div>
+            <div id="pipeline-grid" class="pipeline-grid"></div>
+            <p id="monitor-delta" class="monitor-delta">A comparação de regressões aparece após duas campanhas completas no mesmo alvo.</p>
+          </section>
+
+          <section id="findings" class="content-section" aria-labelledby="findings-title">
+            <div class="section-heading"><div><span class="section-index">02 / EVIDÊNCIAS</span><h2 id="findings-title">Achados verificados</h2><p>Observações diretas, hipóteses e limites de confiança aparecem separados.</p></div><span id="findings-count" class="section-tag">0 ACHADOS</span></div>
+            <div id="findings-list" class="findings-list"><div class="empty-state"><span aria-hidden="true">◎</span><strong>Nenhuma campanha executada</strong><p>Inicie uma campanha para gerar evidências com os testes permitidos.</p></div></div>
+          </section>
+
+          <section id="recommendations" class="content-section" aria-labelledby="recommendations-title">
+            <div class="section-heading"><div><span class="section-index">03 / ORIENTAÇÃO</span><h2 id="recommendations-title">Dicas de código</h2><p>Correções associadas aos achados observados. A validação no código-fonte depende de acesso ao repositório da aplicação.</p></div><span id="ai-status" class="section-tag">IA DESLIGADA</span></div>
+            <div id="recommendations-list" class="recommendation-grid"><div class="empty-state"><span aria-hidden="true">✦</span><strong>Recomendações após o teste</strong><p>O agente de correção transforma evidências em passos de implementação e regressão.</p></div></div>
+          </section>
+
+          <section id="audit" class="content-section" aria-labelledby="audit-title">
+            <div class="section-heading"><div><span class="section-index">04 / RASTREABILIDADE</span><h2 id="audit-title">Trilha de auditoria</h2><p>Decisões, testes, resultados e interrupções em ordem cronológica.</p></div><span class="section-tag">TEMPO REAL</span></div>
+            <div class="audit-console"><div class="audit-console-top"><span><i></i><i></i><i></i></span><strong>campaign.log</strong><span id="audit-count">0 EVENTOS</span></div><ol id="audit-list" class="audit-list"><li class="audit-placeholder">Aguardando o início da campanha...</li></ol></div>
+          </section>
+
+          <section id="guardrails" class="content-section guardrails" aria-labelledby="guardrails-title">
+            <div class="section-heading"><div><span class="section-index">05 / MODELO DE SEGURANÇA</span><h2 id="guardrails-title">Limites da operação</h2><p>As regras do desafio são aplicadas pelo executor antes de cada requisição.</p></div><span class="section-tag">POLÍTICA ATIVA</span></div>
+            <div class="guardrail-grid">
+              <article><span class="guardrail-icon">⌖</span><h3>Alvo único</h3><p id="guardrail-target">Somente a origem definida em <code>scope.json</code>. Redirecionamentos externos são recusados.</p></article>
+              <article><span class="guardrail-icon">◷</span><h3>Volume limitado</h3><p id="guardrail-volume">Métodos de leitura, orçamento de requisições e intervalo mínimo entre ações.</p></article>
+              <article><span class="guardrail-icon">▣</span><h3>Interrupção auditável</h3><p>O botão Parar sinaliza o executor, que preserva os resultados já capturados e encerra entre ações.</p></article>
+              <article><span class="guardrail-icon">◇</span><h3>Aprovação humana</h3><p>Credenciais privilegiadas, mudança de estado, aumento de intensidade e exploração encadeada ficam fora desta campanha automática.</p></article>
+            </div>
+            <div class="approval-note"><span aria-hidden="true">ⓘ</span><p><strong>Fila de aprovação:</strong> nenhuma ação pendente nesta execução. Testes que exigem aprovação precisam de escopo e implementação específicos antes de serem habilitados.</p></div>
+          </section>
+        </main>
+        <footer>HUBBITS / DESAFIO 03 <span>·</span> Evidência local, escopo explícito e parada verificável.</footer>
+      </div>
+    </div>
+  </body>
+</html>
