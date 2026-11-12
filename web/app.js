@@ -547,6 +547,10 @@ function render(snapshot) {
   const actions = Array.isArray(result.actions) ? result.actions : [];
   const events = snapshot.events || [];
   const scope = snapshot.scope || {};
+  if (!aiProviderInitialized && ["openai", "bedrock"].includes(scope.ai_provider)) {
+    $("ai-provider").value = scope.ai_provider;
+    aiProviderInitialized = true;
+  }
   const target = scope.target || result.target || "Alvo ainda não informado";
   if (!targetDirty && !snapshot.running && target && target !== "Alvo ainda não informado") {
     $("target-url").value = target;
@@ -568,7 +572,7 @@ function render(snapshot) {
   $("start-btn").disabled = snapshot.running;
   $("stop-btn").disabled = !snapshot.running || snapshot.stop_requested;
   $("target-url").disabled = snapshot.running;
-  $("api-key").disabled = snapshot.running;
+  updateAIProviderFields(snapshot.running);
   $("authorization-confirmed").disabled = snapshot.running;
   ["download-btn", "download-json-btn"].forEach((id) => {
     $(id).classList.toggle("disabled", !snapshot.report_available);
@@ -616,6 +620,7 @@ async function action(path, data = {}) {
 }
 
 let targetDirty = false;
+let aiProviderInitialized = false;
 function updateTargetPreview() {
   const input = $("target-url");
   const preview = $("target-preview");
@@ -645,8 +650,36 @@ $("target-url").addEventListener("input", () => {
   $("authorization-confirmed").checked = false;
   updateTargetPreview();
 });
+function updateAIProviderFields(running = false) {
+  const bedrock = $("ai-provider").value === "bedrock";
+  $("ai-provider").disabled = running;
+  $("ai-model").disabled = running;
+  $("aws-region").disabled = running || !bedrock;
+  $("api-key").disabled = running;
+  $("aws-region-field").hidden = !bedrock;
+  $("api-key-field").hidden = false;
+  text($("api-key-label"), bedrock ? "Amazon Bedrock API key" : "Chave OpenAI");
+  $("api-key").placeholder = bedrock
+    ? "Cole a chave Bedrock desta campanha"
+    : "Cole a chave OpenAI desta campanha";
+  text($("api-key-help"), bedrock
+    ? "Opcional se o servidor já tiver credenciais AWS. O console usa a chave só em memória."
+    : "Opcional se OPENAI_API_KEY estiver no servidor. O console usa a chave só em memória.");
+  $("ai-model").placeholder = bedrock ? "amazon.nova-micro-v1:0" : "gpt-6-luna";
+  text($("ai-model-help"), bedrock
+    ? "Aceita model ID, inference profile ID ou ARN compatível com Converse."
+    : "Informe um modelo OpenAI ou deixe em branco.");
+}
+$("ai-provider").addEventListener("change", () => {
+  aiProviderInitialized = true;
+  $("api-key").value = "";
+  updateAIProviderFields(false);
+});
 $("api-key").value = "";
-window.addEventListener("pageshow", () => { $("api-key").value = ""; });
+window.addEventListener("pageshow", () => {
+  $("api-key").value = "";
+  updateAIProviderFields(false);
+});
 $("campaign-form").addEventListener("submit", async (event) => {
   event.preventDefault();
   updateTargetPreview();
@@ -658,6 +691,9 @@ $("campaign-form").addEventListener("submit", async (event) => {
   const accepted = await action("/api/campaign/start", {
     target_url: targetUrl,
     api_key: apiKey,
+    ai_provider: $("ai-provider").value,
+    ai_model: $("ai-model").value.trim(),
+    aws_region: $("aws-region").value.trim(),
     authorization_confirmed: $("authorization-confirmed").checked,
   });
   if (accepted) {
@@ -674,5 +710,6 @@ document.querySelectorAll(".side-nav a").forEach((link) => link.addEventListener
   link.classList.add("active");
 }));
 text($("clock"), new Date().toLocaleDateString("pt-BR", { day: "2-digit", month: "short", year: "numeric" }).toUpperCase());
+updateAIProviderFields(false);
 refresh();
 setInterval(refresh, 1500);

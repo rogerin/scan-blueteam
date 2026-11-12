@@ -6,7 +6,7 @@ Veja o [plano das oito funcionalidades](docs/PLANO_FUNCIONALIDADES.md), a [anál
 
 ## Executar
 
-Requer Python 3.11 ou superior; não há dependências Python obrigatórias.
+Requer Python 3.11 ou superior; não há dependências Python obrigatórias. Para usar Amazon Bedrock, instale o extra opcional `pip install -e '.[bedrock]'`.
 
 ```bash
 python3 -m pentest_pipeline scan --config scope.json
@@ -21,7 +21,7 @@ python3 -m unittest discover -s tests -v
 O comando `scan` grava `evidence.json` e `report.md` em `reports/<run_id>/`. `monitor` cria o baseline na primeira execução e, nas seguintes, grava `diff.json` com achados novos, resolvidos, alterados e estáveis. Retorna código 2 quando há achado novo ou alterado; execução incompleta não é comparada nem substitui o baseline. Use `--update-baseline` somente depois de revisar o diff. `Ctrl+C` solicita parada; o evento de parada fica na trilha de auditoria. O par sintético de busca requer `--approve-quoted-search` no CLI; sem isso, o check é pulado e a cobertura fica inconclusiva.
 O monitor compara apenas execuções com o mesmo alvo, configuração de escopo e hash das regras de teste. Uma mudança no detector exige novo baseline revisado; não é interpretada como mudança no alvo.
 
-A interface web local abre com `python3 -m pentest_pipeline.web_server`. Informe a URL HTTPS pública, confirme que tem autorização para testá-la e insira a chave OpenAI para a campanha. Se `OPENAI_API_KEY` já estiver no ambiente do servidor, o campo pode ficar vazio. A chave é usada em memória e não entra no relatório, nos eventos ou no Git. A interface permite acompanhar o plano dos agentes, decidir a única ação condicionada declarada, parar a campanha e baixar o relatório. A fila de aprovação expira em cinco minutos; rejeição, expiração e interrupção não executam o par de busca. Cada requisição ainda passa pelas regras de escopo e volume.
+A interface web local abre com `python3 -m pentest_pipeline.web_server`. Informe a URL HTTPS pública, escolha OpenAI ou Amazon Bedrock, forneça a chave do provedor e confirme que tem autorização para testar o alvo. A chave também pode vir de `OPENAI_API_KEY`, `AWS_BEARER_TOKEN_BEDROCK` ou da cadeia padrão de credenciais AWS. Quando digitada no formulário, ela permanece apenas em memória durante a campanha, é removida do campo ao iniciar e não entra no relatório, nos eventos ou no Git. A interface permite acompanhar o plano dos agentes, decidir a única ação condicionada declarada, parar a campanha e baixar o relatório. A fila de aprovação expira em cinco minutos; rejeição, expiração e interrupção não executam o par de busca. Cada requisição ainda passa pelas regras de escopo e volume.
 
 O agente multiagente analisa qualquer URL HTTPS pública autorizada usando o HTML, os scripts permitidos, o inventário de tecnologia e os resultados HTTP da própria campanha. O perfil genérico limita os testes a inventário de framework, cabeçalhos, cookies, `robots.txt` e `security.txt`; checks adicionais da demonstração só são habilitados no escopo configurado para aquele host. Fragmentos SPA são aceitos para navegação, mas removidos antes de qualquer requisição. URLs com credenciais, query, host privado ou esquema diferente de HTTPS são recusadas.
 
@@ -34,7 +34,21 @@ python3 -m pentest_pipeline scan --config scope.json --ai
 # Para incluir o par sintético de busca no CLI, acrescente --approve-quoted-search.
 ```
 
-`OpenAIPlanner` seleciona até quatro checks opcionais de uma lista fixa após o GET inicial. `OpenAIAdvisor` oferece dicas para os achados. `OpenAITargetReviewer` prioriza apenas hipóteses geradas a partir de sinais desta campanha. As chamadas usam a [Responses API](https://developers.openai.com/api/docs/guides/migrate-to-responses?api-mode=responses), `store: false` e saída JSON estruturada. O planejador recebe origem e metadados HTTP sanitizados; o orientador recebe IDs, classificações e evidências resumidas de até cinco achados; o revisor recebe somente IDs, checks, estados e severidades tipados, sem corpo de HTML, JavaScript ou resposta. O modelo não recebe ferramentas de rede, não altera a severidade, não confirma uma hipótese e não decide se uma CVE está confirmada. Se a IA falhar, as regras locais continuam e a falha é registrada sem expor a chave. `.env` e `reports/` são ignorados pelo Git.
+Com Amazon Bedrock, configure credenciais AWS com permissão `bedrock:InvokeModel`, instale o extra e escolha qualquer model ID, inference profile ID ou ARN compatível com a API Converse:
+
+```bash
+pip install -e '.[bedrock]'
+export PENTEST_AI_PROVIDER="bedrock"
+export PENTEST_BEDROCK_MODEL="amazon.nova-micro-v1:0"
+export AWS_REGION="us-east-1"
+python3 -m pentest_pipeline scan --config scope.json --ai
+
+# A mesma configuração também pode ser passada por argumentos:
+python3 -m pentest_pipeline scan --config scope.json --ai \
+  --ai-provider bedrock --ai-model amazon.nova-micro-v1:0 --aws-region us-east-1
+```
+
+Os papéis de planejamento, orientação e priorização funcionam nos dois provedores. OpenAI usa a Responses API com `store: false`; Bedrock usa a [API Converse](https://docs.aws.amazon.com/bedrock/latest/userguide/conversation-inference.html) do `bedrock-runtime`. A integração solicita [saída por JSON Schema](https://docs.aws.amazon.com/bedrock/latest/userguide/structured-output.html) quando o modelo oferece esse recurso e faz fallback para JSON restrito, sempre com parsing, allowlists e validação local antes de usar a resposta. O planejador recebe origem e metadados HTTP sanitizados; o orientador recebe IDs, classificações e evidências resumidos de até cinco achados; o revisor recebe somente IDs, checks, estados e severidades tipados, sem corpo de HTML, JavaScript ou resposta. O modelo não recebe ferramentas de rede, não altera a severidade, não confirma uma hipótese e não decide se uma CVE está confirmada. Se a IA falhar, as regras locais continuam e a falha é registrada sem expor credenciais. `.env` e `reports/` são ignorados pelo Git.
 
 O inventário Angular lê, sem executar, até três JavaScripts públicos referenciados pelo HTML e procura um marcador de versão específico. Compara a versão a um catálogo **limitado** de advisories oficiais datado de 12/11/2026. Um CVE só é exibido como possível quando o pacote e a faixa de versão coincidem; exploração exige ainda verificar o código e as condições do aviso. Sem versão exata ou pacote confirmado, o resultado permanece inconclusivo. No alvo, o bundle indica Angular 22.2.2; não há CVE confirmada. Veja [a avaliação Angular](docs/ANGULAR_CVES.md).
 

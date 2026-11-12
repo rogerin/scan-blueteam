@@ -53,9 +53,27 @@
                   <small id="target-preview">O teste usa somente a origem HTTPS informada.</small>
                 </div>
                 <div class="form-field">
-                  <label for="api-key">Chave OpenAI <span>se não estiver configurada no servidor</span></label>
+                  <label for="ai-provider">Provedor de IA</label>
+                  <select id="ai-provider" name="ai_provider">
+                    <option value="openai">OpenAI</option>
+                    <option value="bedrock">Amazon Bedrock</option>
+                  </select>
+                  <small>Informe a chave abaixo ou use credenciais já configuradas no servidor.</small>
+                </div>
+                <div class="form-field">
+                  <label for="ai-model">Modelo <span>opcional; usa o padrão do servidor</span></label>
+                  <input id="ai-model" name="ai_model" type="text" autocomplete="off" spellcheck="false" placeholder="gpt-6-luna">
+                  <small id="ai-model-help">Informe um modelo OpenAI ou deixe em branco.</small>
+                </div>
+                <div class="form-field" id="aws-region-field" hidden>
+                  <label for="aws-region">Região AWS <span>opcional</span></label>
+                  <input id="aws-region" name="aws_region" type="text" autocomplete="off" spellcheck="false" placeholder="us-east-1">
+                  <small>Se omitida, usa AWS_REGION, AWS_DEFAULT_REGION ou o perfil AWS.</small>
+                </div>
+                <div class="form-field" id="api-key-field">
+                  <label id="api-key-label" for="api-key">Chave OpenAI <span>se não estiver configurada no servidor</span></label>
                   <input id="api-key" name="api_key" type="password" autocomplete="off" spellcheck="false" placeholder="Usada apenas nesta campanha">
-                  <small>O campo é limpo ao iniciar. O console não salva a chave.</small>
+                  <small id="api-key-help">O campo é limpo ao iniciar. O console não salva a chave.</small>
                 </div>
                 <label class="authorization-check" for="authorization-confirmed">
                   <input id="authorization-confirmed" type="checkbox" required>

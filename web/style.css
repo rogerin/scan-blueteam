@@ -15,9 +15,9 @@
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--keycore-ice);color:var(--keycore-navy);font:500 14px/1.55 Inter,ui-sans-serif,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
-button,a,input{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.52}
+button,a,input,select{font:inherit}button{cursor:pointer}button:disabled{cursor:not-allowed;opacity:.52}
 a{color:inherit;text-decoration:none}
-a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--keycore-info);outline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--keycore-info);outline-offset:3px}
 h1,h2,h3,p{margin-top:0}
 h1,h2,h3{font-family:Poppins,Inter,ui-sans-serif,sans-serif;font-weight:600}
 .skip-link{position:absolute;left:12px;top:-60px;z-index:10;background:var(--keycore-navy);color:var(--keycore-white);padding:8px 12px;border-radius:4px}
@@ -60,11 +60,11 @@ main{max-width:1500px;margin:0 auto;padding:0 clamp(24px,3vw,52px) 70px}
 .form-field{display:grid;gap:5px}
 .form-field label{font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--keycore-navy)}
 .form-field label span{font-size:10px;font-weight:500;letter-spacing:0;text-transform:none;color:var(--keycore-slate)}
-.form-field input{width:100%;min-height:44px;border:1px solid #B9BFCC;border-radius:7px;background:var(--keycore-white);color:var(--keycore-navy);padding:10px 13px;outline:none;font:500 12px/1.4 Inter,ui-monospace,monospace}
+.form-field input,.form-field select{width:100%;min-height:44px;border:1px solid #B9BFCC;border-radius:7px;background:var(--keycore-white);color:var(--keycore-navy);padding:10px 13px;outline:none;font:500 12px/1.4 Inter,ui-monospace,monospace}
 .form-field input::placeholder{color:var(--keycore-slate)}
-.form-field input:focus{border-color:var(--keycore-info);box-shadow:0 0 0 3px var(--keycore-info-bg)}
+.form-field input:focus,.form-field select:focus{border-color:var(--keycore-info);box-shadow:0 0 0 3px var(--keycore-info-bg)}
 .form-field input:invalid:focus{border-color:var(--keycore-error);box-shadow:0 0 0 3px var(--keycore-error-bg)}
-.form-field input:disabled{background:var(--keycore-ice)}
+.form-field input:disabled,.form-field select:disabled{background:var(--keycore-ice)}
 .form-field small{font-size:10px;color:var(--keycore-slate)}
 .authorization-check{display:flex;align-items:flex-start;gap:10px;color:var(--keycore-slate);font-size:11px;cursor:pointer;margin:2px 0 1px}
 .authorization-check input{width:16px;height:16px;margin:0;flex:none;accent-color:var(--keycore-navy)}
