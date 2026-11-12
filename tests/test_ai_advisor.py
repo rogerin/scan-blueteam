@@ -2,10 +2,13 @@
 
 from io import BytesIO
 import json
+import os
 import unittest
 from unittest.mock import patch
 
-from pentest_pipeline.ai import AIAdvisorError, OpenAIAdvisor, OpenAIPlanner, OpenAITargetReviewer
+from pentest_pipeline.ai import (AIAdvisorError, BedrockAdvisor, BedrockPlanner,
+                                 BedrockTargetReviewer, OpenAIAdvisor, OpenAIPlanner,
+                                 OpenAITargetReviewer, create_ai_components)
 from pentest_pipeline.models import Finding
 from pentest_pipeline.report import render_markdown
 
@@ -20,6 +23,94 @@ def finding() -> Finding:
 
 
 class AIAdvisorTests(unittest.TestCase):
+    def test_bedrock_planner_uses_converse_structured_output(self) -> None:
+        class Client:
+            def __init__(self):
+                self.calls = []
+
+            def converse(self, **request):
+                self.calls.append(request)
+                return {"stopReason": "end_turn", "output": {"message": {"content": [{
+                    "text": json.dumps({"check_ids": ["headers", "robots_txt"]})
+                }]}}}
+
+        client = Client()
+        planner = BedrockPlanner("us.openai.gpt-6-luna", region="us-east-1", client=client)
+        selected = planner.plan("https://example.invalid/#private", {"status": 200},
+                                ["headers", "robots_txt"])
+
+        self.assertEqual(selected, ["headers", "robots_txt"])
+        self.assertEqual(planner.provider, "bedrock")
+        request = client.calls[0]
+        self.assertEqual(request["modelId"], "us.openai.gpt-6-luna")
+        self.assertNotIn("tools", request)
+        self.assertTrue(request["additionalModelRequestFields"]["text"]["format"]["strict"])
+        structure = request["outputConfig"]["textFormat"]["structure"]["jsonSchema"]
+        self.assertEqual(structure["name"], "bounded_check_plan")
+        schema = json.loads(structure["schema"])
+        self.assertEqual(schema["properties"]["check_ids"]["items"]["enum"],
+                         ["headers", "robots_txt"])
+
+    def test_bedrock_falls_back_for_models_without_structured_output(self) -> None:
+        class ValidationException(Exception):
+            response = {"Error": {"Code": "ValidationException"}}
+
+        class Client:
+            def __init__(self):
+                self.calls = []
+
+            def converse(self, **request):
+                self.calls.append(request)
+                if len(self.calls) == 1:
+                    raise ValidationException()
+                return {"output": {"message": {"content": [{
+                    "text": json.dumps({"check_ids": ["cookies"]})
+                }]}}}
+
+        client = Client()
+        selected = BedrockPlanner("custom-model", client=client).plan(
+            "https://example.invalid/", {}, ["cookies"])
+        self.assertEqual(selected, ["cookies"])
+        self.assertIn("outputConfig", client.calls[0])
+        self.assertNotIn("outputConfig", client.calls[1])
+        self.assertIn("JSON Schema", client.calls[1]["messages"][0]["content"][0]["text"])
+
+    def test_bedrock_factory_shares_client_across_bounded_roles(self) -> None:
+        client = object()
+        planner, advisor, reviewer = create_ai_components(
+            provider="bedrock", model="model-id", region="us-east-1", client=client,
+        )
+        self.assertIsInstance(planner, BedrockPlanner)
+        self.assertIsInstance(advisor, BedrockAdvisor)
+        self.assertIsInstance(reviewer, BedrockTargetReviewer)
+        self.assertTrue(all(item.client is client for item in (planner, advisor, reviewer)))
+
+    def test_bedrock_bearer_key_is_request_scoped_and_not_in_payload(self) -> None:
+        secret = "bedrock-api-key-test-only"
+
+        class Client:
+            def __init__(self):
+                self.seen_token = None
+                self.request = None
+
+            def converse(self, **request):
+                self.seen_token = os.environ.get("AWS_BEARER_TOKEN_BEDROCK")
+                self.request = request
+                return {"output": {"message": {"content": [{
+                    "text": json.dumps({"check_ids": ["headers"]})
+                }]}}}
+
+        client = Client()
+        with patch.dict(os.environ, {}, clear=True):
+            planner, _, _ = create_ai_components(
+                provider="bedrock", api_key=secret, model="model-id", client=client,
+            )
+            self.assertEqual(planner.plan("https://example.invalid/", {}, ["headers"]),
+                             ["headers"])
+            self.assertEqual(client.seen_token, secret)
+            self.assertNotIn("AWS_BEARER_TOKEN_BEDROCK", os.environ)
+        self.assertNotIn(secret, json.dumps(client.request))
+
     def test_planner_selects_only_declared_checks_with_redacted_input(self) -> None:
         captured = {}
         response = {"status": "completed", "output": [{"type": "message", "content": [{

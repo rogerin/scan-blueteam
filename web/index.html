@@ -11,21 +11,20 @@
   <body>
     <a class="skip-link" href="#main">Ir para o conteúdo</a>
     <div class="app-shell">
-      <aside class="sidebar" aria-label="Navegação da campanha">
-        <a class="brand" href="#overview" aria-label="Hubbits Pentest, início">
+      <aside class="sidebar" aria-label="Fases da campanha">
+        <a class="brand" href="#" id="brand-link" aria-label="Hubbits Pentest, acompanhar fase atual">
           <span class="brand-mark" aria-hidden="true">H<span>·</span></span>
           <span class="brand-copy"><strong>HUBBITS</strong><small>PENTEST LAB</small></span>
         </a>
-        <div class="side-label">CAMPANHA</div>
-        <nav class="side-nav">
-          <a class="active" href="#overview"><span aria-hidden="true">◈</span> Visão geral</a>
-          <a href="#pipeline"><span aria-hidden="true">◇</span> Pipeline</a>
-          <a href="#framework"><span aria-hidden="true">▣</span> Framework</a>
-          <a href="#target-analysis"><span aria-hidden="true">⌘</span> Análise</a>
-          <a href="#findings"><span aria-hidden="true">▤</span> Achados</a>
-          <a href="#recommendations"><span aria-hidden="true">✦</span> Correções</a>
-          <a href="#audit"><span aria-hidden="true">⌁</span> Auditoria</a>
-          <a href="#guardrails"><span aria-hidden="true">⬡</span> Escopo</a>
+        <div class="side-label">JORNADA DA CAMPANHA</div>
+        <nav aria-label="Fases">
+          <ol id="phase-stepper" class="phase-stepper">
+            <li><button type="button" class="phase-step" data-phase="configure"><span class="phase-index" aria-hidden="true">1</span><span class="phase-copy"><strong>Configuração</strong><small>Alvo, autorização e limites</small></span><span class="phase-state"></span></button></li>
+            <li><button type="button" class="phase-step" data-phase="plan"><span class="phase-index" aria-hidden="true">2</span><span class="phase-copy"><strong>Planejamento</strong><small>Hipóteses e ações dos agentes</small></span><span class="phase-state"></span></button></li>
+            <li><button type="button" class="phase-step" data-phase="execute"><span class="phase-index" aria-hidden="true">3</span><span class="phase-copy"><strong>Execução</strong><small>Pipeline em tempo real</small></span><span class="phase-state"></span></button></li>
+            <li><button type="button" class="phase-step" data-phase="analyze"><span class="phase-index" aria-hidden="true">4</span><span class="phase-copy"><strong>Análise</strong><small>Achados, evidências e limites</small></span><span class="phase-state"></span></button></li>
+            <li><button type="button" class="phase-step" data-phase="report"><span class="phase-index" aria-hidden="true">5</span><span class="phase-copy"><strong>Relatório</strong><small>Resumo, exportação e auditoria</small></span><span class="phase-state"></span></button></li>
+          </ol>
         </nav>
         <div class="sidebar-bottom">
           <span class="sidebar-pulse" aria-hidden="true"></span>
@@ -34,141 +33,243 @@
       </aside>
 
       <div class="main-column">
-        <header class="topbar">
-          <div class="crumb">DESAFIO 03 <span>/</span> CONSOLE DA CAMPANHA</div>
-          <div class="topbar-right"><span class="topbar-dot" aria-hidden="true"></span> OPERAÇÃO LOCAL <span class="topbar-divider"></span> <span id="clock">—</span></div>
+        <header class="control-bar" aria-label="Controle permanente da campanha">
+          <div class="control-target"><span>ALVO AUTORIZADO</span><strong id="bar-target">—</strong></div>
+          <div class="control-status">
+            <span id="bar-status" class="status-pill" data-state="idle" role="status" aria-live="polite">○ Aguardando</span>
+            <span id="bar-progress" class="control-progress">Sem campanha ativa</span>
+          </div>
+          <div class="control-policy" id="bar-policy" aria-label="Política de segurança ativa"><span data-icon="clock"></span> Política ativa</div>
+          <div class="control-actions">
+            <button id="stop-btn" class="button button-danger" type="button" disabled><span data-icon="stop"></span> Parar</button>
+            <button id="audit-toggle" class="button button-ghost" type="button" aria-controls="audit-drawer" aria-expanded="false"><span data-icon="history"></span> Auditoria <span id="audit-badge" class="badge">0</span></button>
+          </div>
         </header>
 
-        <main id="main">
-          <section class="hero" id="overview" aria-labelledby="hero-title">
-            <div class="hero-copy">
-              <div class="eyebrow">PENTEST COM AGENTES · MVP FUNCIONAL</div>
-              <h1 id="hero-title">Entenda a superfície.<br><em>Teste com limites.</em></h1>
-              <div class="signature-bars" aria-hidden="true"><span></span><span></span></div>
-              <p>Informe uma URL autorizada. Os agentes planejam, testam e analisam sob limites de escopo, taxa e parada.</p>
-              <form id="campaign-form" class="campaign-form">
-                <div class="form-field">
-                  <label for="target-url">URL do alvo</label>
-                  <input id="target-url" name="target_url" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://exemplo.com/" value="https://4.migbot.com.br/#/" required>
-                  <small id="target-preview">O teste usa somente a origem HTTPS informada.</small>
-                </div>
-                <div class="form-field">
-                  <label for="api-key">Chave OpenAI <span>se não estiver configurada no servidor</span></label>
-                  <input id="api-key" name="api_key" type="password" autocomplete="off" spellcheck="false" placeholder="Usada apenas nesta campanha">
-                  <small>O campo é limpo ao iniciar. O console não salva a chave.</small>
-                </div>
-                <label class="authorization-check" for="authorization-confirmed">
-                  <input id="authorization-confirmed" type="checkbox" required>
-                  <span>Confirmo que tenho autorização para testar esta URL.</span>
-                </label>
-                <div class="hero-actions">
-                  <button id="start-btn" class="button button-primary" type="submit"><span aria-hidden="true">▶</span> Iniciar campanha</button>
-                  <button id="stop-btn" class="button button-danger" type="button" disabled><span aria-hidden="true">■</span> Interromper</button>
-                  <a id="download-btn" class="button button-ghost disabled" href="/api/report.md" download aria-disabled="true"><span aria-hidden="true">↓</span> Relatório</a>
-                  <a id="download-json-btn" class="button button-ghost disabled" href="/api/report.json" download aria-disabled="true"><span aria-hidden="true">↓</span> JSON</a>
-                </div>
-              </form>
-              <p id="action-message" class="action-message" role="status" aria-live="polite"></p>
+        <div id="connection-banner" class="banner banner-error" role="alert" hidden>
+          <strong>Sem conexão com o console local.</strong> As ações ficam indisponíveis até a conexão voltar; nenhuma campanha é reiniciada automaticamente.
+        </div>
+        <div id="approval-banner" class="banner banner-attention" role="alert" hidden>
+          <span id="approval-banner-text"></span>
+          <button id="approval-banner-btn" class="button button-primary" type="button">Ver decisão pendente</button>
+        </div>
+
+        <main id="main" tabindex="-1">
+          <p id="action-message" class="action-message" role="status" aria-live="polite"></p>
+
+          <!-- FASE 1 · CONFIGURAÇÃO -->
+          <section id="view-configure" class="phase-view" data-phase="configure" aria-labelledby="hero-title">
+            <div id="prior-campaign" class="banner banner-info" hidden>
+              <span id="prior-campaign-text"></span>
+              <button id="prior-campaign-btn" class="button button-ghost" type="button">Ver resultados</button>
             </div>
-            <div class="hero-panel" aria-label="Estado da campanha">
-              <div class="panel-top"><span>STATUS DA OPERAÇÃO</span><span class="panel-icon" aria-hidden="true">◉</span></div>
-              <div class="status-visual"><span class="status-ring"><span></span></span><div><strong id="hero-status">Aguardando</strong><small id="hero-substatus">Pronto para uma execução controlada</small></div></div>
-              <div class="target-box"><span>ALVO DA CAMPANHA</span><strong id="target-display">Carregando escopo...</strong></div>
-              <div class="panel-footer"><span>ORIGEM EXATA</span><span>PARADA MANUAL</span><span>EVIDÊNCIA LOCAL</span></div>
-            </div>
-          </section>
-
-          <section class="metrics" aria-label="Resumo da execução">
-            <article class="metric"><span>AÇÕES REGISTRADAS</span><strong id="metric-actions">00</strong><small>trilha cronológica</small></article>
-            <article class="metric"><span>ACHADOS</span><strong id="metric-findings">00</strong><small>com evidência e confiança</small></article>
-            <article class="metric"><span>REQUISIÇÕES</span><strong id="metric-requests">00</strong><small id="metric-request-limit">limite configurado</small></article>
-            <article class="metric metric-accent"><span>CONTROLE</span><strong id="metric-control">ATIVO</strong><small>GET/HEAD · baixo volume</small></article>
-          </section>
-
-          <section class="basics-panel" id="basics" aria-labelledby="basics-title">
-            <div><span class="section-index">PONTO DE PARTIDA</span><h2 id="basics-title">Dificuldades mais básicas</h2><p>Quando o alvo oferece um catálogo público de desafios, os níveis iniciais e tutoriais aparecem aqui.</p></div>
-            <div class="basics-counts"><span><strong id="difficulty-one">—</strong> NÍVEL 1</span><span><strong id="difficulty-two">—</strong> NÍVEL 2</span></div>
-            <ol id="tutorial-list" class="tutorial-list"><li>Os nomes aparecem após uma campanha concluída.</li></ol>
-          </section>
-
-          <section id="pipeline" class="content-section" aria-labelledby="pipeline-title">
-            <div class="section-heading"><div><span class="section-index">01 / FLUXO</span><h2 id="pipeline-title">Pipeline de agentes</h2><p>O planejamento por IA escolhe apenas verificações permitidas; o executor mantém o controle da rede.</p></div><span class="section-tag">8 ETAPAS</span></div>
-            <div id="pipeline-grid" class="pipeline-grid"></div>
-            <p id="plan-status" class="monitor-delta">O plano de testes aparece quando a campanha começar.</p>
-            <div class="stage-plan-panel"><h3>Plano antes da execução</h3><div id="stage-plan-list" class="stage-plan-list"><p class="stage-plan-empty">Hipótese, ação, resultado esperado e condição de parada aparecem aqui.</p></div></div>
-            <p id="monitor-delta" class="monitor-delta">A comparação de regressões aparece após duas campanhas completas no mesmo alvo.</p>
-          </section>
-
-          <section id="framework" class="content-section" aria-labelledby="framework-title">
-            <div class="section-heading"><div><span class="section-index">INVENTÁRIO DE TECNOLOGIA</span><h2 id="framework-title">Framework e avisos públicos</h2><p>Indícios observados no alvo e referências de segurança para investigação.</p></div><span id="framework-count" class="section-tag">AGUARDANDO</span></div>
-            <div class="framework-panel">
-              <div class="framework-summary">
-                <div><span>FAMÍLIA OBSERVADA</span><strong id="framework-family">Aguardando</strong></div>
-                <div><span>VERSÃO OBSERVADA</span><strong id="framework-version">Não confirmada</strong></div>
-                <div><span>CERTEZA DO INVENTÁRIO</span><strong id="framework-certainty">—</strong></div>
+            <div class="hero">
+              <div class="hero-copy">
+                <div class="eyebrow">FASE 1 · CONFIGURAÇÃO DA CAMPANHA</div>
+                <h1 id="hero-title">Entenda a superfície.<br><em>Teste com limites.</em></h1>
+                <div class="signature-bars" aria-hidden="true"><span></span><span></span></div>
+                <p>Informe uma URL autorizada. Os agentes planejam, testam e analisam sob limites de escopo, taxa e parada, e cada decisão fica registrada.</p>
+                <form id="campaign-form" class="campaign-form">
+                  <div class="form-field">
+                    <label for="target-url">URL do alvo autorizado</label>
+                    <input id="target-url" name="target_url" type="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="https://exemplo.com/" value="https://4.migbot.com.br/#/" required>
+                    <small id="target-preview">O teste usa somente a origem HTTPS informada.</small>
+                  </div>
+                  <div class="form-field">
+                    <label for="ai-provider">Provedor de IA</label>
+                    <select id="ai-provider" name="ai_provider">
+                      <option value="openai">OpenAI</option>
+                      <option value="bedrock">Amazon Bedrock</option>
+                    </select>
+                    <small>A IA só escolhe entre verificações permitidas e sugere correções; ela não controla a rede.</small>
+                  </div>
+                  <div class="form-field" id="api-key-field">
+                    <label id="api-key-label" for="api-key">Chave OpenAI <span>se não estiver configurada no servidor</span></label>
+                    <input id="api-key" name="api_key" type="password" autocomplete="off" spellcheck="false" placeholder="Usada apenas nesta campanha">
+                    <small id="api-key-help">O campo é limpo ao iniciar. O console não salva a chave.</small>
+                  </div>
+                  <details class="advanced" id="advanced-settings">
+                    <summary>Configurações avançadas</summary>
+                    <div class="advanced-body">
+                      <div class="form-field">
+                        <label for="ai-model">Modelo <span>opcional; usa o padrão do servidor</span></label>
+                        <input id="ai-model" name="ai_model" type="text" autocomplete="off" spellcheck="false" placeholder="gpt-6-luna">
+                        <small id="ai-model-help">Informe um modelo OpenAI ou deixe em branco.</small>
+                      </div>
+                      <div class="form-field" id="aws-region-field" hidden>
+                        <label for="aws-region">Região AWS <span>opcional</span></label>
+                        <input id="aws-region" name="aws_region" type="text" autocomplete="off" spellcheck="false" placeholder="us-east-1">
+                        <small>Se omitida, usa AWS_REGION, AWS_DEFAULT_REGION ou o perfil AWS.</small>
+                      </div>
+                      <p class="advanced-note">Limites de requisições, cadência, métodos e tamanho de resposta vêm do <code>scope.json</code> do servidor e não podem ser ampliados pela interface.</p>
+                    </div>
+                  </details>
+                  <label class="authorization-check" for="authorization-confirmed">
+                    <input id="authorization-confirmed" type="checkbox" required>
+                    <span>Confirmo que tenho autorização para testar esta URL.</span>
+                  </label>
+                  <div class="hero-actions">
+                    <button id="start-btn" class="button button-primary" type="submit"><span data-icon="play"></span> Iniciar campanha</button>
+                  </div>
+                </form>
               </div>
-              <p id="framework-caveat" class="framework-caveat">Nenhuma versão ou instalação afetada foi confirmada nesta execução.</p>
-              <div class="framework-detail-grid">
-                <div><h3>Evidência observada</h3><div id="framework-evidence" class="framework-evidence"><p>O inventário aparece após a verificação da página.</p></div></div>
-                <div><h3>Avisos para triagem</h3><div id="framework-advisories" class="framework-advisories"><p>Nenhum aviso correlacionado até agora.</p></div></div>
+              <div class="hero-panel" aria-label="O que acontece ao iniciar">
+                <div class="panel-top"><span>O QUE ACONTECE AO INICIAR</span><span class="panel-icon" data-icon="shield-check"></span></div>
+                <ol id="start-summary" class="start-summary"><li>Carregando limites do escopo...</li></ol>
+                <div class="target-box"><span>ESCOPO VIGENTE</span><strong id="config-scope-note">Carregando escopo...</strong></div>
+                <div class="panel-footer"><span>ORIGEM EXATA</span><span>PARADA MANUAL</span><span>EVIDÊNCIA LOCAL</span></div>
               </div>
             </div>
-          </section>
 
-          <section id="target-analysis" class="content-section" aria-labelledby="target-analysis-title">
-            <div class="section-heading"><div><span class="section-index">02 / ANÁLISE DO ALVO</span><h2 id="target-analysis-title">Análise multiagente do alvo</h2><p>Agentes paralelos analisam somente dados coletados da URL desta campanha e indicam verificações futuras.</p></div><span id="target-analysis-count" class="section-tag">AGUARDANDO</span></div>
-            <div class="analysis-panel">
-              <p id="target-analysis-caveat" class="analysis-caveat">As hipóteses são pistas derivadas desta campanha. Elas não entram em Achados verificados sem prova específica no alvo.</p>
-              <div id="target-analysis-meta" class="analysis-meta"></div>
-              <h3>Agentes da análise local</h3>
-              <div id="target-agent-runs" class="analysis-agent-grid"><p class="analysis-empty">Aguardando dados da campanha.</p></div>
-              <h3>Tecnologia observada</h3>
-              <div id="target-technology" class="analysis-technology"><p class="analysis-empty">O inventário aparece após a coleta.</p></div>
-              <h3>Sinais usados nesta análise</h3>
-              <div id="target-signals" class="analysis-signal-list"><p class="analysis-empty">Nenhum sinal associado ainda.</p></div>
-              <h3>Hipóteses para verificar</h3>
-              <div id="target-hypotheses" class="analysis-hypothesis-list"><p class="analysis-empty">Nenhuma hipótese avaliada nesta campanha.</p></div>
-              <div class="analysis-ai-panel"><div class="analysis-ai-heading"><h3>Prioridades sugeridas pela IA</h3><span id="target-ai-status" class="section-tag">AGUARDANDO</span></div><p>A IA ordena verificações futuras; sugestões não confirmam falhas.</p><div id="target-ai-priorities" class="analysis-priority-list"><p class="analysis-empty">Nenhuma prioridade gerada.</p></div></div>
-            </div>
-          </section>
-
-          <section id="findings" class="content-section" aria-labelledby="findings-title">
-            <div class="section-heading"><div><span class="section-index">03 / EVIDÊNCIAS</span><h2 id="findings-title">Achados verificados</h2><p>Observações diretas, hipóteses e limites de confiança aparecem separados.</p></div><span id="findings-count" class="section-tag">0 ACHADOS</span></div>
-            <div id="findings-list" class="findings-list"><div class="empty-state"><span aria-hidden="true">◎</span><strong>Nenhuma campanha executada</strong><p>Inicie uma campanha para gerar evidências com os testes permitidos.</p></div></div>
-          </section>
-
-          <section id="recommendations" class="content-section" aria-labelledby="recommendations-title">
-            <div class="section-heading"><div><span class="section-index">04 / ORIENTAÇÃO</span><h2 id="recommendations-title">Dicas de código</h2><p>Correções associadas aos achados observados. A validação no código-fonte depende de acesso ao repositório da aplicação.</p></div><span id="ai-status" class="section-tag">IA DESLIGADA</span></div>
-            <div id="recommendations-list" class="recommendation-grid"><div class="empty-state"><span aria-hidden="true">✦</span><strong>Recomendações após o teste</strong><p>O agente de correção transforma evidências em passos de implementação e regressão.</p></div></div>
-          </section>
-
-          <section id="audit" class="content-section" aria-labelledby="audit-title">
-            <div class="section-heading"><div><span class="section-index">05 / RASTREABILIDADE</span><h2 id="audit-title">Trilha de auditoria</h2><p>Decisões, testes, resultados e interrupções em ordem cronológica.</p></div><span class="section-tag">TEMPO REAL</span></div>
-            <div class="audit-console"><div class="audit-console-top"><span><i></i><i></i><i></i></span><strong>campaign.log</strong><span id="audit-count">0 EVENTOS</span></div><ol id="audit-list" class="audit-list"><li class="audit-placeholder">Aguardando o início da campanha...</li></ol></div>
-          </section>
-
-          <section id="guardrails" class="content-section guardrails" aria-labelledby="guardrails-title">
-            <div class="section-heading"><div><span class="section-index">06 / MODELO DE SEGURANÇA</span><h2 id="guardrails-title">Limites da operação</h2><p>As regras do desafio são aplicadas pelo executor antes de cada requisição.</p></div><span class="section-tag">POLÍTICA ATIVA</span></div>
+            <div class="section-heading compact"><div><span class="section-index">LIMITES DE SEGURANÇA</span><h2>Resumo da política aplicada pelo executor</h2></div><span class="section-tag">POLÍTICA ATIVA</span></div>
             <div class="guardrail-grid">
-              <article><span class="guardrail-icon">⌖</span><h3>Alvo único</h3><p id="guardrail-target">Somente a origem HTTPS informada nesta campanha. Redirecionamentos externos são recusados.</p></article>
-              <article><span class="guardrail-icon">◷</span><h3>Volume limitado</h3><p id="guardrail-volume">Métodos de leitura, orçamento de requisições e intervalo mínimo entre ações.</p></article>
-              <article><span class="guardrail-icon">▣</span><h3>Interrupção auditável</h3><p>O botão Parar sinaliza o executor, que preserva os resultados já capturados e encerra entre ações.</p></article>
-              <article><span class="guardrail-icon">◇</span><h3>Aprovação humana</h3><p>Credenciais privilegiadas, mudança de estado, aumento de intensidade e exploração encadeada ficam fora desta campanha automática.</p></article>
+              <article><span class="guardrail-icon" data-icon="target"></span><h3>Alvo único</h3><p id="guardrail-target">Somente a origem HTTPS informada nesta campanha. Redirecionamentos externos são recusados.</p></article>
+              <article><span class="guardrail-icon" data-icon="clock"></span><h3>Volume limitado</h3><p id="guardrail-volume">Métodos de leitura, orçamento de requisições e intervalo mínimo entre ações.</p></article>
+              <article><span class="guardrail-icon" data-icon="stop"></span><h3>Interrupção auditável</h3><p>O botão Parar sinaliza o executor, que preserva os resultados já capturados e encerra entre ações.</p></article>
+              <article><span class="guardrail-icon" data-icon="user"></span><h3>Aprovação humana</h3><p>Ações condicionadas declaradas só executam após decisão explícita. Credenciais, mutação e exploração encadeada ficam fora.</p></article>
             </div>
-            <div class="policy-grid" aria-label="Política da campanha">
-              <article><h3>Permitidas</h3><p id="policy-allowed">Leituras limitadas pela origem e pelo orçamento.</p></article>
-              <article><h3>Condicionadas</h3><p id="policy-conditioned">Ações declaradas exigem decisão explícita.</p></article>
-              <article><h3>Proibidas</h3><p id="policy-denied">Mutação, extração de arquivos, força bruta e destinos fora do escopo.</p></article>
+            <details class="policy-details" id="policy-details">
+              <summary>Política completa: permitidas, condicionadas e proibidas</summary>
+              <div class="policy-grid" aria-label="Política da campanha">
+                <article><h3>Permitidas</h3><p id="policy-allowed">Leituras limitadas pela origem e pelo orçamento.</p></article>
+                <article><h3>Condicionadas</h3><p id="policy-conditioned">Ações declaradas exigem decisão explícita.</p></article>
+                <article><h3>Proibidas</h3><p id="policy-denied">Mutação, extração de arquivos, força bruta e destinos fora do escopo.</p></article>
+              </div>
+            </details>
+          </section>
+
+          <!-- FASE 2 · PLANEJAMENTO -->
+          <section id="view-plan" class="phase-view" data-phase="plan" aria-labelledby="plan-title" hidden>
+            <div class="section-heading"><div><span class="section-index">FASE 2 · PLANEJAMENTO DOS AGENTES</span><h2 id="plan-title">O que os agentes pretendem fazer, e por quê</h2><p>Cada etapa registra hipótese, ação, resultado esperado e condição de parada antes de executar. As informações aparecem conforme são produzidas.</p></div><span id="plan-state-tag" class="section-tag">AGUARDANDO</span></div>
+            <div class="plan-grid">
+              <article class="panel" aria-labelledby="plan-scope-title"><h3 id="plan-scope-title">Validação do alvo e do escopo</h3><div id="plan-scope"></div></article>
+              <article class="panel" aria-labelledby="plan-selection-title"><h3 id="plan-selection-title">Seleção das verificações</h3><div id="plan-selection"></div></article>
             </div>
-            <section class="approval-panel" aria-labelledby="approval-title">
-              <h3 id="approval-title">Fila de aprovação humana</h3>
-              <p>A decisão libera apenas a ação declarada; o gateway ainda valida origem, método, cadência e limite.</p>
-              <div id="approval-list" class="approval-list"><p>Nenhuma ação aguardando decisão.</p></div>
-            </section>
+            <h3 class="subheading">Agentes, hipóteses e condições de parada</h3>
+            <div id="plan-agents" class="plan-agents"></div>
+            <div id="plan-cta" class="view-cta"></div>
+          </section>
+
+          <!-- FASE 3 · EXECUÇÃO -->
+          <section id="view-execute" class="phase-view" data-phase="execute" aria-labelledby="execute-title" hidden>
+            <div class="section-heading"><div><span class="section-index">FASE 3 · EXECUÇÃO DO PIPELINE</span><h2 id="execute-title">Acompanhamento dos agentes</h2><p id="exec-progress">O executor mantém o controle da rede; a interface reflete apenas eventos reais do backend.</p></div><span id="exec-state-tag" class="section-tag">AGUARDANDO</span></div>
+            <div class="exec-grid">
+              <div class="exec-main">
+                <div id="active-agent" class="agent-focus" aria-live="polite"></div>
+                <h3 class="subheading">Agentes concluídos</h3>
+                <div id="completed-agents" class="agent-chips"></div>
+                <h3 class="subheading">Próximas etapas</h3>
+                <ol id="upcoming-agents" class="upcoming-list"></ol>
+              </div>
+              <aside class="exec-side" aria-label="Estado da execução">
+                <div class="metrics compact">
+                  <article class="metric"><span>REQUISIÇÕES</span><strong id="exec-metric-requests">00</strong><small id="exec-metric-requests-limit">orçamento</small><div class="metric-bar" aria-hidden="true"><i id="exec-metric-requests-bar"></i></div></article>
+                  <article class="metric"><span>ETAPAS CONCLUÍDAS</span><strong id="exec-metric-stages">0/8</strong><small>das 8 etapas técnicas</small></article>
+                  <article class="metric"><span>TESTES REGISTRADOS</span><strong id="exec-metric-tests">00</strong><small>antes da triagem</small></article>
+                  <article class="metric"><span>DECISÕES</span><strong id="exec-metric-decisions">00</strong><small>com justificativa auditada</small></article>
+                </div>
+                <article class="panel"><h3>Limites ativos</h3><ul id="exec-limits" class="fact-list"></ul></article>
+                <article class="panel"><h3>Evidências registradas</h3><p class="panel-note">Resultados de teste e observações conforme são gravados. A triagem classifica severidade e confiança ao final.</p><ul id="exec-evidence" class="evidence-list"></ul></article>
+                <article class="panel"><h3>Decisões humanas</h3><div id="exec-approvals" class="approval-list"></div></article>
+                <article class="panel"><div class="panel-head"><h3>Eventos relevantes</h3><button id="exec-audit-btn" class="button button-ghost small" type="button">Auditoria completa</button></div><ol id="exec-events" class="event-list"></ol></article>
+              </aside>
+            </div>
+          </section>
+
+          <!-- FASE 4 · ANÁLISE -->
+          <section id="view-analyze" class="phase-view" data-phase="analyze" aria-labelledby="analyze-title" hidden>
+            <div class="section-heading"><div><span class="section-index">FASE 4 · ANÁLISE DOS RESULTADOS</span><h2 id="analyze-title">Resumo da execução</h2><p>Observações confirmadas, sinais inconclusivos e hipóteses ficam separados. Observação confirmada não significa exploração comprovada.</p></div><span id="analyze-state-tag" class="section-tag">AGUARDANDO</span></div>
+            <div id="analyze-summary" class="metrics"></div>
+            <article class="panel caveat-panel"><h3>Limitações da análise</h3><ul id="analyze-limitations" class="fact-list"></ul></article>
+            <div class="tabs" role="tablist" aria-label="Resultados">
+              <button id="tab-findings" class="tab" role="tab" type="button" aria-selected="true" aria-controls="panel-findings">Achados <span id="findings-count" class="badge">0</span></button>
+              <button id="tab-hypotheses" class="tab" role="tab" type="button" aria-selected="false" aria-controls="panel-hypotheses" tabindex="-1">Hipóteses <span id="target-analysis-count" class="badge">0</span></button>
+              <button id="tab-inventory" class="tab" role="tab" type="button" aria-selected="false" aria-controls="panel-inventory" tabindex="-1">Inventário <span id="framework-count" class="badge">—</span></button>
+            </div>
+            <div id="panel-findings" class="tab-panel" role="tabpanel" aria-labelledby="tab-findings">
+              <div class="finding-explorer">
+                <nav class="finding-nav" aria-label="Lista de achados"><div id="finding-list" class="finding-list"></div></nav>
+                <div id="finding-detail" class="finding-detail-panel"></div>
+              </div>
+            </div>
+            <div id="panel-hypotheses" class="tab-panel" role="tabpanel" aria-labelledby="tab-hypotheses" hidden>
+              <div class="analysis-panel">
+                <p id="target-analysis-caveat" class="analysis-caveat">As hipóteses são pistas derivadas desta campanha. Elas não entram em Achados sem prova específica no alvo.</p>
+                <div id="target-analysis-meta" class="analysis-meta"></div>
+                <h3>Agentes da análise local</h3>
+                <div id="target-agent-runs" class="analysis-agent-grid"><p class="analysis-empty">Aguardando dados da campanha.</p></div>
+                <h3>Tecnologia observada</h3>
+                <div id="target-technology" class="analysis-technology"><p class="analysis-empty">O inventário aparece após a coleta.</p></div>
+                <h3>Sinais usados nesta análise</h3>
+                <div id="target-signals" class="analysis-signal-list"><p class="analysis-empty">Nenhum sinal associado ainda.</p></div>
+                <h3>Hipóteses para verificar</h3>
+                <div id="target-hypotheses" class="analysis-hypothesis-list"><p class="analysis-empty">Nenhuma hipótese avaliada nesta campanha.</p></div>
+                <div class="analysis-ai-panel"><div class="analysis-ai-heading"><h3>Prioridades sugeridas pela IA</h3><span id="target-ai-status" class="section-tag">AGUARDANDO</span></div><p>A IA ordena verificações futuras; sugestões não confirmam falhas.</p><div id="target-ai-priorities" class="analysis-priority-list"><p class="analysis-empty">Nenhuma prioridade gerada.</p></div></div>
+              </div>
+            </div>
+            <div id="panel-inventory" class="tab-panel" role="tabpanel" aria-labelledby="tab-inventory" hidden>
+              <div class="framework-panel">
+                <div class="framework-summary">
+                  <div><span>FAMÍLIA OBSERVADA</span><strong id="framework-family">Aguardando</strong></div>
+                  <div><span>VERSÃO OBSERVADA</span><strong id="framework-version">Não confirmada</strong></div>
+                  <div><span>CERTEZA DO INVENTÁRIO</span><strong id="framework-certainty">—</strong></div>
+                </div>
+                <p id="framework-caveat" class="framework-caveat">Nenhuma versão ou instalação afetada foi confirmada nesta execução.</p>
+                <div class="framework-detail-grid">
+                  <div><h3>Evidência observada</h3><div id="framework-evidence" class="framework-evidence"><p>O inventário aparece após a verificação da página.</p></div></div>
+                  <div><h3>Avisos para triagem</h3><div id="framework-advisories" class="framework-advisories"><p>Nenhum aviso correlacionado até agora.</p></div></div>
+                </div>
+              </div>
+              <section class="basics-panel" id="basics" aria-labelledby="basics-title">
+                <div><span class="section-index">PONTO DE PARTIDA</span><h2 id="basics-title">Dificuldades mais básicas</h2><p>Quando o alvo oferece um catálogo público de desafios, os níveis iniciais e tutoriais aparecem aqui.</p></div>
+                <div class="basics-counts"><span><strong id="difficulty-one">—</strong> NÍVEL 1</span><span><strong id="difficulty-two">—</strong> NÍVEL 2</span></div>
+                <ol id="tutorial-list" class="tutorial-list"><li>Os nomes aparecem após uma campanha concluída.</li></ol>
+              </section>
+            </div>
+            <div id="analyze-cta" class="view-cta"></div>
+          </section>
+
+          <!-- FASE 5 · RELATÓRIO -->
+          <section id="view-report" class="phase-view" data-phase="report" aria-labelledby="report-title" hidden>
+            <div class="section-heading"><div><span class="section-index">FASE 5 · RELATÓRIO E ENCERRAMENTO</span><h2 id="report-title">Encerramento da campanha</h2><p>Resumo executivo, resultados técnicos, correções, limites e trilha de auditoria da mesma execução.</p></div><span id="report-state-tag" class="section-tag">AGUARDANDO</span></div>
+            <div class="report-grid">
+              <article class="panel"><h3>Resumo executivo</h3><dl id="report-exec" class="summary-dl"></dl></article>
+              <article class="panel"><h3>Resultados técnicos</h3><ul id="report-technical" class="fact-list"></ul></article>
+            </div>
+            <article class="panel"><div class="panel-head"><h3>Achados e evidências</h3><button id="report-findings-btn" class="button button-ghost small" type="button">Explorar na análise</button></div><div id="report-findings" class="report-findings"></div></article>
+            <div class="section-heading compact"><div><span class="section-index">ORIENTAÇÃO</span><h2>Recomendações de correção</h2><p>Correções associadas aos achados observados. A validação no código-fonte depende de acesso ao repositório da aplicação.</p></div><span id="ai-status" class="section-tag">IA DESLIGADA</span></div>
+            <div id="recommendations-list" class="recommendation-grid"></div>
+            <article class="panel caveat-panel"><h3>Limitações dos testes</h3><ul id="report-limitations" class="fact-list"></ul></article>
+            <p id="monitor-delta" class="monitor-delta">A comparação de regressões aparece após duas campanhas completas no mesmo alvo.</p>
+            <div class="report-actions">
+              <button id="report-audit-btn" class="button button-ghost" type="button"><span data-icon="history"></span> Trilha de auditoria (<span id="report-audit-count">0</span> eventos)</button>
+              <a id="download-btn" class="button button-ghost disabled" href="/api/report.md" download aria-disabled="true"><span data-icon="download"></span> Relatório (Markdown)</a>
+              <a id="download-json-btn" class="button button-ghost disabled" href="/api/report.json" download aria-disabled="true"><span data-icon="download"></span> Evidências (JSON)</a>
+              <button id="new-campaign-btn" class="button button-primary" type="button"><span data-icon="play"></span> Nova campanha</button>
+            </div>
           </section>
         </main>
-        <footer>HUBBITS / DESAFIO 03 <span>·</span> Evidência local, escopo explícito e parada verificável.</footer>
+        <footer>HUBBITS / DESAFIO 03 <span>·</span> Evidência local, escopo explícito e parada verificável. <span>·</span> <span id="clock">—</span></footer>
       </div>
     </div>
+
+    <aside id="audit-drawer" class="audit-drawer" role="dialog" aria-labelledby="audit-title" hidden>
+      <div class="audit-drawer-head">
+        <div><span class="section-index">TRILHA DE AUDITORIA</span><h2 id="audit-title">campaign.log</h2></div>
+        <button id="audit-close" class="button button-ghost small" type="button" aria-label="Fechar auditoria"><span data-icon="close"></span> Fechar</button>
+      </div>
+      <div class="audit-drawer-tools">
+        <label for="audit-filter">Filtrar</label>
+        <select id="audit-filter">
+          <option value="all">Todos os eventos</option>
+          <option value="decisions">Decisões, planos e aprovações</option>
+          <option value="tests">Testes, observações e evidências</option>
+          <option value="network">Requisições e respostas</option>
+          <option value="errors">Erros e interrupções</option>
+        </select>
+        <span id="audit-count" class="section-tag">0 EVENTOS</span>
+      </div>
+      <div class="audit-console"><div class="audit-console-top"><span><i></i><i></i><i></i></span><strong>UTC · sem corpos, sem segredos</strong></div><ol id="audit-list" class="audit-list"><li class="audit-placeholder">Aguardando o início da campanha...</li></ol></div>
+    </aside>
   </body>
 </html>

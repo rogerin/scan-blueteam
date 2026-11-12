@@ -141,6 +141,70 @@ class WebConsoleInputTests(unittest.TestCase):
                     server.server_close()
                     worker.join(timeout=3)
 
+    def test_post_accepts_bedrock_api_key_without_persisting_it(self):
+        secret = "bedrock-api-key-test-only"
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            config_file = root / "scope.json"
+            config_file.write_text(json.dumps({
+                "target_url": "https://4.migbot.com.br/",
+                "allowed_hosts": ["4.migbot.com.br"],
+            }), encoding="utf-8")
+            observed = {}
+
+            class Result:
+                def to_dict(self):
+                    return {"run_id": "bedrock-web-test", "target": "https://4.migbot.com.br/",
+                            "campaign_name": "test", "status": "completed",
+                            "started_at": "2026-11-12T00:00:00+00:00",
+                            "ended_at": "2026-11-12T00:00:01+00:00",
+                            "stop_reason": "planned_tests_complete", "actions": [],
+                            "findings": [], "observations": [], "recommendations": [],
+                            "summary": {"requests": 0, "findings": 0}}
+
+            def fake_components(**options):
+                observed.update(options)
+                return (object(), object(), object())
+
+            def fake_scan(config, *, stop_event, on_event, ai_advisor, ai_planner,
+                          ai_target_reviewer, approval_queue):
+                return Result()
+
+            with patch("pentest_pipeline.web_server.REPORTS", root / "reports"), patch(
+                "pentest_pipeline.web_server.create_ai_components", side_effect=fake_components
+            ), patch("pentest_pipeline.web_server.run_scan", side_effect=fake_scan):
+                console = CampaignConsole(config_file)
+                server = ConsoleHTTPServer(("127.0.0.1", 0), console)
+                worker = threading.Thread(target=server.serve_forever, daemon=True)
+                worker.start()
+                try:
+                    connection = http.client.HTTPConnection("127.0.0.1", server.server_port, timeout=3)
+                    connection.request("POST", "/api/campaign/start", body=json.dumps({
+                        "target_url": "https://4.migbot.com.br/",
+                        "api_key": secret,
+                        "authorization_confirmed": True,
+                        "ai_provider": "bedrock",
+                        "ai_model": "amazon.nova-micro-v1:0",
+                        "aws_region": "us-east-1",
+                    }), headers={"Content-Type": "application/json",
+                                 "Origin": f"http://127.0.0.1:{server.server_port}"})
+                    response = connection.getresponse()
+                    self.assertEqual(response.status, 202)
+                    response.read()
+                    connection.close()
+                    deadline = time.monotonic() + 3
+                    while console.snapshot()["running"] and time.monotonic() < deadline:
+                        time.sleep(0.01)
+                    self.assertEqual(observed["provider"], "bedrock")
+                    self.assertEqual(observed["model"], "amazon.nova-micro-v1:0")
+                    self.assertEqual(observed["region"], "us-east-1")
+                    self.assertEqual(observed["api_key"], secret)
+                    self.assertNotIn(secret, json.dumps(console.snapshot()))
+                finally:
+                    server.shutdown()
+                    server.server_close()
+                    worker.join(timeout=3)
+
 
 class WebConsoleEvidenceTests(unittest.TestCase):
     def test_evidence_route_serves_only_local_png_files(self):
@@ -303,6 +367,30 @@ class WebConsoleLoadedReportTests(unittest.TestCase):
                     server.shutdown()
                     server.server_close()
                     worker.join(timeout=3)
+
+
+class WebConsolePresentationTests(unittest.TestCase):
+    def test_icons_have_semantic_svg_sources_and_no_ambiguous_glyphs(self):
+        root = Path(__file__).resolve().parents[1]
+        html = (root / "web" / "index.html").read_text(encoding="utf-8")
+        script = (root / "web" / "app.js").read_text(encoding="utf-8")
+        self.assertIn('data-icon="history"', html)
+        self.assertIn('data-icon="shield-check"', html)
+        self.assertIn("const ICON_PATHS", script)
+        for glyph in ("⌖", "◈", "✧", "◇", "▤", "⌘", "⌁", "◷", "◉"):
+            self.assertNotIn(glyph, html + script)
+
+    def test_summary_copy_and_responsive_overflow_guards_are_present(self):
+        root = Path(__file__).resolve().parents[1]
+        script = (root / "web" / "app.js").read_text(encoding="utf-8")
+        styles = (root / "web" / "style.css").read_text(encoding="utf-8")
+        self.assertIn('metricTile("ALTA CONFIANÇA"', script)
+        self.assertIn('"resultados que exigem contexto"', script)
+        self.assertIn(".phase-copy{display:flex;flex:1", styles)
+        self.assertIn('history.scrollRestoration = "manual"', script)
+        self.assertIn("scroll-margin-top:78px", styles)
+        self.assertIn("@media(max-width:380px)", styles)
+        self.assertIn(".tabs{overflow-x:auto}", styles)
 
 
 if __name__ == "__main__":

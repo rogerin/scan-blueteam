@@ -9,6 +9,9 @@ description = "Pipeline controlada de agentes para pentest não destrutivo"
 requires-python = ">=3.11"
 dependencies = []
 
+[project.optional-dependencies]
+bedrock = ["boto3>=1.44.0"]
+
 [project.scripts]
 pentest-agents = "pentest_pipeline.__main__:main"
 
