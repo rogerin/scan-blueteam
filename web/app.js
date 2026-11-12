@@ -33,7 +33,7 @@ function message(value, error = false) {
 function renderStages(snapshot) {
   const grid = $("pipeline-grid");
   grid.replaceChildren();
-  const events = snapshot.events || [];
+  const events = snapshot.events?.length ? snapshot.events : (snapshot.result?.actions || []);
   const phases = events.map((event) => String(event.phase || "").toLowerCase());
   const reached = stages.map((stage) => phases.some((phase) => phase === stage.id || phase.startsWith(stage.id)
     || (stage.id === "checks" && phase === "surface_checks")));
