@@ -21,6 +21,7 @@
           <a class="active" href="#overview"><span aria-hidden="true">◈</span> Visão geral</a>
           <a href="#pipeline"><span aria-hidden="true">◇</span> Pipeline</a>
           <a href="#framework"><span aria-hidden="true">▣</span> Framework</a>
+          <a href="#source-review"><span aria-hidden="true">⌘</span> Reversa</a>
           <a href="#findings"><span aria-hidden="true">▤</span> Achados</a>
           <a href="#recommendations"><span aria-hidden="true">✦</span> Correções</a>
           <a href="#audit"><span aria-hidden="true">⌁</span> Auditoria</a>
@@ -91,7 +92,7 @@
           </section>
 
           <section id="pipeline" class="content-section" aria-labelledby="pipeline-title">
-            <div class="section-heading"><div><span class="section-index">01 / FLUXO</span><h2 id="pipeline-title">Pipeline de agentes</h2><p>O planejamento por IA escolhe apenas verificações permitidas; o executor mantém o controle da rede.</p></div><span class="section-tag">7 ETAPAS</span></div>
+            <div class="section-heading"><div><span class="section-index">01 / FLUXO</span><h2 id="pipeline-title">Pipeline de agentes</h2><p>O planejamento por IA escolhe apenas verificações permitidas; o executor mantém o controle da rede.</p></div><span class="section-tag">8 ETAPAS</span></div>
             <div id="pipeline-grid" class="pipeline-grid"></div>
             <p id="plan-status" class="monitor-delta">O plano de testes aparece quando a campanha começar.</p>
             <div class="stage-plan-panel"><h3>Plano antes da execução</h3><div id="stage-plan-list" class="stage-plan-list"><p class="stage-plan-empty">Hipótese, ação, resultado esperado e condição de parada aparecem aqui.</p></div></div>
@@ -114,23 +115,38 @@
             </div>
           </section>
 
+          <section id="source-review" class="content-section" aria-labelledby="source-review-title">
+            <div class="section-heading"><div><span class="section-index">02 / CÓDIGO PÚBLICO</span><h2 id="source-review-title">Reversa do código público</h2><p>Hipóteses de um commit do Juice Shop, avaliadas por agentes paralelos e comparadas apenas com sinais já coletados.</p></div><span id="source-review-count" class="section-tag">AGUARDANDO</span></div>
+            <div class="source-review-panel">
+              <p id="source-review-caveat" class="source-review-caveat">O vínculo entre esse código público e a implantação do alvo ainda não foi verificado. Hipóteses desta área não entram na contagem de achados.</p>
+              <div id="source-review-meta" class="source-review-meta"></div>
+              <h3>Agentes da análise local</h3>
+              <div id="source-agent-runs" class="source-agent-grid"><p class="source-review-empty">Aguardando uma campanha para correlacionar código, sinais e versão.</p></div>
+              <h3>Sinais correlatos no alvo</h3>
+              <div id="source-target-signals" class="source-signal-list"><p class="source-review-empty">Nenhum sinal associado ainda.</p></div>
+              <h3>Hipóteses do commit</h3>
+              <div id="source-hypotheses" class="source-hypothesis-list"><p class="source-review-empty">Nenhuma hipótese avaliada nesta campanha.</p></div>
+              <div class="source-ai-panel"><div class="source-ai-heading"><h3>Prioridades sugeridas pela IA</h3><span id="source-ai-status" class="section-tag">AGUARDANDO</span></div><p>A IA prioriza revisão futura. Suas sugestões não confirmam falhas no alvo.</p><div id="source-ai-priorities" class="source-priority-list"><p class="source-review-empty">Nenhuma prioridade gerada.</p></div></div>
+            </div>
+          </section>
+
           <section id="findings" class="content-section" aria-labelledby="findings-title">
-            <div class="section-heading"><div><span class="section-index">02 / EVIDÊNCIAS</span><h2 id="findings-title">Achados verificados</h2><p>Observações diretas, hipóteses e limites de confiança aparecem separados.</p></div><span id="findings-count" class="section-tag">0 ACHADOS</span></div>
+            <div class="section-heading"><div><span class="section-index">03 / EVIDÊNCIAS</span><h2 id="findings-title">Achados verificados</h2><p>Observações diretas, hipóteses e limites de confiança aparecem separados.</p></div><span id="findings-count" class="section-tag">0 ACHADOS</span></div>
             <div id="findings-list" class="findings-list"><div class="empty-state"><span aria-hidden="true">◎</span><strong>Nenhuma campanha executada</strong><p>Inicie uma campanha para gerar evidências com os testes permitidos.</p></div></div>
           </section>
 
           <section id="recommendations" class="content-section" aria-labelledby="recommendations-title">
-            <div class="section-heading"><div><span class="section-index">03 / ORIENTAÇÃO</span><h2 id="recommendations-title">Dicas de código</h2><p>Correções associadas aos achados observados. A validação no código-fonte depende de acesso ao repositório da aplicação.</p></div><span id="ai-status" class="section-tag">IA DESLIGADA</span></div>
+            <div class="section-heading"><div><span class="section-index">04 / ORIENTAÇÃO</span><h2 id="recommendations-title">Dicas de código</h2><p>Correções associadas aos achados observados. A validação no código-fonte depende de acesso ao repositório da aplicação.</p></div><span id="ai-status" class="section-tag">IA DESLIGADA</span></div>
             <div id="recommendations-list" class="recommendation-grid"><div class="empty-state"><span aria-hidden="true">✦</span><strong>Recomendações após o teste</strong><p>O agente de correção transforma evidências em passos de implementação e regressão.</p></div></div>
           </section>
 
           <section id="audit" class="content-section" aria-labelledby="audit-title">
-            <div class="section-heading"><div><span class="section-index">04 / RASTREABILIDADE</span><h2 id="audit-title">Trilha de auditoria</h2><p>Decisões, testes, resultados e interrupções em ordem cronológica.</p></div><span class="section-tag">TEMPO REAL</span></div>
+            <div class="section-heading"><div><span class="section-index">05 / RASTREABILIDADE</span><h2 id="audit-title">Trilha de auditoria</h2><p>Decisões, testes, resultados e interrupções em ordem cronológica.</p></div><span class="section-tag">TEMPO REAL</span></div>
             <div class="audit-console"><div class="audit-console-top"><span><i></i><i></i><i></i></span><strong>campaign.log</strong><span id="audit-count">0 EVENTOS</span></div><ol id="audit-list" class="audit-list"><li class="audit-placeholder">Aguardando o início da campanha...</li></ol></div>
           </section>
 
           <section id="guardrails" class="content-section guardrails" aria-labelledby="guardrails-title">
-            <div class="section-heading"><div><span class="section-index">05 / MODELO DE SEGURANÇA</span><h2 id="guardrails-title">Limites da operação</h2><p>As regras do desafio são aplicadas pelo executor antes de cada requisição.</p></div><span class="section-tag">POLÍTICA ATIVA</span></div>
+            <div class="section-heading"><div><span class="section-index">06 / MODELO DE SEGURANÇA</span><h2 id="guardrails-title">Limites da operação</h2><p>As regras do desafio são aplicadas pelo executor antes de cada requisição.</p></div><span class="section-tag">POLÍTICA ATIVA</span></div>
             <div class="guardrail-grid">
               <article><span class="guardrail-icon">⌖</span><h3>Alvo único</h3><p id="guardrail-target">Somente a origem HTTPS informada nesta campanha. Redirecionamentos externos são recusados.</p></article>
               <article><span class="guardrail-icon">◷</span><h3>Volume limitado</h3><p id="guardrail-volume">Métodos de leitura, orçamento de requisições e intervalo mínimo entre ações.</p></article>

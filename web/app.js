@@ -7,7 +7,8 @@ const stages = [
   { id: "checks", number: "04", icon: "◇", title: "Testes seguros", description: "Executa verificações de leitura com cadência e volume limitados." },
   { id: "triage", number: "05", icon: "▤", title: "Triagem", description: "Classifica evidência, severidade e confiança sem inferir exploração." },
   { id: "remediation", number: "06", icon: "✦", title: "Correção", description: "Relaciona os achados a dicas de código e testes de regressão." },
-  { id: "monitor", number: "07", icon: "⌁", title: "Monitoramento", description: "Compara execuções e destaca achados novos ou resolvidos." },
+  { id: "source_review", number: "07", icon: "⌘", title: "Reversa multiagente", description: "Confronta código público, sinais já coletados e vínculo da versão em agentes paralelos." },
+  { id: "monitor", number: "08", icon: "⌁", title: "Monitoramento", description: "Compara execuções e destaca achados novos ou resolvidos." },
 ];
 
 const checkLabels = {
@@ -20,7 +21,7 @@ const stepLabels = {
   scope: "Escopo", discovery: "Descoberta", check_selection: "Seleção dos checks",
   ai_planning: "Prioridades da IA", asset_fetch: "Coleta de scripts",
   framework_inventory: "Inventário de framework", headers: "Cabeçalhos",
-  cookies: "Cookies", triage: "Triagem", remediation: "Correção", ai_advisor: "Revisão por IA",
+  cookies: "Cookies", triage: "Triagem", remediation: "Correção", source_review: "Reversa do código público", ai_advisor: "Revisão por IA",
 };
 
 const $ = (id) => document.getElementById(id);
@@ -220,6 +221,153 @@ function renderFrameworkInventory(observations) {
       } catch { /* Ignore malformed reference URLs. */ }
     }
     list.append(item);
+  });
+}
+
+const upstreamCommit = "266448aba68cd8ba5915f526a128da4fa7bc3f9f";
+function safeUpstreamReference(value) {
+  if (typeof value !== "string" || value.length > 360) return "";
+  try {
+    const reference = new URL(value);
+    const prefix = `/juice-shop/juice-shop/blob/${upstreamCommit}/`;
+    if (reference.protocol !== "https:" || reference.hostname !== "github.com"
+        || reference.port || reference.username || reference.password || reference.search
+        || !reference.pathname.startsWith(prefix) || reference.pathname.includes("..")
+        || !/^#L[1-9][0-9]*$/.test(reference.hash)) return "";
+    const filePath = reference.pathname.slice(prefix.length);
+    return /^[A-Za-z0-9._/-]+$/.test(filePath) && !filePath.includes("//") ? reference.href : "";
+  } catch { return ""; }
+}
+
+function sourceFact(label, value) {
+  const row = node("p", "source-fact");
+  row.append(node("strong", "", label), node("span", "", value || "Não determinado."));
+  return row;
+}
+
+function renderSourceReview(observations) {
+  const review = observations.find((item) => item.type === "upstream_source_review");
+  const aiReview = observations.find((item) => item.type === "upstream_ai_review");
+  const hypotheses = Array.isArray(review?.hypotheses) ? review.hypotheses : [];
+  const applicable = review?.status === "reference_only" && review?.commit === upstreamCommit;
+  text($("source-review-count"), applicable
+    ? `${hypotheses.length} ${hypotheses.length === 1 ? "HIPÓTESE" : "HIPÓTESES"}`
+    : review ? "SEM REFERÊNCIA APLICÁVEL" : "AGUARDANDO");
+  text($("source-review-caveat"), applicable
+    ? "O commit público foi revisado como referência, mas sua correspondência com o código implantado não foi comprovada. Mesmo quando há sinal HTTP correlato, estas hipóteses não entram em Achados verificados."
+    : review ? "Não há catálogo de código público vinculado a esta origem. A campanha continua baseada nos testes autorizados e nas evidências do alvo."
+      : "O vínculo entre código público e implantação ainda não foi verificado. Hipóteses desta área não entram na contagem de achados.");
+  const meta = $("source-review-meta");
+  meta.replaceChildren();
+  if (applicable) {
+    meta.append(node("span", "", `Fonte: OWASP Juice Shop · commit ${upstreamCommit.slice(0, 8)}`),
+      node("span", "", "Vínculo com o alvo: não verificado"));
+    const link = node("a", "framework-reference", "Ver commit no GitHub ↗");
+    link.href = `https://github.com/juice-shop/juice-shop/commit/${upstreamCommit}`;
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    meta.append(link);
+  }
+
+  const runs = $("source-agent-runs");
+  runs.replaceChildren();
+  const agentNames = {
+    source_catalog: ["Catálogo do código", "Confere as referências do commit fixado."],
+    target_signals: ["Sinais do alvo", "Resume apenas resultados da campanha."],
+    deployment_match: ["Vínculo da implantação", "Separa identificação de produto de versão exata."],
+  };
+  const agentRuns = applicable && Array.isArray(review?.agent_runs) ? review.agent_runs : [];
+  if (!agentRuns.length) runs.append(node("p", "source-review-empty", applicable
+    ? "Execuções dos agentes não registradas nesta campanha."
+    : "Aguardando uma campanha para correlacionar código, sinais e versão."));
+  agentRuns.forEach((run) => {
+    if (!run || typeof run !== "object") return;
+    const [name, description] = agentNames[run.name] || [run.name || "Agente", "Análise local."];
+    const card = node("article", "source-agent-card");
+    const status = run.status === "completed" ? "CONCLUÍDO" : run.status === "failed" ? "FALHOU" : "NÃO EXECUTADO";
+    card.append(node("span", `source-agent-status ${run.status === "completed" ? "complete" : ""}`, status),
+      node("h4", "", name), node("p", "", run.detail || description));
+    if (Number.isFinite(run.duration_ms) && run.duration_ms >= 0) {
+      card.append(node("small", "", `${Math.round(run.duration_ms)} ms · análise local`));
+    }
+    runs.append(card);
+  });
+
+  const signals = $("source-target-signals");
+  signals.replaceChildren();
+  const targetSignals = applicable && Array.isArray(review?.target_signals) ? review.target_signals : [];
+  if (!targetSignals.length) signals.append(node("p", "source-review-empty", "Nenhum sinal do alvo foi associado a este catálogo."));
+  targetSignals.forEach((signal) => {
+    if (!signal || typeof signal !== "object") return;
+    const item = node("article", "source-signal");
+    item.append(node("strong", "", checkLabels[signal.check] || signal.check || "Sinal"),
+      node("span", "", signal.status === "signal_only" ? "SINAL, NÃO CONFIRMAÇÃO" : "CORRELAÇÃO LIMITADA"));
+    if (signal.proof) item.append(sourceFact("Prova já coletada", signal.proof));
+    item.append(sourceFact("Limite", signal.limitations || "Não demonstra a aplicabilidade do código público no alvo."));
+    signals.append(item);
+  });
+
+  const list = $("source-hypotheses");
+  list.replaceChildren();
+  if (!applicable || !hypotheses.length) list.append(node("p", "source-review-empty",
+    review ? "Nenhuma hipótese do commit se aplica automaticamente a este alvo." : "Nenhuma hipótese avaliada nesta campanha."));
+  (applicable ? hypotheses : []).forEach((hypothesis, index) => {
+    if (!hypothesis || typeof hypothesis !== "object") return;
+    const details = node("details", "source-hypothesis");
+    const summary = node("summary", "source-hypothesis-summary");
+    const title = node("span", "source-hypothesis-title");
+    title.append(node("small", "", String(index + 1).padStart(2, "0")),
+      node("strong", "", hypothesis.title || hypothesis.id || "Hipótese"));
+    summary.append(title, node("span", "source-hypothesis-badge",
+      Array.isArray(hypothesis.related_dynamic_checks) && hypothesis.related_dynamic_checks.length
+        ? "SINAL CORRELATO" : "NÃO TESTADA NO ALVO"));
+    details.append(summary);
+    const body = node("div", "source-hypothesis-body");
+    body.append(sourceFact("Estado", "Hipótese do upstream; aplicabilidade no alvo não verificada."),
+      sourceFact("Trecho do código", hypothesis.source_excerpt),
+      sourceFact("Condições", hypothesis.prerequisites),
+      sourceFact("Impacto se aplicável", hypothesis.impact_if_applicable),
+      sourceFact("Próxima verificação", hypothesis.verification));
+    const related = Array.isArray(hypothesis.related_dynamic_checks) ? hypothesis.related_dynamic_checks : [];
+    if (related.length) body.append(sourceFact("Sinal relacionado", related.map((check) => checkLabels[check] || check).join(" · ")));
+    body.append(sourceFact("Limite da correlação", hypothesis.correlation_limit));
+    const refs = node("div", "source-refs");
+    refs.append(node("strong", "", "Referências do commit"));
+    (Array.isArray(hypothesis.source_refs) ? hypothesis.source_refs : []).forEach((url) => {
+      const safe = safeUpstreamReference(url);
+      if (!safe) return;
+      const reference = new URL(safe);
+      const label = `${reference.pathname.split("/").slice(5).join("/")} ${reference.hash}`;
+      const link = node("a", "framework-reference", `${label} ↗`);
+      link.href = safe;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      refs.append(link);
+    });
+    body.append(refs);
+    details.append(body);
+    list.append(details);
+  });
+
+  text($("source-ai-status"), aiReview?.status === "completed" ? `IA ${aiReview.model || ""} · CONCLUÍDA`
+    : aiReview?.status === "failed" ? "IA INDISPONÍVEL" : "SEM PRIORIZAÇÃO POR IA");
+  const priorities = $("source-ai-priorities");
+  priorities.replaceChildren();
+  const suggestions = applicable && Array.isArray(aiReview?.priorities) ? aiReview.priorities : [];
+  if (!suggestions.length) priorities.append(node("p", "source-review-empty", aiReview?.status === "failed"
+    ? "A revisão por IA falhou; o catálogo determinístico permanece disponível."
+    : "Nenhuma prioridade por IA nesta campanha."));
+  const knownIds = new Set(hypotheses.map((item) => item.id));
+  suggestions.forEach((suggestion) => {
+    if (!suggestion || typeof suggestion !== "object" || !knownIds.has(suggestion.id)) return;
+    const card = node("article", "source-priority");
+    const title = hypotheses.find((item) => item.id === suggestion.id)?.title || suggestion.id;
+    const rank = { high: "ALTA", medium: "MÉDIA", low: "BAIXA" }[suggestion.priority] || "PRIORIDADE";
+    card.append(node("span", "source-priority-rank", rank), node("h4", "", title),
+      sourceFact("Por que revisar", suggestion.rationale),
+      sourceFact("Próximo passo", suggestion.next_step),
+      sourceFact("Limite", suggestion.limitation));
+    priorities.append(card);
   });
 }
 
@@ -460,6 +608,7 @@ function render(snapshot) {
   renderStagePlan(observations, events.length ? events : actions);
   renderBasics(observations, snapshot.running ? "running" : result.status);
   renderFrameworkInventory(observations);
+  renderSourceReview(observations);
   renderAIStatus(observations, scope, events.length ? events : actions);
   renderFindings(findings);
   renderRecommendations(recommendations, findings);

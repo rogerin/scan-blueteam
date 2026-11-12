@@ -40,7 +40,8 @@ class WebConsoleStopTests(unittest.TestCase):
                 "allowed_hosts": ["4.migbot.com.br"],
             }))
 
-            def fake_scan(config, *, stop_event, on_event, ai_advisor, ai_planner, approval_queue):
+            def fake_scan(config, *, stop_event, on_event, ai_advisor, ai_planner,
+                          ai_source_reviewer, approval_queue):
                 on_event({"timestamp": "2026-11-12T00:00:00+00:00", "type": "request", "phase": "discovery", "message": "Synthetic request"})
                 self.assertTrue(stop_event.wait(2), "the stop signal never reached the scan")
                 return _StoppedResult()
@@ -87,10 +88,12 @@ class WebConsoleInputTests(unittest.TestCase):
                         "summary": {"requests": 1, "findings": 0},
                     }
 
-            def fake_scan(config, *, stop_event, on_event, ai_advisor, ai_planner, approval_queue):
+            def fake_scan(config, *, stop_event, on_event, ai_advisor, ai_planner,
+                          ai_source_reviewer, approval_queue):
                 seen.append(config.target_url)
                 self.assertIsNotNone(ai_planner)
                 self.assertIsNotNone(ai_advisor)
+                self.assertIsNotNone(ai_source_reviewer)
                 self.assertIsNotNone(approval_queue)
                 return _CompletedResult()
 
@@ -214,7 +217,8 @@ class WebConsoleApprovalTests(unittest.TestCase):
                             "findings": [], "observations": [], "recommendations": [],
                             "summary": {"requests": 0, "findings": 0}}
 
-            def fake_scan(config, *, stop_event, on_event, ai_advisor, ai_planner, approval_queue):
+            def fake_scan(config, *, stop_event, on_event, ai_advisor, ai_planner,
+                          ai_source_reviewer, approval_queue):
                 self.assertTrue(approval_queue.require(
                     "quoted_search", target="https://4.migbot.com.br/rest/products/search",
                     reason="Comparação sintética", stop_event=stop_event))
